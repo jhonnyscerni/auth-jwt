@@ -29,7 +29,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
    private final AuthenticationEntryPointImpl authenticationEntryPoint;
 
     private static final String[] AUTH_WHITELIST = {
-            "/auth/**"
+            "/auth/**",
+            "/authenticate",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/v3/api-docs",
+            "/webjars/**"
     };
 
     @Bean

@@ -36,14 +36,4 @@ public class AuthenticationController {
         String jwt = jwtProvider.generateJwt(authentication);
         return ResponseEntity.ok(new JwtDto(jwt));
     }
-
-    @GetMapping("/")
-    public String index(){
-        log.trace("TRACE");
-        log.debug("DEBUG");
-        log.info("INFO");
-        log.warn("WARN");
-        log.error("ERROR");
-        return "Logging Spring Boot...";
-    }
 }
