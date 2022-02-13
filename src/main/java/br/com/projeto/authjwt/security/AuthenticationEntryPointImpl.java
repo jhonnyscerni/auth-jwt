@@ -1,4 +1,4 @@
-package br.com.projeto.authjwt.security.jwt;
+package br.com.projeto.authjwt.security;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.AuthenticationException;

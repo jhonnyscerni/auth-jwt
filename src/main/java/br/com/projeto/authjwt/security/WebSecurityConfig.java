@@ -1,9 +1,7 @@
 package br.com.projeto.authjwt.security;
 
-import br.com.projeto.authjwt.security.jwt.AuthenticationEntryPointImpl;
 import br.com.projeto.authjwt.security.jwt.AuthenticationJwtFilter;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,14 +17,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @AllArgsConstructor
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled=true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     private final UserDetailsServiceImpl userDetailsService;
 
-   private final AuthenticationEntryPointImpl authenticationEntryPoint;
+    private final AuthenticationEntryPointImpl authenticationEntryPoint;
 
     private static final String[] AUTH_WHITELIST = {
             "/auth/**",

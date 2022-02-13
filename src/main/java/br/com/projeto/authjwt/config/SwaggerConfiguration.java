@@ -18,11 +18,11 @@ public class SwaggerConfiguration {
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
     private ApiInfo apiInfo() {
-        return new ApiInfo("MyApp Rest APIs",
-                "APIs for MyApp.",
+        return new ApiInfo("Micro Serviço de autenticação JWT ",
+                "APIs de Autenticação e criação de Usuario",
                 "1.0",
-                "Terms of service",
-                new Contact("test", "www.org.com", "test@emaildomain.com"),
+                "Termos de serviço",
+                new Contact("jhonny", "www.siberius.com.br", "jhonnyscerni@gmail.com"),
                 "License of API",
                 "API license URL",
                 Collections.emptyList());

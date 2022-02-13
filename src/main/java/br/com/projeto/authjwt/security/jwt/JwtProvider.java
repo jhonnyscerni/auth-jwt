@@ -34,6 +34,7 @@ public class JwtProvider {
                 .compact();
     }
 
+    // Usado no Filter
     public String getUsernameJwt(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
