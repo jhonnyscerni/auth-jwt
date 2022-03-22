@@ -26,18 +26,23 @@ public class UserDetailsImpl implements UserDetails {
 
     public static UserDetailsImpl build(User userModel) {
         List<GrantedAuthority> authorities = userModel.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
-                .collect(Collectors.toList());
+            .flatMap(grupo -> grupo.getPermissions().stream())
+            .map(permissao -> new SimpleGrantedAuthority(permissao.getNome().toUpperCase()))
+            .collect(Collectors.toList());
+
+//                userModel.getRoles().stream()
+//                .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
+//                .collect(Collectors.toList());
         // Parametros Padrões
         //return new User(usuario.getUsername(), usuario.getPassword(), usuario.getAuthorities());
         // Incluir outros parametros
         return new UserDetailsImpl(
-                userModel.getId(),
-                userModel.getFullName(),
-                userModel.getUsername(),
-                userModel.getPassword(),
-                userModel.getEmail(),
-                authorities);
+            userModel.getId(),
+            userModel.getFullName(),
+            userModel.getUsername(),
+            userModel.getPassword(),
+            userModel.getEmail(),
+            authorities);
     }
 
     @Override

@@ -14,7 +14,7 @@
     <name>auth-jwt</name>
     <description>auth-jwt</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>8</java.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <maven.compiler.version>3.8.1</maven.compiler.version>

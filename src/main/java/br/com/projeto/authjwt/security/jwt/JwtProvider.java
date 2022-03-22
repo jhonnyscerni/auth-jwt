@@ -2,10 +2,13 @@ package br.com.projeto.authjwt.security.jwt;
 
 import br.com.projeto.authjwt.security.UserDetailsImpl;
 import io.jsonwebtoken.*;
+import java.util.stream.Collectors;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
