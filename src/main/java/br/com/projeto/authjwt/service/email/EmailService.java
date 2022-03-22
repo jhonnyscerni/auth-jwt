@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class EmailService {
 
     @Autowired
-    private EnvioEmailService envioEmailService;W
+    private EnvioEmailService envioEmailService;
 
     public void sendNewPasswordEmail(User user) {
         EnvioEmailService.Mensagem mensagem = EnvioEmailService.Mensagem.builder()
