@@ -2,35 +2,43 @@ package br.com.projeto.authjwt.models;
 
 import br.com.projeto.authjwt.models.enums.RoleType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "TB_ROLES")
 @SequenceGenerator(name = "seq_role", sequenceName = "seq_role", initialValue = 1, allocationSize = 1)
-public class Role implements Serializable {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_role")
+    @EqualsAndHashCode.Include
     private Long roleId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true, length = 30)
     private RoleType roleName;
 
-    @ManyToMany
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "TB_ROLES_PERMISSIONS", joinColumns = @JoinColumn(name = "roleId"),
         inverseJoinColumns = @JoinColumn(name = "permissionId"))
     private List<Permission> permissions = new ArrayList<>();

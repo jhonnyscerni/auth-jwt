@@ -2,19 +2,24 @@ package br.com.projeto.authjwt.service.impl;
 
 
 import br.com.projeto.authjwt.dto.UserDto;
+import br.com.projeto.authjwt.filter.UserFilter;
 import br.com.projeto.authjwt.models.Role;
 import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.models.enums.RoleType;
+import br.com.projeto.authjwt.models.enums.UserType;
 import br.com.projeto.authjwt.models.exceptions.BusinessException;
 import br.com.projeto.authjwt.models.exceptions.ConflictException;
 import br.com.projeto.authjwt.models.exceptions.EntityNotFoundException;
 import br.com.projeto.authjwt.models.mapper.UserMapper;
 import br.com.projeto.authjwt.repositories.UserRepository;
+import br.com.projeto.authjwt.repositories.specs.UserSpecification;
 import br.com.projeto.authjwt.service.RoleService;
 import br.com.projeto.authjwt.service.UserService;
 import br.com.projeto.authjwt.service.email.EmailService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +64,7 @@ public class UserServiceImpl implements UserService {
         Role role = roleService.findByRoleName(RoleType.ROLE_USER);
 
         User user = userMapper.toEntity(userDto);
+        user.setUserType(UserType.USER);
         user.getRoles().add(role);
         user = userRepository.save(user);
         log.debug("POST registerUser userId saved {} ", user.getId());
@@ -68,10 +74,27 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
     public User buscarOuFalharPorEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException(
                         String.format("Não existe um cadastro de usuário com email %s", email)));
+    }
+
+    @Override
+    public User buscarOuFalhar(Long usuarioId) {
+        return userRepository.findById(usuarioId)
+            .orElseThrow(() -> new EntityNotFoundException("Não existe um cadastro de usuário"));
+    }
+
+    @Override
+    public Page<UserDto> search(UserFilter filter, Pageable pageable) {
+        return userRepository.findAll(new UserSpecification(filter), pageable).map(userMapper::toModel);
+    }
+
+    public UserDto findByIdUserDto(Long id){
+        User user = buscarOuFalhar(id);
+        return userMapper.toModel(user);
     }
 
     @Override
