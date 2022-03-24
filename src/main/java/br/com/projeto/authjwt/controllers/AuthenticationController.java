@@ -21,7 +21,6 @@ import javax.validation.Valid;
 @AllArgsConstructor
 @Log4j2
 @RestController
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/auth")
 public class AuthenticationController {
 
