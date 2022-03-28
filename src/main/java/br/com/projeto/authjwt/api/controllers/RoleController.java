@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,4 +22,8 @@ public class RoleController {
         return ResponseEntity.ok().body(roleService.findAll());
     }
 
+    @GetMapping("/{roleId}")
+    public ResponseEntity<RoleResponse> findById(@PathVariable Long roleId) {
+        return ResponseEntity.ok().body(roleService.findByIdRoleResponse(roleId));
+    }
 }

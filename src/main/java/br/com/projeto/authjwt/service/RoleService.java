@@ -10,5 +10,9 @@ public interface RoleService {
 
     Role findByRoleName(RoleType roleType);
 
+    Role buscarOuFalhar(Long permisionId);
+
     List<RoleResponse> findAll();
+
+    RoleResponse findByIdRoleResponse(Long id);
 }
