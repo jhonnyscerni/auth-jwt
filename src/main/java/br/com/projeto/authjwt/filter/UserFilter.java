@@ -10,7 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 @Getter
 public class UserFilter {
 
-    private String userName;
+    private String username;
 
     private String email;
 

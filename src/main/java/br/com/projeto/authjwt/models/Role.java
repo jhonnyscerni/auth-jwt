@@ -38,7 +38,7 @@ public class Role {
     private RoleType roleName;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "TB_ROLES_PERMISSIONS", joinColumns = @JoinColumn(name = "roleId"),
         inverseJoinColumns = @JoinColumn(name = "permissionId"))
     private List<Permission> permissions = new ArrayList<>();

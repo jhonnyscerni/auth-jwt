@@ -21,8 +21,10 @@ public class UserSpecification implements Specification<User> {
     public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
 
-        Optional.ofNullable(allocationFilter.getUserName())
-            .ifPresent(p -> predicates.add(criteriaBuilder.like(root.get("userName"), "%" + allocationFilter.getUserName() + "%")));
+        Optional.ofNullable(allocationFilter.getUsername())
+            .ifPresent(p -> predicates.add(criteriaBuilder.like(root.get("username"), "%" + allocationFilter.getUsername() + "%")));
+        Optional.ofNullable(allocationFilter.getEmail())
+            .ifPresent(p -> predicates.add(criteriaBuilder.like(root.get("email"), "%" + allocationFilter.getEmail() + "%")));
 //        Optional.ofNullable(allocationFilter.getRg())
 //            .ifPresent(p -> predicates.add(criteriaBuilder.equal(root.get("rg"), allocationFilter.getRg())));
 //        Optional.ofNullable(allocationFilter.getCpf())

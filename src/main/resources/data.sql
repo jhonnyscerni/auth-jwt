@@ -1,5 +1,5 @@
 insert into tb_users (id, username, email, password, full_name, user_type, user_status, phone_number, cpf)
-values (1, 'jhonnyscerni', 'jhonnyscerni@gmail.com', '$2a$10$zbasxF6mxu5xUQMfjT2xr.j9opYTDR3jHkixr9lQ.ZPDwe3T.HOi2',
+values (1, 'jhonnyscerni', 'jhonnyscerni@gmail.com', '$2a$10$5SAcyRvZdMGYnWu5pTriR.yS9GC6i2ff6r/dR3WU1cJBJbksXQ5/W',
         'Jhonny Scerni Gondim Costa', 'ADMIN', 'ACTIVE', '9999999999', '99999999999');
 
 insert into tb_roles (role_id, role_name)
