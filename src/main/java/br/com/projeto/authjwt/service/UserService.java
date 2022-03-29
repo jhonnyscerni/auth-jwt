@@ -13,6 +13,12 @@ public interface UserService {
 
     void existsByUserName(User cliente, String username);
 
+    void disassociateRole(Long userId, Long roleId);
+
+    void passwordNotEquals(User user, UserRequest userRequest);
+
+    void delete(Long id);
+
     UserResponse resetPassword(String email);
 
     User buscarOuFalhar(Long usuarioId);
@@ -29,5 +35,5 @@ public interface UserService {
 
     UserResponse update(Long id, UserRequest userRequest);
 
-    void excluir(Long id);
+    void connectRole(Long userId, Long roleId);
 }

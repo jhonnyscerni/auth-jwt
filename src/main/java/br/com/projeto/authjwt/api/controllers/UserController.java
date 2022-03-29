@@ -34,9 +34,9 @@ public class UserController {
         return ResponseEntity.ok().body(userService.search(filter, pageable));
     }
 
-    @GetMapping("/{usuarioId}")
-    public ResponseEntity<UserResponse> findById(@PathVariable Long usuarioId) {
-        return ResponseEntity.ok().body(userService.findByIdUserDto(usuarioId));
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserResponse> findById(@PathVariable Long userId) {
+        return ResponseEntity.ok().body(userService.findByIdUserDto(userId));
     }
 
     @PostMapping
@@ -44,15 +44,15 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(userRequest));
     }
 
-    @PutMapping("/{usuarioId}")
-    public ResponseEntity<UserResponse> update(@PathVariable Long usuarioId,
+    @PutMapping("/{userId}")
+    public ResponseEntity<UserResponse> update(@PathVariable Long userId,
         @RequestBody @Valid UserRequest userRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.update(usuarioId, userRequest));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId, userRequest));
     }
 
-    @DeleteMapping("/{usuarioId}")
-    public ResponseEntity<Void> delete(@PathVariable Long usuarioId) {
-        userService.excluir(usuarioId);
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> delete(@PathVariable Long userId) {
+        userService.delete(userId);
         return ResponseEntity.noContent().build();
     }
 

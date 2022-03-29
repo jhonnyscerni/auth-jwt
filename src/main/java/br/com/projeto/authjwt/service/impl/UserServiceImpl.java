@@ -111,13 +111,31 @@ public class UserServiceImpl implements UserService {
         return userMapper.toResponse(userRepository.save(user));
     }
 
-    private void passwordNotEquals(User user, UserRequest userRequest) {
+    @Override
+    public void connectRole(Long userId, Long roleId) {
+        User user = buscarOuFalhar(userId);
+        Role role = roleService.buscarOuFalhar(roleId);
+        user.addRole(role);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void disassociateRole(Long userId, Long roleId) {
+        User user = buscarOuFalhar(userId);
+        Role role = roleService.buscarOuFalhar(roleId);
+        user.removeRole(role);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void passwordNotEquals(User user, UserRequest userRequest) {
         if (!user.getPassword().equals(userRequest.getPassword())){
             userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         }
     }
 
-    public void excluir(Long id) {
+    @Override
+    public void delete(Long id) {
         try {
             userRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
