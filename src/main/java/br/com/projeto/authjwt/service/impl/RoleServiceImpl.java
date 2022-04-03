@@ -33,7 +33,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role findByRoleName(RoleType roleType) {
-        return roleRepository.findByRoleName(roleType).orElseThrow(() -> new BusinessException("Error: Role is Not Found."));
+        return roleRepository.findByName(roleType).orElseThrow(() -> new BusinessException("Error: Role is Not Found."));
     }
 
     @Override

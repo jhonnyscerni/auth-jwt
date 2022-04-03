@@ -8,9 +8,9 @@ import lombok.Data;
 @Data
 public class RoleResponse {
 
-    private Long roleId;
+    private Long id;
 
-    private String roleName;
+    private String name;
 
     private List<Permission> permissions = new ArrayList<>();
 

@@ -31,7 +31,7 @@ public class PermissionsController {
 
     @GetMapping
     public ResponseEntity<Page<PermissionResponse>> search(PermissionFilter filter,
-        @PageableDefault(sort = "permissionId", direction = Direction.DESC, page = 0, size = 10) Pageable pageable) {
+        @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable pageable) {
         return ResponseEntity.ok().body(permissionService.search(filter, pageable));
     }
 

@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class PermissionRequest {
 
-    private String nome;
+    private String name;
 
-    private String descricao;
+    private String description;
 
 }
