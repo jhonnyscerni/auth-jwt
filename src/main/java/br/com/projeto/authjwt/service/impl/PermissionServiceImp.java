@@ -35,7 +35,7 @@ public class PermissionServiceImp implements PermissionService {
     @Override
     public Permission buscarOuFalhar(Long permisionId) {
         return permissionRepository.findById(permisionId)
-            .orElseThrow(() -> new EntityNotFoundException("Não existe um cadastro de permission"));
+            .orElseThrow(() -> new EntityNotFoundException("Não existe um cadastro de permission", permisionId));
     }
 
     @Override

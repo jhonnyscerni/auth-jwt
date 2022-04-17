@@ -8,6 +8,10 @@ public class EntityNotFoundException extends BusinessException {
         super(message);
     }
 
+    public EntityNotFoundException(String message, Long id) {
+        this(String.format(message + " %d", id));
+    }
+
     public EntityNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }

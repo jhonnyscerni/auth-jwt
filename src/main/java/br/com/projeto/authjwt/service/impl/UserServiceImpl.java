@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User buscarOuFalhar(Long usuarioId) {
         return userRepository.findById(usuarioId)
-            .orElseThrow(() -> new EntityNotFoundException("Não existe um cadastro de usuário"));
+            .orElseThrow(() -> new EntityNotFoundException("Não existe um cadastro de usuário", usuarioId));
     }
 
     public UserResponse findByIdUserDto(Long id) {

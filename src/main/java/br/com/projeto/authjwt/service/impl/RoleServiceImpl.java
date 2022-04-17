@@ -39,7 +39,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role buscarOuFalhar(Long roleId) {
         return roleRepository.findById(roleId)
-            .orElseThrow(() -> new EntityNotFoundException("Não existe um cadastro de role"));
+            .orElseThrow(() -> new EntityNotFoundException("Não existe um cadastro de role", roleId));
     }
 
     @Override
