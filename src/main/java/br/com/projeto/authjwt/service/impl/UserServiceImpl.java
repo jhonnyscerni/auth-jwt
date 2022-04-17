@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
         existsByUserEmail(new User(), userRequest.getEmail());
 
         userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        userRequest.setUserType(UserType.USER.name());
+        //userRequest.setUserType(UserType.USER.name());
         Role role = roleService.findByRoleName(RoleType.ROLE_USER);
         userRequest.getRoles().add(role);
 

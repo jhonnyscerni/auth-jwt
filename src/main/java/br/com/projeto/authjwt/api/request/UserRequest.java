@@ -16,8 +16,6 @@ public class UserRequest {
 
     private String fullName;
 
-    private String userType;
-
     private String phoneNumber;
 
     private String cpf;
