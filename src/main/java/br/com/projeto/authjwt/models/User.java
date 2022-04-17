@@ -46,9 +46,10 @@ public class User {
     @Column(nullable = false, length = 150)
     private String fullName;
 
-    // Podemos Criar Classe Pessoa e fazer Herança com os tipos
-    @Enumerated(EnumType.STRING)
-    private UserType userType;
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "person_id", nullable = false,
+            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "person_fk"))
+    private Person person;
 
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
