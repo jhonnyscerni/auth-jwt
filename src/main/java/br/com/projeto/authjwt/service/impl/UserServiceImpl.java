@@ -1,23 +1,21 @@
 package br.com.projeto.authjwt.service.impl;
 
 
+import br.com.projeto.authjwt.api.mapper.UserMapper;
 import br.com.projeto.authjwt.api.request.UserRequest;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.filter.UserFilter;
 import br.com.projeto.authjwt.models.Role;
 import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.models.enums.RoleType;
-import br.com.projeto.authjwt.models.enums.UserType;
 import br.com.projeto.authjwt.models.exceptions.ConflictException;
 import br.com.projeto.authjwt.models.exceptions.EntityInUseException;
 import br.com.projeto.authjwt.models.exceptions.EntityNotFoundException;
-import br.com.projeto.authjwt.api.mapper.UserMapper;
 import br.com.projeto.authjwt.repositories.UserRepository;
 import br.com.projeto.authjwt.repositories.specs.UserSpecification;
 import br.com.projeto.authjwt.service.RoleService;
 import br.com.projeto.authjwt.service.UserService;
 import br.com.projeto.authjwt.service.email.EmailService;
-import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -27,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j

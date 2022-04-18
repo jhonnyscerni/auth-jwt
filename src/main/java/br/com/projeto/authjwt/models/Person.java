@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @SequenceGenerator(name = "seq_person", sequenceName = "seq_person", initialValue = 1, allocationSize = 1)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Person {
+public abstract class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_person")
@@ -27,5 +27,8 @@ public class Person {
 
     @Column(nullable = false)
     private String phoneNumber;
+
+    @Embedded
+    private Address address;
 
 }
