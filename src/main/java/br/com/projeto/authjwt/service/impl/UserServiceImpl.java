@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
         log.debug("POST registerUser userDto received {} ", userRequest.toString());
 
         existsByUserName(new User(), userRequest.getUsername());
-        existsByUserEmail(new User(), userRequest.getEmail());
+        //existsByUserEmail(new User(), userRequest.getEmail());
 
         userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         //userRequest.setUserType(UserType.USER.name());
@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
     public UserResponse create(UserRequest userRequest) {
 
         existsByUserName(new User(), userRequest.getUsername());
-        existsByUserEmail(new User(), userRequest.getEmail());
+        //existsByUserEmail(new User(), userRequest.getEmail());
         userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 
         User cliente = userMapper.create(userRequest);
@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
         User user = buscarOuFalhar(id);
 
         existsByUserName(user, userRequest.getUsername());
-        existsByUserEmail(user, userRequest.getEmail());
+        //existsByUserEmail(user, userRequest.getEmail());
         passwordNotEquals(user, userRequest);
 
         userMapper.update(user, userRequest);
@@ -177,15 +177,15 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public void existsByUserEmail(User cliente, String email) {
-        Optional<User> clienteExistente = userRepository.findByEmail(email);
-
-        if (clienteExistente.isPresent() && !clienteExistente.get().equals(cliente)) {
-            log.warn("Email {} is Already Taken ", clienteExistente.get().getEmail());
-            throw new ConflictException(
-                String.format("\"Error: Email is Already Taken! %s ", clienteExistente.get().getEmail()));
-        }
-    }
+   // @Override
+   // public void existsByUserEmail(User cliente, String email) {
+   //     Optional<User> clienteExistente = userRepository.findByEmail(email);
+//
+//        if (clienteExistente.isPresent() && !clienteExistente.get().equals(cliente)) {
+//            log.warn("Email {} is Already Taken ", clienteExistente.get().getEmail());
+//            throw new ConflictException(
+//                String.format("\"Error: Email is Already Taken! %s ", clienteExistente.get().getEmail()));
+//        }
+//    }
 
 }

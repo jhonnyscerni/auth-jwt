@@ -12,15 +12,7 @@ public class UserResponse {
 
     private String username;
 
-    private String email;
-
     private String password;
-
-    private String fullName;
-
-    private String phoneNumber;
-
-    private String cpf;
 
     private Set<Role> roles = new HashSet<>();
 

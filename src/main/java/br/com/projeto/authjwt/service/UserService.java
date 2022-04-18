@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface UserService {
 
-    void existsByUserEmail(User cliente, String email);
+    //void existsByUserEmail(User cliente, String email);
 
     void existsByUserName(User cliente, String username);
 

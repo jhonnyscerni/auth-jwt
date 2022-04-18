@@ -17,11 +17,9 @@ import java.util.stream.Collectors;
 public class UserDetailsImpl implements UserDetails {
 
     private Long userId;
-    private String fullName;
     private String username;
     @JsonIgnore
     private String password;
-    private String email;
     private Collection<? extends GrantedAuthority> authorities;
 
     public static UserDetailsImpl build(User userModel) {
@@ -38,10 +36,8 @@ public class UserDetailsImpl implements UserDetails {
         // Incluir outros parametros
         return new UserDetailsImpl(
             userModel.getId(),
-            userModel.getFullName(),
             userModel.getUsername(),
             userModel.getPassword(),
-            userModel.getEmail(),
             authorities);
     }
 

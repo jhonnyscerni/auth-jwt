@@ -36,15 +36,9 @@ public class User {
     @Column(nullable = false, unique = true, length = 50)
     private String username;
 
-    @Column(nullable = false, unique = true, length = 50)
-    private String email;
-
     @Column(nullable = false)
     @JsonIgnore
     private String password;
-
-    @Column(nullable = false, length = 150)
-    private String fullName;
 
     @ManyToOne(targetEntity = Person.class)
     @JoinColumn(name = "person_id", nullable = false,
@@ -53,12 +47,6 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
-
-    @Column(length = 20)
-    private String phoneNumber;
-
-    @Column(length = 20)
-    private String cpf;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToMany(fetch = FetchType.LAZY)
