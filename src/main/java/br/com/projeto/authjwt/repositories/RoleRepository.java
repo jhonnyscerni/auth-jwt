@@ -2,6 +2,7 @@ package br.com.projeto.authjwt.repositories;
 
 import br.com.projeto.authjwt.models.Role;
 import br.com.projeto.authjwt.models.enums.RoleType;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
