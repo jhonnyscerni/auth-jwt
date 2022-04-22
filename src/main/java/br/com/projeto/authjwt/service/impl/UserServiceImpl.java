@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User buscarOuFalharPorEmail(String email) {
-        return userRepository.findByEmail(email)
+        return userRepository.findByPersonEmail(email)
             .orElseThrow(() -> new EntityNotFoundException(
                 String.format("Não existe um cadastro de usuário com email %s", email)));
     }
