@@ -23,7 +23,7 @@ public abstract class Person {
     private String name;
 
     @Column(nullable = false)
-    private String email;
+        private String email;
 
     @Column(nullable = false)
     private String phoneNumber;

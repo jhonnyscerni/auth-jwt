@@ -24,10 +24,10 @@ public class Address {
     @Column(name = "ENDERECO_BAIRRO")
     private String bairro;
 
-    @Column(name = "ENDERECO_NM_CIDADE",nullable = false)
+    @Column(name = "ENDERECO_NM_CIDADE")
     private String nomeCidade;
 
-    @Column(name = "ENDERECO_SIGLA_ESTADO", nullable = false)
-    private String sigla_Estado;
+    @Column(name = "ENDERECO_SIGLA_ESTADO")
+    private String siglaEstado;
 
 }

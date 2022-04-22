@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.From;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import lombok.AllArgsConstructor;
@@ -21,10 +23,13 @@ public class UserSpecification implements Specification<User> {
     public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
 
+        From<?, ?> person = root.join("person", JoinType.INNER);
+
         Optional.ofNullable(allocationFilter.getUsername())
             .ifPresent(p -> predicates.add(criteriaBuilder.like(root.get("username"), "%" + allocationFilter.getUsername() + "%")));
         Optional.ofNullable(allocationFilter.getEmail())
-            .ifPresent(p -> predicates.add(criteriaBuilder.like(root.get("email"), "%" + allocationFilter.getEmail() + "%")));
+            .ifPresent(p -> predicates.add(criteriaBuilder.like(person.get("email"), "%" + allocationFilter.getEmail() + "%")));
+//        Optional.ofNullable(allocationFilter.getRg())
 //        Optional.ofNullable(allocationFilter.getRg())
 //            .ifPresent(p -> predicates.add(criteriaBuilder.equal(root.get("rg"), allocationFilter.getRg())));
 //        Optional.ofNullable(allocationFilter.getCpf())
