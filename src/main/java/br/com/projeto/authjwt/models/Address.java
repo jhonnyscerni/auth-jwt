@@ -1,33 +1,32 @@
 package br.com.projeto.authjwt.models;
 
-import lombok.Data;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import lombok.Data;
 
 @Data
 @Embeddable
 public class Address {
 
-    @Column(name = "ENDERECO_CEP")
-    private String cep;
+    @Column(name = "address_zip_code")
+    private String zipCode;
 
-    @Column(name = "ENDERECO_LOGRADOURO")
-    private String logradouro;
+    @Column(name = "address_street")
+    private String street;
 
-    @Column(name = "ENDERECO_NUMERO")
-    private String numero;
+    @Column(name = "address_number")
+    private String number;
 
-    @Column(name = "ENDERECO_COMPLEMENTO")
-    private String complemento;
+    @Column(name = "address_complement")
+    private String complement;
 
-    @Column(name = "ENDERECO_BAIRRO")
-    private String bairro;
+    @Column(name = "address_district")
+    private String district;
 
-    @Column(name = "ENDERECO_NM_CIDADE")
-    private String nomeCidade;
+    @Column(name = "address_nm_city")
+    private String nameCity;
 
-    @Column(name = "ENDERECO_SIGLA_ESTADO")
-    private String siglaEstado;
+    @Column(name = "address_state")
+    private String state;
 
 }

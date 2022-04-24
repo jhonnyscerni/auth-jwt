@@ -1,5 +1,6 @@
 package br.com.projeto.authjwt.models;
 
+import br.com.projeto.authjwt.models.enums.VoteEnum;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,8 +26,11 @@ public abstract class Person {
     @Column(nullable = false)
         private String email;
 
-    @Column(nullable = false)
+    @Column
     private String phoneNumber;
+
+    @Enumerated(EnumType.STRING)
+    private VoteEnum vote;
 
     @Embedded
     private Address address;

@@ -18,26 +18,26 @@ public class PersonPhysical extends Person {
     private String cpf;
 
     @Temporal(TemporalType.DATE)
-    private Date dataNascimento;
+    private Date birthDate;
 
     @Column
-    private String apelido;
+    private String surname;
 
     @Column
-    private String genero;
+    private String gender;
 
     @Column
-    private String zonaVotacao;
+    private String zoneVoting;
 
     @Column
-    private String secaoVotacao;
+    private String sectionVote;
 
     @OneToOne
-    private PersonPhysical padrinho;
+    private PersonPhysical godfather;
 
     @OneToOne
-    private PersonLegal empresa;
+    private PersonLegal company;
 
     @Column
-    private String observacoes;
+    private String observation;
 }

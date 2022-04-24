@@ -32,7 +32,7 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
     public PersonPhysicalResponse create(Long personphysicalId, PersonPhysicalRequest personPhysicalRequest) {
         PersonPhysical padrinho = buscarOuFalhar(personphysicalId);
         PersonPhysical personPhysical = personPhysicalMapper.create(personPhysicalRequest);
-        personPhysical.setPadrinho(padrinho);
+        personPhysical.setGodfather(padrinho);
         personPhysicalRepository.save(personPhysical);
         return personPhysicalMapper.toResponse(personPhysical);
     }

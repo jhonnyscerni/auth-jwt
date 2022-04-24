@@ -1,11 +1,15 @@
 package br.com.projeto.authjwt.api.request;
 
-import lombok.Data;
-
+import br.com.projeto.authjwt.api.response.AddressResponse;
+import br.com.projeto.authjwt.models.enums.VoteEnum;
 import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class PersonPhysicalRequest {
+
     private Long id;
 
     private String name;
@@ -14,17 +18,22 @@ public class PersonPhysicalRequest {
 
     private String phoneNumber;
 
+    private VoteEnum vote;
+
+    private AddressResponse address;
+
     private String cpf;
 
-    private Date dataNascimento;
+    private Date birthDate;
 
-    private String apelido;
+    private String surname;
 
-    private String genero;
+    private String gender;
 
-    private String zonaVotacao;
+    private String zoneVoting;
 
-    private String secaoVotacao;
+    private String sectionVote;
 
-    private String observacoes;
+    private String observation;
+
 }

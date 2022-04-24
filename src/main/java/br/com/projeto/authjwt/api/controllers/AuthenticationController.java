@@ -1,10 +1,13 @@
 package br.com.projeto.authjwt.api.controllers;
 
 import br.com.projeto.authjwt.api.request.LoginRequest;
+import br.com.projeto.authjwt.api.request.PersonPhysicalRequest;
 import br.com.projeto.authjwt.api.request.UserRequest;
 import br.com.projeto.authjwt.api.response.JwtResponse;
+import br.com.projeto.authjwt.api.response.PersonPhysicalResponse;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.security.jwt.JwtProvider;
+import br.com.projeto.authjwt.service.PersonPhysicalService;
 import br.com.projeto.authjwt.service.UserService;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -32,9 +35,17 @@ public class AuthenticationController {
 
     private final UserService userService;
 
+    private final PersonPhysicalService personPhysicalService;
+
     @PostMapping("/signup")
     public ResponseEntity<UserResponse> registerUser(@RequestBody @Valid UserRequest userRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(userRequest));
+    }
+
+    @PostMapping(value = "/person-phisical/{personphisicalId}")
+    public ResponseEntity<PersonPhysicalResponse> registerPersonPhisicalGoldFather(
+        @PathVariable Long personphisicalId, @RequestBody PersonPhysicalRequest personPhysicalRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(personPhysicalService.create(personphisicalId, personPhysicalRequest));
     }
 
     @PostMapping("/login")
