@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PersonPhysicalRequest {
+public class PersonLegalRequest {
 
     private Long id;
 
@@ -22,22 +22,6 @@ public class PersonPhysicalRequest {
 
     private AddressResponse address;
 
-    private String cpf;
-
-    private Date birthDate;
-
-    private String surname;
-
-    private String gender;
-
-    private String zoneVoting;
-
-    private String sectionVote;
-
-    private String observation;
-
-    private Long personPhysicalId;
-
-    private Long personLegalId;
+    private String cnpj;
 
 }

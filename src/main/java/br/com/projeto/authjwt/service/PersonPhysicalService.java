@@ -10,7 +10,13 @@ public interface PersonPhysicalService {
 
     PersonPhysical buscarOuFalhar(Long personphysicalId);
 
-    PersonPhysicalResponse create(Long personphysicalId, PersonPhysicalRequest personPhysicalRequest);
+    PersonPhysicalResponse create(Long personphysicalId, PersonPhysicalRequest personPhysicalRequest, String tipoPerson);
+
+    PersonPhysicalResponse create(PersonPhysicalRequest personPhysicalRequest);
 
     List<PersonPhysicalResponse> findAll();
+
+    PersonPhysicalResponse update(Long personphisicalId, PersonPhysicalRequest personPhysicalRequest);
+
+    void delete(Long id);
 }

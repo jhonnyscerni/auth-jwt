@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
@@ -42,10 +43,10 @@ public class AuthenticationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(userRequest));
     }
 
-    @PostMapping(value = "/person-phisical/{personphisicalId}")
-    public ResponseEntity<PersonPhysicalResponse> registerPersonPhisicalGoldFather(
-        @PathVariable Long personphisicalId, @RequestBody PersonPhysicalRequest personPhysicalRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(personPhysicalService.create(personphisicalId, personPhysicalRequest));
+    @PostMapping(value = "/persongoldfather/{id}")
+    public ResponseEntity<PersonPhysicalResponse> registerPersonPhisicalGoldFatherPersonPhysical(
+        @RequestParam String tipoPerson, @PathVariable Long id, @RequestBody PersonPhysicalRequest personPhysicalRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(personPhysicalService.create(id, personPhysicalRequest, tipoPerson));
     }
 
     @PostMapping("/login")
