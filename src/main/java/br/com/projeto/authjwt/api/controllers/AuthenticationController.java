@@ -45,7 +45,7 @@ public class AuthenticationController {
 
     @PostMapping(value = "/persongoldfather/{id}")
     public ResponseEntity<PersonPhysicalResponse> registerPersonPhisicalGoldFatherPersonPhysical(
-        @RequestParam String tipoPerson, @PathVariable Long id, @RequestBody PersonPhysicalRequest personPhysicalRequest) {
+        @RequestParam(required = false) String tipoPerson, @PathVariable Long id, @RequestBody PersonPhysicalRequest personPhysicalRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(personPhysicalService.create(id, personPhysicalRequest, tipoPerson));
     }
 
