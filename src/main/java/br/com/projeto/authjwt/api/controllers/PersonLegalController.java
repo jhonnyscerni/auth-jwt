@@ -29,6 +29,11 @@ public class PersonLegalController {
         return ResponseEntity.ok().body(personLegalService.findAll());
     }
 
+    @GetMapping("/{empresaId}")
+    public ResponseEntity<PersonLegalResponse> findById(@PathVariable Long empresaId) {
+        return ResponseEntity.ok().body(personLegalService.findByIdResponse(empresaId));
+    }
+
     @PostMapping
     public ResponseEntity<PersonLegalResponse> create(@RequestBody PersonLegalRequest personLegalRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(personLegalService.create(personLegalRequest));

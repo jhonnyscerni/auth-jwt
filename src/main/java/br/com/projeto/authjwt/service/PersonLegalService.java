@@ -16,4 +16,6 @@ public interface PersonLegalService {
     PersonLegalResponse update(Long personphisicalId, PersonLegalRequest personLegalRequest);
 
     void delete(Long id);
+
+    PersonLegalResponse findByIdResponse(Long empresaId);
 }

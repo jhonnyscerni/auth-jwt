@@ -4,6 +4,7 @@ import br.com.projeto.authjwt.api.mapper.PersonLegalMapper;
 import br.com.projeto.authjwt.api.request.PersonLegalRequest;
 import br.com.projeto.authjwt.api.response.PersonLegalResponse;
 import br.com.projeto.authjwt.models.PersonLegal;
+import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.models.exceptions.EntityInUseException;
 import br.com.projeto.authjwt.models.exceptions.EntityNotFoundException;
 import br.com.projeto.authjwt.repositories.PersonLegalRepository;
@@ -64,6 +65,12 @@ public class PersonLegalServiceImpl implements PersonLegalService {
             throw new EntityInUseException(
                 String.format(MSG_PERMISSAO_EM_USO, id));
         }
+    }
+
+    @Override
+    public PersonLegalResponse findByIdResponse(Long empresaId) {
+        PersonLegal personLegal = buscarOuFalhar(empresaId);
+        return personLegalMapper.toResponse(personLegal);
     }
 
 }
