@@ -2,7 +2,7 @@ package br.com.projeto.authjwt.service.impl;
 
 
 import br.com.projeto.authjwt.api.mapper.UserMapper;
-import br.com.projeto.authjwt.api.request.UserRequest;
+import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.filter.UserFilter;
 import br.com.projeto.authjwt.models.Role;
@@ -66,18 +66,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse saveUser(UserRequest userRequest) {
-        log.debug("POST registerUser userDto received {} ", userRequest.toString());
+    public UserResponse saveUser(UserPersonPhysicalRequest userPersonPhysicalRequest) {
+        log.debug("POST registerUser userDto received {} ", userPersonPhysicalRequest.toString());
 
-        existsByUserName(new User(), userRequest.getUsername());
+        existsByUserName(new User(), userPersonPhysicalRequest.getUsername());
         //existsByUserEmail(new User(), userRequest.getEmail());
 
-        userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        userPersonPhysicalRequest.setPassword(passwordEncoder.encode(userPersonPhysicalRequest.getPassword()));
         //userRequest.setUserType(UserType.USER.name());
         Role role = roleService.findByRoleName(RoleType.ROLE_USER);
-        userRequest.getRoles().add(role);
+        userPersonPhysicalRequest.getRoles().add(role);
 
-        User user = userMapper.create(userRequest);
+        User user = userMapper.create(userPersonPhysicalRequest);
         user = userRepository.save(user);
         log.debug("POST registerUser userId saved {} ", user.getId());
         log.info("User saved successfully userId {} ", user.getId());
@@ -87,26 +87,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse create(UserRequest userRequest) {
+    public UserResponse create(UserPersonPhysicalRequest userPersonPhysicalRequest) {
 
-        existsByUserName(new User(), userRequest.getUsername());
+        existsByUserName(new User(), userPersonPhysicalRequest.getUsername());
         //existsByUserEmail(new User(), userRequest.getEmail());
-        userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        userPersonPhysicalRequest.setPassword(passwordEncoder.encode(userPersonPhysicalRequest.getPassword()));
 
-        User cliente = userMapper.create(userRequest);
+        User cliente = userMapper.create(userPersonPhysicalRequest);
         userRepository.save(cliente);
         return userMapper.toResponse(cliente);
     }
 
     @Override
-    public UserResponse update(Long id, UserRequest userRequest) {
+    public UserResponse update(Long id, UserPersonPhysicalRequest userPersonPhysicalRequest) {
         User user = buscarOuFalhar(id);
 
-        existsByUserName(user, userRequest.getUsername());
+        existsByUserName(user, userPersonPhysicalRequest.getUsername());
         //existsByUserEmail(user, userRequest.getEmail());
-        passwordNotEquals(user, userRequest);
+        passwordNotEquals(user, userPersonPhysicalRequest);
 
-        userMapper.update(user, userRequest);
+        userMapper.update(user, userPersonPhysicalRequest);
         return userMapper.toResponse(userRepository.save(user));
     }
 
@@ -127,9 +127,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void passwordNotEquals(User user, UserRequest userRequest) {
-        if (!user.getPassword().equals(userRequest.getPassword())){
-            userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+    public void passwordNotEquals(User user, UserPersonPhysicalRequest userPersonPhysicalRequest) {
+        if (!user.getPassword().equals(userPersonPhysicalRequest.getPassword())){
+            userPersonPhysicalRequest.setPassword(passwordEncoder.encode(userPersonPhysicalRequest.getPassword()));
         }
     }
 

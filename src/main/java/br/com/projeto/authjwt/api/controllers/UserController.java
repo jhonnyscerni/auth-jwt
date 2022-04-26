@@ -1,7 +1,7 @@
 package br.com.projeto.authjwt.api.controllers;
 
 import br.com.projeto.authjwt.filter.UserFilter;
-import br.com.projeto.authjwt.api.request.UserRequest;
+import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.service.UserService;
 import javax.validation.Valid;
@@ -40,14 +40,14 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> create(@RequestBody @Valid UserRequest userRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(userRequest));
+    public ResponseEntity<UserResponse> create(@RequestBody @Valid UserPersonPhysicalRequest userPersonPhysicalRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(userPersonPhysicalRequest));
     }
 
     @PutMapping("/{userId}")
     public ResponseEntity<UserResponse> update(@PathVariable Long userId,
-        @RequestBody @Valid UserRequest userRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId, userRequest));
+        @RequestBody @Valid UserPersonPhysicalRequest userPersonPhysicalRequest) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId, userPersonPhysicalRequest));
     }
 
     @DeleteMapping("/{userId}")

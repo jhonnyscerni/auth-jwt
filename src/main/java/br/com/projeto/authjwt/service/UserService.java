@@ -1,6 +1,6 @@
 package br.com.projeto.authjwt.service;
 
-import br.com.projeto.authjwt.api.request.UserRequest;
+import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.filter.UserFilter;
 import br.com.projeto.authjwt.models.User;
@@ -15,7 +15,7 @@ public interface UserService {
 
     void disassociateRole(Long userId, Long roleId);
 
-    void passwordNotEquals(User user, UserRequest userRequest);
+    void passwordNotEquals(User user, UserPersonPhysicalRequest userPersonPhysicalRequest);
 
     void delete(Long id);
 
@@ -29,11 +29,11 @@ public interface UserService {
 
     Page<UserResponse> search(UserFilter filter, Pageable pageable);
 
-    UserResponse saveUser(UserRequest userResponse);
+    UserResponse saveUser(UserPersonPhysicalRequest userResponse);
 
-    UserResponse create(UserRequest userRequest);
+    UserResponse create(UserPersonPhysicalRequest userPersonPhysicalRequest);
 
-    UserResponse update(Long id, UserRequest userRequest);
+    UserResponse update(Long id, UserPersonPhysicalRequest userPersonPhysicalRequest);
 
     void connectRole(Long userId, Long roleId);
 }
