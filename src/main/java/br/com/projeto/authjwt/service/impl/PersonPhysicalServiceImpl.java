@@ -2,20 +2,24 @@ package br.com.projeto.authjwt.service.impl;
 
 import br.com.projeto.authjwt.api.mapper.PersonPhysicalMapper;
 import br.com.projeto.authjwt.api.request.PersonPhysicalRequest;
+import br.com.projeto.authjwt.api.response.PersonLegalResponse;
 import br.com.projeto.authjwt.api.response.PersonPhysicalResponse;
 import br.com.projeto.authjwt.models.PersonLegal;
 import br.com.projeto.authjwt.models.PersonPhysical;
+import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.models.exceptions.EntityInUseException;
 import br.com.projeto.authjwt.models.exceptions.EntityNotFoundException;
 import br.com.projeto.authjwt.repositories.PersonLegalRepository;
 import br.com.projeto.authjwt.repositories.PersonPhysicalRepository;
 import br.com.projeto.authjwt.service.PersonLegalService;
 import br.com.projeto.authjwt.service.PersonPhysicalService;
+import br.com.projeto.authjwt.service.UserService;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +34,8 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
 
     private final PersonLegalService personLegalService;
     private final PersonPhysicalMapper personPhysicalMapper;
+
+    private final UserService userService;
 
     private static final String MSG_PERMISSAO_EM_USO
         = "Person de código %d não pode ser removida, pois está em uso";
@@ -63,9 +69,9 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
 
     @Override
     public PersonPhysicalResponse create(PersonPhysicalRequest personPhysicalRequest) {
-        PersonPhysical padrinho = buscarOuFalhar(personPhysicalRequest.getPersonPhysicalId());
+        //PersonPhysical padrinho = buscarOuFalhar(personPhysicalRequest.getPersonPhysicalId());
         PersonPhysical personPhysical = personPhysicalMapper.create(personPhysicalRequest);
-        personPhysical.setGodfather(padrinho);
+        //personPhysical.setGodfather(padrinho);
         personPhysicalRepository.save(personPhysical);
         return personPhysicalMapper.toResponse(personPhysical);
     }
@@ -94,6 +100,12 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
             throw new EntityInUseException(
                 String.format(MSG_PERMISSAO_EM_USO, id));
         }
+    }
+
+    @Override
+    public PersonPhysicalResponse findByIdResponse(Long personphisicalId) {
+        PersonPhysical personPhysical = buscarOuFalhar(personphisicalId);
+        return personPhysicalMapper.toResponse(personPhysical);
     }
 
 }

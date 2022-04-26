@@ -19,4 +19,6 @@ public interface PersonPhysicalService {
     PersonPhysicalResponse update(Long personphisicalId, PersonPhysicalRequest personPhysicalRequest);
 
     void delete(Long id);
+
+    PersonPhysicalResponse findByIdResponse(Long personphisicalId);
 }

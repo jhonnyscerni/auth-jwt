@@ -34,6 +34,11 @@ public class PersonPhysicalController {
         return ResponseEntity.status(HttpStatus.CREATED).body(personPhysicalService.create(personPhysicalRequest));
     }
 
+    @GetMapping("/{personphisicalId}")
+    public ResponseEntity<PersonPhysicalResponse> findById(@PathVariable Long personphisicalId) {
+        return ResponseEntity.ok().body(personPhysicalService.findByIdResponse(personphisicalId));
+    }
+
     @PutMapping("/{personphisicalId}")
     public ResponseEntity<PersonPhysicalResponse> update(@PathVariable Long personphisicalId,
         @RequestBody @Valid PersonPhysicalRequest personPhysicalRequest) {

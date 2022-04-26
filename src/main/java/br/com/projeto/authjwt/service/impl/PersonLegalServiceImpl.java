@@ -1,4 +1,4 @@
-package br.com.projeto.authjwt.service;
+package br.com.projeto.authjwt.service.impl;
 
 import br.com.projeto.authjwt.api.mapper.PersonLegalMapper;
 import br.com.projeto.authjwt.api.request.PersonLegalRequest;
@@ -8,6 +8,7 @@ import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.models.exceptions.EntityInUseException;
 import br.com.projeto.authjwt.models.exceptions.EntityNotFoundException;
 import br.com.projeto.authjwt.repositories.PersonLegalRepository;
+import br.com.projeto.authjwt.service.PersonLegalService;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
