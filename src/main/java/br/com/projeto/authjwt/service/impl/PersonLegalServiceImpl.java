@@ -48,23 +48,23 @@ public class PersonLegalServiceImpl implements PersonLegalService {
     }
 
     @Override
-    public PersonLegalResponse update(Long personphisicalId, PersonLegalRequest personLegalRequest) {
-        PersonLegal personLegal = buscarOuFalhar(personphisicalId);
+    public PersonLegalResponse update(Long personLegalId, PersonLegalRequest personLegalRequest) {
+        PersonLegal personLegal = buscarOuFalhar(personLegalId);
 
         personLegalMapper.update(personLegal, personLegalRequest);
         return personLegalMapper.toResponse(personLegalRepository.save(personLegal));
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long personLegalId) {
         try {
-            personLegalRepository.deleteById(id);
+            personLegalRepository.deleteById(personLegalId);
         } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFoundException("Person Legal not found");
 
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException(
-                String.format(MSG_PERMISSAO_EM_USO, id));
+                String.format(MSG_PERMISSAO_EM_USO, personLegalId));
         }
     }
 

@@ -13,9 +13,9 @@ public interface PersonLegalService {
 
     List<PersonLegalResponse> findAll();
 
-    PersonLegalResponse update(Long personphisicalId, PersonLegalRequest personLegalRequest);
+    PersonLegalResponse update(Long personLegalId, PersonLegalRequest personLegalRequest);
 
-    void delete(Long id);
+    void delete(Long personLegalId);
 
-    PersonLegalResponse findByIdResponse(Long empresaId);
+    PersonLegalResponse findByIdResponse(Long personLegalId);
 }

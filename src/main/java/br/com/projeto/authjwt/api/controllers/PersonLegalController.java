@@ -29,9 +29,9 @@ public class PersonLegalController {
         return ResponseEntity.ok().body(personLegalService.findAll());
     }
 
-    @GetMapping("/{empresaId}")
-    public ResponseEntity<PersonLegalResponse> findById(@PathVariable Long empresaId) {
-        return ResponseEntity.ok().body(personLegalService.findByIdResponse(empresaId));
+    @GetMapping("/{personLegalId}")
+    public ResponseEntity<PersonLegalResponse> findById(@PathVariable Long personLegalId) {
+        return ResponseEntity.ok().body(personLegalService.findByIdResponse(personLegalId));
     }
 
     @PostMapping
@@ -39,15 +39,15 @@ public class PersonLegalController {
         return ResponseEntity.status(HttpStatus.CREATED).body(personLegalService.create(personLegalRequest));
     }
 
-    @PutMapping("/{personphisicalId}")
-    public ResponseEntity<PersonLegalResponse> update(@PathVariable Long personphisicalId,
+    @PutMapping("/{personLegalId}")
+    public ResponseEntity<PersonLegalResponse> update(@PathVariable Long personLegalId,
         @RequestBody @Valid PersonLegalRequest personLegalRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(personLegalService.update(personphisicalId, personLegalRequest));
+        return ResponseEntity.status(HttpStatus.OK).body(personLegalService.update(personLegalId, personLegalRequest));
     }
 
-    @DeleteMapping("/{personphisicalId}")
-    public ResponseEntity<Void> delete(@PathVariable Long personphisicalId) {
-        personLegalService.delete(personphisicalId);
+    @DeleteMapping("/{personLegalId}")
+    public ResponseEntity<Void> delete(@PathVariable Long personLegalId) {
+        personLegalService.delete(personLegalId);
         return ResponseEntity.noContent().build();
     }
 }
