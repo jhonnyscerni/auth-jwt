@@ -56,17 +56,4 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-
-    @GetMapping("/person/{personId}")
-    public ResponseEntity<UserResponse> findByPersonId(@PathVariable Long personId) {
-        return ResponseEntity.ok().body(userService.findByPersonIdUserDto(personId));
-    }
-
-    @PostMapping("/person/{personId}")
-    public ResponseEntity<UserResponse> findByPersonId(@PathVariable Long personId,
-        @RequestBody @Valid UserPersonPhysicalRequest userPersonPhysicalRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createPersonUser(personId ,userPersonPhysicalRequest));
-    }
-
-
 }

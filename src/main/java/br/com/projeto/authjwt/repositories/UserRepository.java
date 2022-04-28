@@ -1,16 +1,16 @@
 package br.com.projeto.authjwt.repositories;
 
 import br.com.projeto.authjwt.models.User;
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<User, Long> , JpaSpecificationExecutor<User> {
 
+    //@Query("select u from User u join fetch u.person p join fetch u.roles r where u.username =:username")
+    //Optional<User> findByUsername(@Param("username") String username);
     Optional<User> findByUsername(String username);
 
     boolean existsByUsername(String username);
