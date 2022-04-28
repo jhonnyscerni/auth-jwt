@@ -2,28 +2,22 @@ package br.com.projeto.authjwt.service.impl;
 
 import br.com.projeto.authjwt.api.mapper.PersonPhysicalMapper;
 import br.com.projeto.authjwt.api.request.PersonPhysicalRequest;
-import br.com.projeto.authjwt.api.response.PersonLegalResponse;
 import br.com.projeto.authjwt.api.response.PersonPhysicalResponse;
 import br.com.projeto.authjwt.models.PersonLegal;
 import br.com.projeto.authjwt.models.PersonPhysical;
-import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.models.exceptions.EntityInUseException;
 import br.com.projeto.authjwt.models.exceptions.EntityNotFoundException;
-import br.com.projeto.authjwt.repositories.PersonLegalRepository;
 import br.com.projeto.authjwt.repositories.PersonPhysicalRepository;
 import br.com.projeto.authjwt.service.PersonLegalService;
 import br.com.projeto.authjwt.service.PersonPhysicalService;
-import br.com.projeto.authjwt.service.UserService;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -34,8 +28,6 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
 
     private final PersonLegalService personLegalService;
     private final PersonPhysicalMapper personPhysicalMapper;
-
-    private final UserService userService;
 
     private static final String MSG_PERMISSAO_EM_USO
         = "Person de código %d não pode ser removida, pois está em uso";

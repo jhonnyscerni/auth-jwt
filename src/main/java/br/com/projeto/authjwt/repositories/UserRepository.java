@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<User, Long> , JpaSpecificationExecutor<User> {
 
@@ -15,4 +17,6 @@ public interface UserRepository extends JpaRepository<User, Long> , JpaSpecifica
 
     Optional<User> findByPersonEmail(String email);
 
+    @Query("select u from User u join u.person p where p.id =:personId")
+    Optional<User> findByPersonIdUserDto(@Param("personId") Long personId);
 }

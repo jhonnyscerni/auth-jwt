@@ -40,7 +40,7 @@ public class User {
     @JsonIgnore
     private String password;
 
-    @ManyToOne(targetEntity = Person.class, cascade=CascadeType.ALL)
+    @ManyToOne(targetEntity = Person.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id", nullable = false,
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "person_fk"))
     private Person person;

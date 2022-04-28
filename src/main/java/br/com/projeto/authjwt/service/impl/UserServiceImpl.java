@@ -5,6 +5,7 @@ import br.com.projeto.authjwt.api.mapper.UserMapper;
 import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.filter.UserFilter;
+import br.com.projeto.authjwt.models.PersonPhysical;
 import br.com.projeto.authjwt.models.Role;
 import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.models.enums.RoleType;
@@ -13,9 +14,14 @@ import br.com.projeto.authjwt.models.exceptions.EntityInUseException;
 import br.com.projeto.authjwt.models.exceptions.EntityNotFoundException;
 import br.com.projeto.authjwt.repositories.UserRepository;
 import br.com.projeto.authjwt.repositories.specs.UserSpecification;
+import br.com.projeto.authjwt.service.PersonPhysicalService;
 import br.com.projeto.authjwt.service.RoleService;
 import br.com.projeto.authjwt.service.UserService;
 import br.com.projeto.authjwt.service.email.EmailService;
+import java.beans.Transient;
+import java.util.Optional;
+import java.util.UUID;
+import javax.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -24,9 +30,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-import java.util.UUID;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -39,10 +43,13 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
 
+    private final PersonPhysicalService personPhysicalService;
+
     private static final String MSG_PERMISSAO_EM_USO
         = "Usuário de código %d não pode ser removida, pois está em uso";
 
     @Override
+    @Transactional
     public User buscarOuFalharPorEmail(String email) {
         return userRepository.findByPersonEmail(email)
             .orElseThrow(() -> new EntityNotFoundException(
@@ -50,22 +57,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User buscarOuFalhar(Long usuarioId) {
         return userRepository.findById(usuarioId)
             .orElseThrow(() -> new EntityNotFoundException("Não existe um cadastro de usuário", usuarioId));
     }
-
+    @Override
+    @Transactional
     public UserResponse findByIdUserDto(Long id) {
         User user = buscarOuFalhar(id);
         return userMapper.toResponse(user);
     }
 
     @Override
+    @Transactional
     public Page<UserResponse> search(UserFilter filter, Pageable pageable) {
         return userRepository.findAll(new UserSpecification(filter), pageable).map(userMapper::toResponse);
     }
 
     @Override
+    @Transactional
     public UserResponse saveUser(UserPersonPhysicalRequest userPersonPhysicalRequest) {
         log.debug("POST registerUser userDto received {} ", userPersonPhysicalRequest.toString());
 
@@ -74,8 +85,12 @@ public class UserServiceImpl implements UserService {
 
         userPersonPhysicalRequest.setPassword(passwordEncoder.encode(userPersonPhysicalRequest.getPassword()));
         //userRequest.setUserType(UserType.USER.name());
-        Role role = roleService.findByRoleName(RoleType.ROLE_USER);
-        userPersonPhysicalRequest.getRoles().add(role);
+        Role dashboard = roleService.findByRoleName(RoleType.ROLE_DASHBOARD);
+        Role pessoas = roleService.findByRoleName(RoleType.ROLE_PESSOAS);
+        Role empresas = roleService.findByRoleName(RoleType.ROLE_PESSOAS);
+        userPersonPhysicalRequest.getRoles().add(dashboard);
+        userPersonPhysicalRequest.getRoles().add(pessoas);
+        userPersonPhysicalRequest.getRoles().add(empresas);
 
         User user = userMapper.create(userPersonPhysicalRequest);
         user = userRepository.save(user);
@@ -87,6 +102,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserResponse create(UserPersonPhysicalRequest userPersonPhysicalRequest) {
 
         existsByUserName(new User(), userPersonPhysicalRequest.getUsername());
@@ -99,6 +115,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserResponse update(Long id, UserPersonPhysicalRequest userPersonPhysicalRequest) {
         User user = buscarOuFalhar(id);
 
@@ -111,6 +128,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void connectRole(Long userId, Long roleId) {
         User user = buscarOuFalhar(userId);
         Role role = roleService.buscarOuFalhar(roleId);
@@ -119,6 +137,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public UserResponse findByPersonIdUserDto(Long personId) {
+        Optional<User> userOptional = userRepository.findByPersonIdUserDto(personId);
+
+        if (userOptional.isPresent()){
+            return userMapper.toResponse(userOptional.get());
+        }
+        return userMapper.toResponse(new User());
+    }
+
+    @Override
+    @Transactional
+    public UserResponse createPersonUser(Long personId, UserPersonPhysicalRequest userPersonPhysicalRequest) {
+
+        PersonPhysical personPhysical = personPhysicalService.buscarOuFalhar(personId);
+        existsByUserName(new User(), userPersonPhysicalRequest.getUsername());
+        //existsByUserEmail(new User(), userRequest.getEmail());
+        userPersonPhysicalRequest.setPassword(passwordEncoder.encode(userPersonPhysicalRequest.getPassword()));
+        userPersonPhysicalRequest.setPerson(personPhysical);
+
+        User user = userMapper.create(userPersonPhysicalRequest);
+        userRepository.save(user);
+        return userMapper.toResponse(user);
+    }
+
+    @Override
+    @Transactional
     public void disassociateRole(Long userId, Long roleId) {
         User user = buscarOuFalhar(userId);
         Role role = roleService.buscarOuFalhar(roleId);
@@ -127,6 +172,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void passwordNotEquals(User user, UserPersonPhysicalRequest userPersonPhysicalRequest) {
         if (!user.getPassword().equals(userPersonPhysicalRequest.getPassword())){
             userPersonPhysicalRequest.setPassword(passwordEncoder.encode(userPersonPhysicalRequest.getPassword()));
@@ -134,6 +180,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         try {
             userRepository.deleteById(id);
@@ -147,6 +194,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserResponse resetPassword(String email) {
 
         User user = buscarOuFalharPorEmail(email);
@@ -167,6 +215,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void existsByUserName(User cliente, String username) {
         Optional<User> clienteExistente = userRepository.findByUsername(username);
 

@@ -36,4 +36,8 @@ public interface UserService {
     UserResponse update(Long id, UserPersonPhysicalRequest userPersonPhysicalRequest);
 
     void connectRole(Long userId, Long roleId);
+
+    UserResponse findByPersonIdUserDto(Long personId);
+
+    UserResponse createPersonUser(Long personId, UserPersonPhysicalRequest userPersonPhysicalRequest);
 }
