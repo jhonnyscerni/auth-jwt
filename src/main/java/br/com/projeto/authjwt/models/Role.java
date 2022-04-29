@@ -1,6 +1,5 @@
 package br.com.projeto.authjwt.models;
 
-import br.com.projeto.authjwt.models.enums.RoleType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +39,8 @@ public class Role {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true, length = 30)
-    private RoleType name;
+    private String name; /* Acesso ex: ROLE_ADMIN ou ROLE_SECRETARIO */
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToMany(fetch = FetchType.LAZY)

@@ -18,10 +18,8 @@ import br.com.projeto.authjwt.service.PersonPhysicalService;
 import br.com.projeto.authjwt.service.RoleService;
 import br.com.projeto.authjwt.service.UserService;
 import br.com.projeto.authjwt.service.email.EmailService;
-import java.beans.Transient;
 import java.util.Optional;
 import java.util.UUID;
-import javax.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -85,9 +83,9 @@ public class UserServiceImpl implements UserService {
 
         userPersonPhysicalRequest.setPassword(passwordEncoder.encode(userPersonPhysicalRequest.getPassword()));
         //userRequest.setUserType(UserType.USER.name());
-        Role dashboard = roleService.findByRoleName(RoleType.ROLE_DASHBOARD);
-        Role pessoas = roleService.findByRoleName(RoleType.ROLE_PESSOAS);
-        Role empresas = roleService.findByRoleName(RoleType.ROLE_PESSOAS);
+        Role dashboard = roleService.findByRoleName(RoleType.ROLE_DASHBOARD.name());
+        Role pessoas = roleService.findByRoleName(RoleType.ROLE_PESSOAS.name());
+        Role empresas = roleService.findByRoleName(RoleType.ROLE_EMPRESAS.name());
         userPersonPhysicalRequest.getRoles().add(dashboard);
         userPersonPhysicalRequest.getRoles().add(pessoas);
         userPersonPhysicalRequest.getRoles().add(empresas);

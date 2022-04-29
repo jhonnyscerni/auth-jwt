@@ -5,7 +5,6 @@ import br.com.projeto.authjwt.api.request.RoleRequest;
 import br.com.projeto.authjwt.api.response.RoleResponse;
 import br.com.projeto.authjwt.models.Permission;
 import br.com.projeto.authjwt.models.Role;
-import br.com.projeto.authjwt.models.enums.RoleType;
 import br.com.projeto.authjwt.models.exceptions.BusinessException;
 import br.com.projeto.authjwt.models.exceptions.EntityInUseException;
 import br.com.projeto.authjwt.models.exceptions.EntityNotFoundException;
@@ -32,7 +31,7 @@ public class RoleServiceImpl implements RoleService {
 
 
     @Override
-    public Role findByRoleName(RoleType roleType) {
+    public Role findByRoleName(String roleType) {
         return roleRepository.findByName(roleType).orElseThrow(() -> new BusinessException("Error: Role is Not Found."));
     }
 
