@@ -1,24 +1,38 @@
-insert into tb_users (id, username, email, password, full_name, user_type, user_status, phone_number, cpf)
-values (1, 'jhonnyscerni', 'jhonnyscerni@gmail.com', '$2a$10$5SAcyRvZdMGYnWu5pTriR.yS9GC6i2ff6r/dR3WU1cJBJbksXQ5/W',
-        'Jhonny Scerni Gondim Costa', 'ADMIN', 'ACTIVE', '9999999999', '99999999999');
+insert into tb_person_physical (id, address_complement, address_district, address_nm_city, address_number, address_state,
+                                address_street, address_zip_code, email, name, phone_number, vote, birth_date, cpf, gender,
+                                observation, section_vote, surname, zone_voting, company_id, godfather_id)
+values (1, 'complement','district', 'nm_city', 'number', 'state', 'street', '66615005', 'jhonnyscerni@gmail.com', 'Jhonny Scerni', '9999999', 'A_CONQUISTAR',
+        null, '98473891287', 'MASCULINO', '', 'secao voto', 'scerni', 'zona votação', null, null);
+
+ALTER SEQUENCE seq_person RESTART WITH 2;
+
+insert into tb_users (id, username, password, user_status, person_id)
+values (1, 'jhonnyscerni','$2a$10$5SAcyRvZdMGYnWu5pTriR.yS9GC6i2ff6r/dR3WU1cJBJbksXQ5/W', 'ACTIVE', 1);
 -- Modify initial value and increment
 ALTER SEQUENCE seq_usuario RESTART WITH 2;
 
 insert into tb_roles (id, name)
 values (1, 'ROLE_USUARIOS'),  (2, 'ROLE_PESSOAS'), (3, 'ROLE_EMPRESAS'), (4, 'ROLE_PERMISSOES'), (5, 'ROLE_GRUPOS'), (6, 'ROLE_DASHBOARD');
 
--- Modify initial value and increment
-ALTER SEQUENCE seq_role RESTART WITH 6
 
 insert into tb_users_roles(user_id, role_id)
 values (1, 1);
+insert into tb_users_roles(user_id, role_id)
 values (1, 2);
+insert into tb_users_roles(user_id, role_id)
 values (1, 3);
+insert into tb_users_roles(user_id, role_id)
 values (1, 4);
+insert into tb_users_roles(user_id, role_id)
 values (1, 5);
+insert into tb_users_roles(user_id, role_id)
 values (1, 6);
 
-insert into tb_permissions (id, name ,description) values (1, 'CONSULTAR_DASHBOARD', 'Permite consultar dashboard');
+-- Modify initial value and increment
+ALTER SEQUENCE seq_role RESTART WITH 7
+
+
+    insert into tb_permissions (id, name ,description) values (1, 'CONSULTAR_DASHBOARD', 'Permite consultar dashboard');
 
 insert into tb_permissions (id, name, description) values (2, 'SEG_CONSULTAR_USUARIOS', 'Permite consultar usuarios');
 insert into tb_permissions (id, name, description) values (3, 'SEG_CADASTRAR_USUARIOS', 'Permite cadastrar usuarios');
@@ -53,7 +67,7 @@ insert into tb_permissions (id, name, description) values (21, 'SEG_REMOVER_EMPR
 --insert into tb_permissions (id, name, description) values (19, 'SEG_DESASSOCIAR_GRUPOS_PERMISSOES', 'Permite editar asossiações de grupo e permissão');
 
 -- Modify initial value and increment
-ALTER SEQUENCE seq_permission RESTART WITH 21;
+ALTER SEQUENCE seq_permission RESTART WITH 22;
 
 -- # Adiciona todas as permissoes no grupo
 
@@ -83,4 +97,3 @@ insert into tb_roles_permissions (role_id, permission_id) values (3 ,20);
 insert into tb_roles_permissions (role_id, permission_id) values (3 ,21);
 
 insert into tb_roles_permissions (role_id, permission_id) values (6,1);
-
