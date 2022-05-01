@@ -25,6 +25,8 @@ public class UserSpecification implements Specification<User> {
 
         From<?, ?> person = root.join("person", JoinType.INNER);
 
+        root.fetch( "person", JoinType.LEFT);
+
         Optional.ofNullable(allocationFilter.getUsername())
             .ifPresent(p -> predicates.add(criteriaBuilder.like(root.get("username"), "%" + allocationFilter.getUsername() + "%")));
         Optional.ofNullable(allocationFilter.getEmail())

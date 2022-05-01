@@ -27,7 +27,7 @@ public class UserPersonPhysicalController {
     }
 
     @PostMapping("/person/{personId}")
-    public ResponseEntity<UserResponse> findByPersonId(@PathVariable Long personId,
+    public ResponseEntity<UserResponse> createPersonUser(@PathVariable Long personId,
         @RequestBody @Valid UserPersonPhysicalRequest userPersonPhysicalRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.createPersonUser(personId ,userPersonPhysicalRequest));
     }

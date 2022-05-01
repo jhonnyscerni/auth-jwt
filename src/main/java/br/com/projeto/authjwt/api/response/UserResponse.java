@@ -1,6 +1,7 @@
 package br.com.projeto.authjwt.api.response;
 
 import br.com.projeto.authjwt.models.Person;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Data;
@@ -14,6 +15,7 @@ public class UserResponse {
 
     private String password;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Person person;
 
     private Set<RoleResponse> roles = new HashSet<>();

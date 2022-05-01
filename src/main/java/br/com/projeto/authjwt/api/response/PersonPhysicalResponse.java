@@ -1,6 +1,8 @@
 package br.com.projeto.authjwt.api.response;
 
 import br.com.projeto.authjwt.models.enums.VoteEnum;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +25,7 @@ public class PersonPhysicalResponse {
 
     private String cpf;
 
+    @JsonFormat(shape = Shape.STRING, pattern = "dd-MM-yyyy")
     private Date birthDate;
 
     private String surname;
