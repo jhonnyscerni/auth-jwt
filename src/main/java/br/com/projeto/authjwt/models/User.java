@@ -2,7 +2,6 @@ package br.com.projeto.authjwt.models;
 
 import br.com.projeto.authjwt.models.enums.UserStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashSet;
 import java.util.Set;
@@ -47,7 +46,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_usuario")
     @EqualsAndHashCode.Include
     private Long id;
-
     @Column(nullable = false, unique = true, length = 50)
     private String username;
 

@@ -2,7 +2,6 @@ package br.com.projeto.authjwt.api.controllers;
 
 import br.com.projeto.authjwt.api.request.LoginRequest;
 import br.com.projeto.authjwt.api.request.PersonPhysicalRequest;
-import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
 import br.com.projeto.authjwt.api.response.JwtResponse;
 import br.com.projeto.authjwt.api.response.PersonPhysicalResponse;
 import br.com.projeto.authjwt.api.response.UserResponse;
@@ -38,11 +37,6 @@ public class AuthenticationController {
 
     private final PersonPhysicalService personPhysicalService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<UserResponse> registerUser(@RequestBody @Valid UserPersonPhysicalRequest userPersonPhysicalRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(userPersonPhysicalRequest));
-    }
-
     @PostMapping(value = "/persongoldfather/{id}")
     public ResponseEntity<PersonPhysicalResponse> registerPersonPhisicalGoldFatherPersonPhysical(
         @RequestParam(required = false) String tipoPerson, @PathVariable Long id, @RequestBody PersonPhysicalRequest personPhysicalRequest) {
@@ -52,7 +46,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+            new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtProvider.generateJwt(authentication);
         return ResponseEntity.ok(new JwtResponse(jwt));

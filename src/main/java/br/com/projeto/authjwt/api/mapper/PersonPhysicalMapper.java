@@ -2,6 +2,7 @@ package br.com.projeto.authjwt.api.mapper;
 
 import br.com.projeto.authjwt.api.request.PersonPhysicalRequest;
 import br.com.projeto.authjwt.api.response.PersonPhysicalResponse;
+import br.com.projeto.authjwt.models.Person;
 import br.com.projeto.authjwt.models.PersonPhysical;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -20,4 +21,5 @@ public interface PersonPhysicalMapper {
     PersonPhysicalResponse toResponse(PersonPhysical entity);
 
     PersonPhysical toEntity(PersonPhysicalResponse model);
+
 }
