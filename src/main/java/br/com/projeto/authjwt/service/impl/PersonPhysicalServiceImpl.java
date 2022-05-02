@@ -5,14 +5,17 @@ import br.com.projeto.authjwt.api.request.PersonPhysicalRequest;
 import br.com.projeto.authjwt.api.response.PersonPhysicalResponse;
 import br.com.projeto.authjwt.models.PersonLegal;
 import br.com.projeto.authjwt.models.PersonPhysical;
+import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.models.exceptions.EntityInUseException;
 import br.com.projeto.authjwt.models.exceptions.EntityNotFoundException;
 import br.com.projeto.authjwt.repositories.PersonPhysicalRepository;
+import br.com.projeto.authjwt.repositories.UserRepository;
 import br.com.projeto.authjwt.service.PersonLegalService;
 import br.com.projeto.authjwt.service.PersonPhysicalService;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
@@ -30,6 +33,8 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
 
     private final PersonLegalService personLegalService;
     private final PersonPhysicalMapper personPhysicalMapper;
+
+    private final UserRepository userRepository;
 
     private static final String MSG_OBJECT_IN_USE
             = "Person Physical %d cannot be removed as it is in use";
@@ -106,7 +111,14 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
     @Override
     public void delete(Long id) {
         try {
-            personPhysicalRepository.deleteById(id);
+
+            Optional<User> user = userRepository.findByPersonIdUserDto(id);
+            if (user.isPresent()) {
+                userRepository.delete(user.get());
+            } else {
+                personPhysicalRepository.deleteById(id);
+            }
+
         } catch (EmptyResultDataAccessException e) {
             log.warn("Person Physical {} not found", id);
             throw new EntityNotFoundException("Person Physical not found");

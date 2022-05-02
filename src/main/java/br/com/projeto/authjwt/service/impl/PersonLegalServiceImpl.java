@@ -4,11 +4,14 @@ import br.com.projeto.authjwt.api.mapper.PersonLegalMapper;
 import br.com.projeto.authjwt.api.request.PersonLegalRequest;
 import br.com.projeto.authjwt.api.response.PersonLegalResponse;
 import br.com.projeto.authjwt.models.PersonLegal;
+import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.models.exceptions.EntityInUseException;
 import br.com.projeto.authjwt.models.exceptions.EntityNotFoundException;
 import br.com.projeto.authjwt.repositories.PersonLegalRepository;
+import br.com.projeto.authjwt.repositories.UserRepository;
 import br.com.projeto.authjwt.service.PersonLegalService;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +26,8 @@ public class PersonLegalServiceImpl implements PersonLegalService {
 
     private final PersonLegalRepository personLegalRepository;
     private final PersonLegalMapper personLegalMapper;
+
+    private final UserRepository userRepository;
 
     private static final String MSG_OBJECT_IN_USE
         = "Person Legal %d cannot be removed as it is in use";
@@ -67,7 +72,13 @@ public class PersonLegalServiceImpl implements PersonLegalService {
     @Override
     public void delete(Long personLegalId) {
         try {
-            personLegalRepository.deleteById(personLegalId);
+            Optional<User> user = userRepository.findByPersonIdUserDto(personLegalId);
+            if (user.isPresent()) {
+                userRepository.delete(user.get());
+            } else {
+                personLegalRepository.deleteById(personLegalId);
+            }
+
         } catch (EmptyResultDataAccessException e) {
             log.warn("Person Legal {} not found", personLegalId);
             throw new EntityNotFoundException("Person Legal not found");

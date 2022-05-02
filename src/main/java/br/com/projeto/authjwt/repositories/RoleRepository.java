@@ -10,6 +10,6 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
     Optional<Role> findByName(String name);
 
-    @Query("select r from Role r join fetch r.permissions p")
-    List<Role> findAll();
+    //@Query("select r from Role r left join fetch r.permissions p")
+    //List<Role> findAll();
 }
