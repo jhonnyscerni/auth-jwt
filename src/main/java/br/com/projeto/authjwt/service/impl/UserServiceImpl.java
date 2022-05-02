@@ -18,8 +18,10 @@ import br.com.projeto.authjwt.service.PersonPhysicalService;
 import br.com.projeto.authjwt.service.RoleService;
 import br.com.projeto.authjwt.service.UserService;
 import br.com.projeto.authjwt.service.email.EmailService;
+
 import java.util.Optional;
 import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -43,23 +45,26 @@ public class UserServiceImpl implements UserService {
 
     private final PersonPhysicalService personPhysicalService;
 
-    private static final String MSG_PERMISSAO_EM_USO
-        = "Usuário de código %d não pode ser removida, pois está em uso";
+    private static final String MSG_OBJECT_IN_USE
+            = "code user %d cannot be removed as it is in use";
 
     @Override
     @Transactional
     public User buscarOuFalharPorEmail(String email) {
+        log.debug("GET String email received {} ", email);
         return userRepository.findByPersonEmail(email)
-            .orElseThrow(() -> new EntityNotFoundException(
-                String.format("Não existe um cadastro de usuário com email %s", email)));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        String.format("There is no user registration with email %s", email)));
     }
 
     @Override
     @Transactional
     public User buscarOuFalhar(Long usuarioId) {
+        log.debug("GET Long usuarioId received {} ", usuarioId.toString());
         return userRepository.findById(usuarioId)
-            .orElseThrow(() -> new EntityNotFoundException("Não existe um cadastro de usuário", usuarioId));
+                .orElseThrow(() -> new EntityNotFoundException("There is no user registration", usuarioId));
     }
+
     @Override
     @Transactional
     public UserResponse findByIdUserDto(Long id) {
@@ -70,13 +75,14 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Page<UserResponse> search(UserFilter filter, Pageable pageable) {
+        log.debug("GET UserFilter filter received {} ", filter.toString());
         return userRepository.findAll(new UserSpecification(filter), pageable).map(userMapper::toResponse);
     }
 
     @Override
     @Transactional
     public UserResponse saveUser(UserPersonPhysicalRequest userPersonPhysicalRequest) {
-        log.debug("POST registerUser userDto received {} ", userPersonPhysicalRequest.toString());
+        log.debug("POST UserPersonPhysicalRequest userPersonPhysicalRequest received {} ", userPersonPhysicalRequest.toString());
 
         existsByUserName(new User(), userPersonPhysicalRequest.getUsername());
         //existsByUserEmail(new User(), userRequest.getEmail());
@@ -92,7 +98,7 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.create(userPersonPhysicalRequest);
         user = userRepository.save(user);
-        log.debug("POST registerUser userId saved {} ", user.getId());
+        log.debug("POST saveUser userId saved {} ", user.getId());
         log.info("User saved successfully userId {} ", user.getId());
 
         return userMapper.toResponse(user);
@@ -102,19 +108,24 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponse create(UserPersonPhysicalRequest userPersonPhysicalRequest) {
+        log.debug("POST UserPersonPhysicalRequest userPersonPhysicalRequest received {} ", userPersonPhysicalRequest.toString());
 
         existsByUserName(new User(), userPersonPhysicalRequest.getUsername());
         //existsByUserEmail(new User(), userRequest.getEmail());
         userPersonPhysicalRequest.setPassword(passwordEncoder.encode(userPersonPhysicalRequest.getPassword()));
 
-        User cliente = userMapper.create(userPersonPhysicalRequest);
-        userRepository.save(cliente);
-        return userMapper.toResponse(cliente);
+        User user = userMapper.create(userPersonPhysicalRequest);
+        userRepository.save(user);
+        log.debug("POST create userId saved {} ", user.getId());
+        log.info("User create successfully userId {} ", user.getId());
+        return userMapper.toResponse(user);
     }
 
     @Override
     @Transactional
     public UserResponse update(Long id, UserPersonPhysicalRequest userPersonPhysicalRequest) {
+        log.debug("PUT Long id received {} ", id.toString());
+        log.debug("PUT UserPersonPhysicalRequest userPersonPhysicalRequest received {} ", userPersonPhysicalRequest.toString());
         User user = buscarOuFalhar(id);
 
         existsByUserName(user, userPersonPhysicalRequest.getUsername());
@@ -122,7 +133,12 @@ public class UserServiceImpl implements UserService {
         passwordNotEquals(user, userPersonPhysicalRequest);
 
         userMapper.update(user, userPersonPhysicalRequest);
-        return userMapper.toResponse(userRepository.save(user));
+
+        User save = userRepository.save(user);
+        log.debug("PUT update userId saved {} ", user.getId());
+        log.info("User update successfully userId {} ", user.getId());
+        return userMapper.toResponse(save);
+
     }
 
     @Override
@@ -131,7 +147,9 @@ public class UserServiceImpl implements UserService {
         User user = buscarOuFalhar(userId);
         Role role = roleService.buscarOuFalhar(roleId);
         user.addRole(role);
+        log.debug("Add in Role roleId {} ", roleId);
         userRepository.save(user);
+        log.info("User connectRole successfully roleId {} ",roleId);
     }
 
     @Override
@@ -139,15 +157,18 @@ public class UserServiceImpl implements UserService {
     public UserResponse findByPersonIdUserDto(Long personId) {
         Optional<User> userOptional = userRepository.findByPersonIdUserDto(personId);
 
-        if (userOptional.isPresent()){
+        if (userOptional.isPresent()) {
             return userMapper.toResponse(userOptional.get());
         }
+        log.debug("GET Long personId received {} ", userOptional);
         return userMapper.toResponse(new User());
     }
 
     @Override
     @Transactional
     public UserResponse createPersonUser(Long personId, UserPersonPhysicalRequest userPersonPhysicalRequest) {
+        log.debug("POST Long personId received {} ", personId.toString());
+        log.debug("POST UserPersonPhysicalRequest userPersonPhysicalRequest received {} ", userPersonPhysicalRequest.toString());
 
         PersonPhysical personPhysical = personPhysicalService.buscarOuFalhar(personId);
         existsByUserName(new User(), userPersonPhysicalRequest.getUsername());
@@ -157,6 +178,8 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.create(userPersonPhysicalRequest);
         userRepository.save(user);
+        log.debug("POST create userId saved {} ", user.getId());
+        log.info("User create successfully userId {} ", user.getId());
         return userMapper.toResponse(user);
     }
 
@@ -166,13 +189,16 @@ public class UserServiceImpl implements UserService {
         User user = buscarOuFalhar(userId);
         Role role = roleService.buscarOuFalhar(roleId);
         user.removeRole(role);
+        log.debug("removed in Role roleId {} ", roleId);
         userRepository.save(user);
+        log.info("User disassociateRole successfully userId {} ", user.getId());
     }
 
     @Override
     @Transactional
     public void passwordNotEquals(User user, UserPersonPhysicalRequest userPersonPhysicalRequest) {
-        if (!user.getPassword().equals(userPersonPhysicalRequest.getPassword())){
+        log.debug("Verify password {} ", user.getId());
+        if (!user.getPassword().equals(userPersonPhysicalRequest.getPassword())) {
             userPersonPhysicalRequest.setPassword(passwordEncoder.encode(userPersonPhysicalRequest.getPassword()));
         }
     }
@@ -183,11 +209,13 @@ public class UserServiceImpl implements UserService {
         try {
             userRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new EntityNotFoundException("Usuario não encontrado");
+            log.warn("User {} not found", id);
+            throw new EntityNotFoundException("User not found");
 
         } catch (DataIntegrityViolationException e) {
+            log.warn("User {} cannot be removed as it is in use", id);
             throw new EntityInUseException(
-                String.format(MSG_PERMISSAO_EM_USO, id));
+                    String.format(MSG_OBJECT_IN_USE, id));
         }
     }
 
@@ -220,13 +248,13 @@ public class UserServiceImpl implements UserService {
         if (clienteExistente.isPresent() && !clienteExistente.get().equals(cliente)) {
             log.warn("Username {} is Already Taken ", clienteExistente.get().getUsername());
             throw new ConflictException(
-                String.format("Error: Username is Already Taken! %s ", clienteExistente.get().getUsername()));
+                    String.format("Error: Username is Already Taken! %s ", clienteExistente.get().getUsername()));
         }
     }
 
-   // @Override
-   // public void existsByUserEmail(User cliente, String email) {
-   //     Optional<User> clienteExistente = userRepository.findByEmail(email);
+    // @Override
+    // public void existsByUserEmail(User cliente, String email) {
+    //     Optional<User> clienteExistente = userRepository.findByEmail(email);
 //
 //        if (clienteExistente.isPresent() && !clienteExistente.get().equals(cliente)) {
 //            log.warn("Email {} is Already Taken ", clienteExistente.get().getEmail());

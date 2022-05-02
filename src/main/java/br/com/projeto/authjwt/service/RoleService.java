@@ -22,7 +22,7 @@ public interface RoleService {
 
     void delete(Long id);
 
-    void connectRole(Long roleId, Long permissionId);
+    void connectPermission(Long roleId, Long permissionId);
 
-    void disassociateRole(Long roleId, Long permissionId);
+    void disassociatePermission(Long roleId, Long permissionId);
 }

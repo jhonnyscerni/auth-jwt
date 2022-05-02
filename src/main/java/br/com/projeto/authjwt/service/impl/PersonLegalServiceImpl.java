@@ -4,7 +4,6 @@ import br.com.projeto.authjwt.api.mapper.PersonLegalMapper;
 import br.com.projeto.authjwt.api.request.PersonLegalRequest;
 import br.com.projeto.authjwt.api.response.PersonLegalResponse;
 import br.com.projeto.authjwt.models.PersonLegal;
-import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.models.exceptions.EntityInUseException;
 import br.com.projeto.authjwt.models.exceptions.EntityNotFoundException;
 import br.com.projeto.authjwt.repositories.PersonLegalRepository;
@@ -25,33 +24,43 @@ public class PersonLegalServiceImpl implements PersonLegalService {
     private final PersonLegalRepository personLegalRepository;
     private final PersonLegalMapper personLegalMapper;
 
-    private static final String MSG_PERMISSAO_EM_USO
-        = "Person de código %d não pode ser removida, pois está em uso";
+    private static final String MSG_OBJECT_IN_USE
+        = "Person Legal %d cannot be removed as it is in use";
 
 
     @Override
     public PersonLegal buscarOuFalhar(Long personlegalId) {
+        log.debug("GET Long personlegalId received {} ", personlegalId.toString());
         return personLegalRepository.findById(personlegalId)
-            .orElseThrow(() -> new EntityNotFoundException("Não existe um cadastro de person physical", personlegalId));
+            .orElseThrow(() -> new EntityNotFoundException("There is no record of person Legal", personlegalId));
     }
 
     @Override
     public PersonLegalResponse create(PersonLegalRequest personLegalRequest) {
+        log.debug("POST PersonLegalRequest personLegalRequest {} ", personLegalRequest.toString());
         PersonLegal personLegal = personLegalMapper.create(personLegalRequest);
         personLegalRepository.save(personLegal);
+        log.debug("POST create personLegal saved {} ", personLegal.getId());
+        log.info("User create successfully personLegal {} ", personLegal.getId());
         return personLegalMapper.toResponse(personLegal);
     }
 
     @Override
     public List<PersonLegalResponse> findAll() {
+        log.debug("GET PersonLegalResponse findAll");
         return personLegalRepository.findAll().stream().map(personLegalMapper::toResponse).collect(Collectors.toList());
     }
 
     @Override
     public PersonLegalResponse update(Long personLegalId, PersonLegalRequest personLegalRequest) {
+        log.debug("PUT Long personLegalId received {} ", personLegalId.toString());
+        log.debug("PUT PersonLegalRequest personLegalRequest received {} ", personLegalRequest.toString());
+
         PersonLegal personLegal = buscarOuFalhar(personLegalId);
 
         personLegalMapper.update(personLegal, personLegalRequest);
+        log.debug("PUT update personLegalId saved {} ", personLegal.getId());
+        log.info("Person Legal update successfully personLegalId {} ", personLegal.getId());
         return personLegalMapper.toResponse(personLegalRepository.save(personLegal));
     }
 
@@ -60,11 +69,13 @@ public class PersonLegalServiceImpl implements PersonLegalService {
         try {
             personLegalRepository.deleteById(personLegalId);
         } catch (EmptyResultDataAccessException e) {
+            log.warn("Person Legal {} not found", personLegalId);
             throw new EntityNotFoundException("Person Legal not found");
 
         } catch (DataIntegrityViolationException e) {
+            log.warn("Person Legal {} cannot be removed as it is in use", personLegalId);
             throw new EntityInUseException(
-                String.format(MSG_PERMISSAO_EM_USO, personLegalId));
+                String.format(MSG_OBJECT_IN_USE, personLegalId));
         }
     }
 

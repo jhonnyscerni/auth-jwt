@@ -18,13 +18,13 @@ public class RolePermissionController {
 
     @PutMapping("/{permissionId}")
     public ResponseEntity<Void> connect(@PathVariable Long roleId, @PathVariable Long permissionId) {
-        roleService.connectRole(roleId, permissionId);
+        roleService.connectPermission(roleId, permissionId);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{permissionId}")
     public ResponseEntity<Void> disassociate(@PathVariable Long roleId, @PathVariable Long permissionId) {
-        roleService.disassociateRole(roleId, permissionId);
+        roleService.disassociatePermission(roleId, permissionId);
         return ResponseEntity.noContent().build();
     }
 
