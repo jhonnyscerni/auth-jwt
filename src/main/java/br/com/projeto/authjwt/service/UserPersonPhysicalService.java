@@ -2,6 +2,7 @@ package br.com.projeto.authjwt.service;
 
 import br.com.projeto.authjwt.api.request.UserAddPersonPhysicalRequest;
 import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
+import br.com.projeto.authjwt.api.response.UserPersonPhysicalResponse;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.models.User;
 
@@ -13,11 +14,12 @@ public interface UserPersonPhysicalService {
 
     void passwordNotEquals(User user, UserPersonPhysicalRequest userPersonPhysicalRequest);
 
-    UserResponse create(UserPersonPhysicalRequest userPersonPhysicalRequest);
+    UserPersonPhysicalResponse create(UserPersonPhysicalRequest userPersonPhysicalRequest);
 
-    UserResponse update(Long id, UserPersonPhysicalRequest userPersonPhysicalRequest);
+    UserPersonPhysicalResponse update(Long id, UserPersonPhysicalRequest userPersonPhysicalRequest);
 
-    UserResponse findByPersonPhysicalIdUserUserPersonPhysicalResponse(Long personId);
+    UserPersonPhysicalResponse findByPersonPhysicalIdUserUserPersonPhysicalResponse(Long personId);
 
-    UserResponse createPersonUser(Long personId, UserAddPersonPhysicalRequest userPersonPhysicalRequest);
+    UserPersonPhysicalResponse createPersonUser(Long personId, UserAddPersonPhysicalRequest userPersonPhysicalRequest);
+
 }

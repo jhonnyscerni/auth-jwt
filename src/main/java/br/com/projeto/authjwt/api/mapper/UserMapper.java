@@ -2,6 +2,7 @@ package br.com.projeto.authjwt.api.mapper;
 
 import br.com.projeto.authjwt.api.request.UserAddPersonPhysicalRequest;
 import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
+import br.com.projeto.authjwt.api.request.UserRequest;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.utils.ModelMapper;
@@ -12,16 +13,8 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", imports = {PersonPhysicalMapper.class})
 public interface UserMapper extends ModelMapper<User, UserResponse> {
-
-    @InheritConfiguration
-    @Mapping(target = "person", expression = "java(userPersonPhysicalRequest.getPerson())")
-    User create(UserPersonPhysicalRequest userPersonPhysicalRequest);
-
-    User add(UserAddPersonPhysicalRequest userPersonPhysicalRequest);
-
-    //@Mapping(target = "id", ignore = true)
-    //@Mapping(target = "person", expression = "java(model.getPerson())")
-    void update(@MappingTarget User entity, UserPersonPhysicalRequest model);
-
     UserResponse toResponse(User entity);
+
+    @Mapping(target = "person", ignore = true)
+    void update(@MappingTarget User user, UserRequest userRequest);
 }

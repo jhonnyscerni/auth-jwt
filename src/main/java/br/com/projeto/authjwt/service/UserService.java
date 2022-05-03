@@ -1,5 +1,7 @@
 package br.com.projeto.authjwt.service;
 
+import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
+import br.com.projeto.authjwt.api.request.UserRequest;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.filter.UserFilter;
 import br.com.projeto.authjwt.models.User;
@@ -26,4 +28,10 @@ public interface UserService {
 
     @Transactional
     UserResponse resetPassword(String email);
+
+    UserResponse update(Long userId, UserRequest userRequest);
+
+    void existsByUserName(User cliente, String username);
+
+    void passwordNotEquals(User user, UserRequest userPersonPhysicalRequest);
 }

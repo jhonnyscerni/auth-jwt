@@ -1,10 +1,10 @@
 package br.com.projeto.authjwt.service.impl;
 
 
-import br.com.projeto.authjwt.api.mapper.UserMapper;
+import br.com.projeto.authjwt.api.mapper.UserPersonPhysicalMapper;
 import br.com.projeto.authjwt.api.request.UserAddPersonPhysicalRequest;
 import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
-import br.com.projeto.authjwt.api.response.UserResponse;
+import br.com.projeto.authjwt.api.response.UserPersonPhysicalResponse;
 import br.com.projeto.authjwt.models.PersonPhysical;
 import br.com.projeto.authjwt.models.Role;
 import br.com.projeto.authjwt.models.User;
@@ -28,8 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService {
 
     private final UserRepository userRepository;
+
     private final RoleService roleService;
-    private final UserMapper userMapper;
+    private final UserPersonPhysicalMapper userPersonPhysicalMapper;
     private final PasswordEncoder passwordEncoder;
 
     private final PersonPhysicalService personPhysicalService;
@@ -39,7 +40,7 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
 
     @Override
     @Transactional
-    public UserResponse create(UserPersonPhysicalRequest userPersonPhysicalRequest) {
+    public UserPersonPhysicalResponse create(UserPersonPhysicalRequest userPersonPhysicalRequest) {
         log.debug("POST registerUser userDto received {} ", userPersonPhysicalRequest.toString());
 
         existsByUserName(new User(), userPersonPhysicalRequest.getUsername());
@@ -54,18 +55,18 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
         userPersonPhysicalRequest.getRoles().add(pessoas);
         userPersonPhysicalRequest.getRoles().add(empresas);
 
-        User user = userMapper.create(userPersonPhysicalRequest);
+        User user = userPersonPhysicalMapper.create(userPersonPhysicalRequest);
         user = userRepository.save(user);
         log.debug("POST registerUser userId saved {} ", user.getId());
         log.info("User saved successfully userId {} ", user.getId());
 
-        return userMapper.toResponse(user);
+        return userPersonPhysicalMapper.toResponse(user);
 
     }
 
     @Override
     @Transactional
-    public UserResponse update(Long id, UserPersonPhysicalRequest userPersonPhysicalRequest) {
+    public UserPersonPhysicalResponse update(Long id, UserPersonPhysicalRequest userPersonPhysicalRequest) {
         log.debug("PUT Long id received {} ", id.toString());
         log.debug("PUT UserPersonPhysicalRequest userPersonPhysicalRequest received {} ", userPersonPhysicalRequest.toString());
         User user = userService.buscarOuFalhar(id);
@@ -74,29 +75,29 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
         //existsByUserEmail(user, userRequest.getEmail());
         passwordNotEquals(user, userPersonPhysicalRequest);
 
-        userMapper.update(user, userPersonPhysicalRequest);
+        userPersonPhysicalMapper.update(user, userPersonPhysicalRequest);
 
         User save = userRepository.save(user);
         log.debug("PUT update userId saved {} ", user.getId());
         log.info("User update successfully userId {} ", user.getId());
-        return userMapper.toResponse(save);
+        return userPersonPhysicalMapper.toResponse(save);
     }
 
     @Override
     @Transactional
-    public UserResponse findByPersonPhysicalIdUserUserPersonPhysicalResponse(Long personId) {
+    public UserPersonPhysicalResponse findByPersonPhysicalIdUserUserPersonPhysicalResponse(Long personId) {
         Optional<User> userOptional = userRepository.findByPersonIdUserDto(personId);
 
         if (userOptional.isPresent()) {
-            return userMapper.toResponse(userOptional.get());
+            return userPersonPhysicalMapper.toResponse(userOptional.get());
         }
         log.debug("GET Long personId received {} ", userOptional);
-        return userMapper.toResponse(new User());
+        return userPersonPhysicalMapper.toResponse(new User());
     }
 
     @Override
     @Transactional
-    public UserResponse createPersonUser(Long personId, UserAddPersonPhysicalRequest userPersonPhysicalRequest) {
+    public UserPersonPhysicalResponse createPersonUser(Long personId, UserAddPersonPhysicalRequest userPersonPhysicalRequest) {
         log.debug("POST Long personId received {} ", personId.toString());
         log.debug("POST UserPersonPhysicalRequest userPersonPhysicalRequest received {} ", userPersonPhysicalRequest.toString());
 
@@ -106,12 +107,12 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
         //existsByUserEmail(new User(), userRequest.getEmail());
         userPersonPhysicalRequest.setPassword(passwordEncoder.encode(userPersonPhysicalRequest.getPassword()));
 
-        User user = userMapper.add(userPersonPhysicalRequest);
+        User user = userPersonPhysicalMapper.add(userPersonPhysicalRequest);
         user.setPerson(personPhysical);
         userRepository.save(user);
         log.debug("POST create userId saved {} ", user.getId());
         log.info("User create successfully userId {} ", user.getId());
-        return userMapper.toResponse(user);
+        return userPersonPhysicalMapper.toResponse(user);
     }
 
     @Override

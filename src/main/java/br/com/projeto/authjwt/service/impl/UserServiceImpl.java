@@ -1,10 +1,13 @@
 package br.com.projeto.authjwt.service.impl;
 
 import br.com.projeto.authjwt.api.mapper.UserMapper;
+import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
+import br.com.projeto.authjwt.api.request.UserRequest;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.filter.UserFilter;
 import br.com.projeto.authjwt.models.Role;
 import br.com.projeto.authjwt.models.User;
+import br.com.projeto.authjwt.models.exceptions.ConflictException;
 import br.com.projeto.authjwt.models.exceptions.EntityInUseException;
 import br.com.projeto.authjwt.models.exceptions.EntityNotFoundException;
 import br.com.projeto.authjwt.repositories.UserRepository;
@@ -12,6 +15,7 @@ import br.com.projeto.authjwt.repositories.specs.UserSpecification;
 import br.com.projeto.authjwt.service.RoleService;
 import br.com.projeto.authjwt.service.UserService;
 import br.com.projeto.authjwt.service.email.EmailService;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -119,6 +123,43 @@ public class UserServiceImpl implements UserService {
         log.info("Mail send successfully new password: " + password);
 
         return userMapper.toResponse(user);
+    }
+
+    @Override
+    public UserResponse update(Long userId, UserRequest userRequest) {
+        log.debug("PUT Long userId received {} ", userId.toString());
+        log.debug("PUT UserRequest userRequest received {} ", userRequest.toString());
+        User user = buscarOuFalhar(userId);
+
+        existsByUserName(user, userRequest.getUsername());
+        //existsByUserEmail(user, userRequest.getEmail());
+        passwordNotEquals(user, userRequest);
+
+        userMapper.update(user, userRequest);
+
+        User save = userRepository.save(user);
+        log.debug("PUT update userId saved {} ", user.getId());
+        log.info("User update successfully userId {} ", user.getId());
+        return userMapper.toResponse(save);
+    }
+
+    @Override
+    public void passwordNotEquals(User user, UserRequest userRequest) {
+        log.debug("Verify password {} ", user.getId());
+        if (!user.getPassword().equals(userRequest.getPassword())) {
+            userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        }
+    }
+
+    @Override
+    public void existsByUserName(User cliente, String username) {
+        Optional<User> clienteExistente = userRepository.findByUsername(username);
+
+        if (clienteExistente.isPresent() && !clienteExistente.get().equals(cliente)) {
+            log.warn("Username {} is Already Taken ", clienteExistente.get().getUsername());
+            throw new ConflictException(
+                String.format("Error: Username is Already Taken! %s ", clienteExistente.get().getUsername()));
+        }
     }
 
     private String encodePassword(String password) {
