@@ -4,6 +4,7 @@ import br.com.projeto.authjwt.api.request.UserAddPersonPhysicalRequest;
 import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
 import br.com.projeto.authjwt.api.response.UserPersonPhysicalResponse;
 import br.com.projeto.authjwt.service.UserPersonPhysicalService;
+import java.util.UUID;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,12 +25,12 @@ public class UserPersonPhysicalController {
     private final UserPersonPhysicalService userPersonPhysicalService;
 
     @GetMapping("/{personPhysicalId}")
-    public ResponseEntity<UserPersonPhysicalResponse> findByPersonId(@PathVariable Long personPhysicalId) {
+    public ResponseEntity<UserPersonPhysicalResponse> findByPersonId(@PathVariable UUID personPhysicalId) {
         return ResponseEntity.ok().body(userPersonPhysicalService.findByPersonPhysicalIdUserUserPersonPhysicalResponse(personPhysicalId));
     }
 
     @PostMapping("/{personPhysicalId}")
-    public ResponseEntity<UserPersonPhysicalResponse> createPersonUser(@PathVariable Long personPhysicalId,
+    public ResponseEntity<UserPersonPhysicalResponse> createPersonUser(@PathVariable UUID personPhysicalId,
         @RequestBody @Valid UserAddPersonPhysicalRequest userAddPersonPhysicalRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(userPersonPhysicalService.createPersonUser(personPhysicalId, userAddPersonPhysicalRequest));
@@ -41,7 +42,7 @@ public class UserPersonPhysicalController {
     }
 
     @PutMapping("/{userPersonPhysicalId}")
-    public ResponseEntity<UserPersonPhysicalResponse> update(@PathVariable Long userPersonPhysicalId,
+    public ResponseEntity<UserPersonPhysicalResponse> update(@PathVariable UUID userPersonPhysicalId,
         @RequestBody @Valid UserPersonPhysicalRequest userPersonPhysicalRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(userPersonPhysicalService.update(userPersonPhysicalId, userPersonPhysicalRequest));
     }

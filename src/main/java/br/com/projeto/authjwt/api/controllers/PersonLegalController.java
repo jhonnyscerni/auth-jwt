@@ -4,6 +4,7 @@ import br.com.projeto.authjwt.api.request.PersonLegalRequest;
 import br.com.projeto.authjwt.api.response.PersonLegalResponse;
 import br.com.projeto.authjwt.service.PersonLegalService;
 import java.util.List;
+import java.util.UUID;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class PersonLegalController {
     }
 
     @GetMapping("/{personLegalId}")
-    public ResponseEntity<PersonLegalResponse> findById(@PathVariable Long personLegalId) {
+    public ResponseEntity<PersonLegalResponse> findById(@PathVariable UUID personLegalId) {
         return ResponseEntity.ok().body(personLegalService.findByIdResponse(personLegalId));
     }
 
@@ -40,13 +41,13 @@ public class PersonLegalController {
     }
 
     @PutMapping("/{personLegalId}")
-    public ResponseEntity<PersonLegalResponse> update(@PathVariable Long personLegalId,
+    public ResponseEntity<PersonLegalResponse> update(@PathVariable UUID personLegalId,
         @RequestBody @Valid PersonLegalRequest personLegalRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(personLegalService.update(personLegalId, personLegalRequest));
     }
 
     @DeleteMapping("/{personLegalId}")
-    public ResponseEntity<Void> delete(@PathVariable Long personLegalId) {
+    public ResponseEntity<Void> delete(@PathVariable UUID personLegalId) {
         personLegalService.delete(personLegalId);
         return ResponseEntity.noContent().build();
     }

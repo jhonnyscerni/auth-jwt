@@ -16,6 +16,7 @@ import br.com.projeto.authjwt.service.RoleService;
 import br.com.projeto.authjwt.service.UserPersonPhysicalService;
 import br.com.projeto.authjwt.service.UserService;
 import java.util.Optional;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -66,8 +67,8 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
 
     @Override
     @Transactional
-    public UserPersonPhysicalResponse update(Long id, UserPersonPhysicalRequest userPersonPhysicalRequest) {
-        log.debug("PUT Long id received {} ", id.toString());
+    public UserPersonPhysicalResponse update(UUID id, UserPersonPhysicalRequest userPersonPhysicalRequest) {
+        log.debug("PUT UUID id received {} ", id.toString());
         log.debug("PUT UserPersonPhysicalRequest userPersonPhysicalRequest received {} ", userPersonPhysicalRequest.toString());
         User user = userService.buscarOuFalhar(id);
 
@@ -85,20 +86,20 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
 
     @Override
     @Transactional
-    public UserPersonPhysicalResponse findByPersonPhysicalIdUserUserPersonPhysicalResponse(Long personId) {
+    public UserPersonPhysicalResponse findByPersonPhysicalIdUserUserPersonPhysicalResponse(UUID personId) {
         Optional<User> userOptional = userRepository.findByPersonIdUserDto(personId);
 
         if (userOptional.isPresent()) {
             return userPersonPhysicalMapper.toResponse(userOptional.get());
         }
-        log.debug("GET Long personId received {} ", userOptional);
+        log.debug("GET UUID personId received {} ", userOptional);
         return userPersonPhysicalMapper.toResponse(new User());
     }
 
     @Override
     @Transactional
-    public UserPersonPhysicalResponse createPersonUser(Long personId, UserAddPersonPhysicalRequest userPersonPhysicalRequest) {
-        log.debug("POST Long personId received {} ", personId.toString());
+    public UserPersonPhysicalResponse createPersonUser(UUID personId, UserAddPersonPhysicalRequest userPersonPhysicalRequest) {
+        log.debug("POST UUID personId received {} ", personId.toString());
         log.debug("POST UserPersonPhysicalRequest userPersonPhysicalRequest received {} ", userPersonPhysicalRequest.toString());
 
 

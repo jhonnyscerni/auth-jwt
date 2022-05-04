@@ -4,6 +4,7 @@ import br.com.projeto.authjwt.api.request.UserRequest;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.filter.UserFilter;
 import br.com.projeto.authjwt.service.UserService;
+import java.util.UUID;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,18 +34,18 @@ public class UserController {
         return ResponseEntity.ok().body(userService.search(filter, pageable));
     }
     @GetMapping("/{userId}")
-    public ResponseEntity<UserResponse> findById(@PathVariable Long userId) {
+    public ResponseEntity<UserResponse> findById(@PathVariable UUID userId) {
         return ResponseEntity.ok().body(userService.findById(userId));
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> delete(@PathVariable Long userId) {
+    public ResponseEntity<Void> delete(@PathVariable UUID userId) {
         userService.delete(userId);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserResponse> update(@PathVariable Long userId,
+    public ResponseEntity<UserResponse> update(@PathVariable UUID userId,
         @RequestBody @Valid UserRequest userRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId, userRequest));
     }

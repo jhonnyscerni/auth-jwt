@@ -2,8 +2,10 @@ package br.com.projeto.authjwt.api.controllers;
 
 import br.com.projeto.authjwt.api.request.PersonPhysicalRequest;
 import br.com.projeto.authjwt.api.response.PersonPhysicalResponse;
+import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.service.PersonPhysicalService;
 import java.util.List;
+import java.util.UUID;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,18 +37,18 @@ public class PersonPhysicalController {
     }
 
     @GetMapping("/{personphisicalId}")
-    public ResponseEntity<PersonPhysicalResponse> findById(@PathVariable Long personphisicalId) {
+    public ResponseEntity<PersonPhysicalResponse> findById(@PathVariable UUID personphisicalId) {
         return ResponseEntity.ok().body(personPhysicalService.findByIdResponse(personphisicalId));
     }
 
     @PutMapping("/{personphisicalId}")
-    public ResponseEntity<PersonPhysicalResponse> update(@PathVariable Long personphisicalId,
+    public ResponseEntity<PersonPhysicalResponse> update(@PathVariable UUID personphisicalId,
         @RequestBody @Valid PersonPhysicalRequest personPhysicalRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(personPhysicalService.update(personphisicalId, personPhysicalRequest));
     }
 
     @DeleteMapping("/{personphisicalId}")
-    public ResponseEntity<Void> delete(@PathVariable Long personphisicalId) {
+    public ResponseEntity<Void> delete(@PathVariable UUID personphisicalId) {
         personPhysicalService.delete(personphisicalId);
         return ResponseEntity.noContent().build();
     }

@@ -11,6 +11,7 @@ import br.com.projeto.authjwt.repositories.PermissionRepository;
 import br.com.projeto.authjwt.repositories.specs.PermissionSpecification;
 import br.com.projeto.authjwt.service.PermissionService;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +34,8 @@ public class PermissionServiceImp implements PermissionService {
 
 
     @Override
-    public Permission buscarOuFalhar(Long permisionId) {
-        log.debug("GET Long permisionId received {} ", permisionId.toString());
+    public Permission buscarOuFalhar(UUID permisionId) {
+        log.debug("GET UUID permisionId received {} ", permisionId.toString());
         return permissionRepository.findById(permisionId)
             .orElseThrow(() -> new EntityNotFoundException("There is no perminssion registration ", permisionId));
     }
@@ -46,8 +47,8 @@ public class PermissionServiceImp implements PermissionService {
     }
 
     @Override
-    public PermissionResponse findByIdPermisionResponse(Long id) {
-        log.debug("GET Long permissionId received {} ", id.toString());
+    public PermissionResponse findByIdPermisionResponse(UUID id) {
+        log.debug("GET UUID permissionId received {} ", id.toString());
         Permission permission = buscarOuFalhar(id);
         return permissionMapper.toResponse(permission);
     }
@@ -69,8 +70,8 @@ public class PermissionServiceImp implements PermissionService {
     }
 
     @Override
-    public PermissionResponse update(Long id, PermissionRequest permissionRequest) {
-        log.debug("PUT Long permissionId received {} ", id.toString());
+    public PermissionResponse update(UUID id, PermissionRequest permissionRequest) {
+        log.debug("PUT UUID permissionId received {} ", id.toString());
         log.debug("PUT PermissionRequest roleRequest received {} ", permissionRequest.toString());
         Permission permission = buscarOuFalhar(id);
 
@@ -84,7 +85,7 @@ public class PermissionServiceImp implements PermissionService {
 
 
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
         try {
             permissionRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {

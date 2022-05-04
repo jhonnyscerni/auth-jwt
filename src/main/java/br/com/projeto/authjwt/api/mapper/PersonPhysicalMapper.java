@@ -11,13 +11,15 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface PersonPhysicalMapper {
 
+    @Mapping(target = "godfatherId", source = "userRequest.personPhysicalId")
+    @Mapping(target="companyId",source = "userRequest.personLegalId")
     PersonPhysical create(PersonPhysicalRequest userRequest);
 
     //@Mapping(target = "id", ignore = true)
     void update(@MappingTarget PersonPhysical entity, PersonPhysicalRequest model);
 
-    @Mapping(target="personPhysicalId",source = "entity.godfather.id")
-    @Mapping(target="personLedalId",source = "entity.company.id")
+    @Mapping(target="personPhysicalId",source = "entity.godfatherId")
+    @Mapping(target="personLedalId",source = "entity.companyId")
     PersonPhysicalResponse toResponse(PersonPhysical entity);
 
     PersonPhysical toEntity(PersonPhysicalResponse model);

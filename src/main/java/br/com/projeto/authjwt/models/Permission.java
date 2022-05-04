@@ -1,11 +1,11 @@
 package br.com.projeto.authjwt.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,14 +22,13 @@ import org.springframework.security.core.GrantedAuthority;
 @AllArgsConstructor
 @Entity
 @Table(name = "TB_PERMISSIONS")
-@SequenceGenerator(name = "seq_permission", sequenceName = "seq_permission", initialValue = 1, allocationSize = 1)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Permission implements GrantedAuthority{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_permission")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @EqualsAndHashCode.Include
-    private Long id;
+    private UUID id;
 
     private String name;
 

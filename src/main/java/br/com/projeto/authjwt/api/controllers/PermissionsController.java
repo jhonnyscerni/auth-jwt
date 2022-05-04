@@ -5,6 +5,7 @@ import br.com.projeto.authjwt.api.response.PermissionResponse;
 import br.com.projeto.authjwt.filter.PermissionFilter;
 import br.com.projeto.authjwt.service.PermissionService;
 import java.util.List;
+import java.util.UUID;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -41,7 +42,7 @@ public class PermissionsController {
     }
 
     @GetMapping("/{permissionId}")
-    public ResponseEntity<PermissionResponse> findById(@PathVariable Long permissionId) {
+    public ResponseEntity<PermissionResponse> findById(@PathVariable UUID permissionId) {
         return ResponseEntity.ok().body(permissionService.findByIdPermisionResponse(permissionId));
     }
 
@@ -51,13 +52,13 @@ public class PermissionsController {
     }
 
     @PutMapping("/{permissionId}")
-    public ResponseEntity<PermissionResponse> update(@PathVariable Long permissionId,
+    public ResponseEntity<PermissionResponse> update(@PathVariable UUID permissionId,
         @RequestBody @Valid PermissionRequest permissionRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(permissionService.update(permissionId, permissionRequest));
     }
 
     @DeleteMapping("/{permissionId}")
-    public ResponseEntity<Void> delete(@PathVariable Long permissionId) {
+    public ResponseEntity<Void> delete(@PathVariable UUID permissionId) {
         permissionService.delete(permissionId);
         return ResponseEntity.noContent().build();
     }

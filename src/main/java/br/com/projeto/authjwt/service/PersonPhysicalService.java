@@ -5,20 +5,21 @@ import br.com.projeto.authjwt.api.response.PersonPhysicalResponse;
 import br.com.projeto.authjwt.models.PersonPhysical;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface PersonPhysicalService {
 
-    PersonPhysical buscarOuFalhar(Long personphysicalId);
+    PersonPhysical buscarOuFalhar(UUID personphysicalId);
 
-    PersonPhysicalResponse create(Long personphysicalId, PersonPhysicalRequest personPhysicalRequest, String tipoPerson);
+    PersonPhysicalResponse create(UUID personphysicalId, PersonPhysicalRequest personPhysicalRequest, String tipoPerson);
 
     PersonPhysicalResponse create(PersonPhysicalRequest personPhysicalRequest);
 
     List<PersonPhysicalResponse> findAll();
 
-    PersonPhysicalResponse update(Long personphisicalId, PersonPhysicalRequest personPhysicalRequest);
+    PersonPhysicalResponse update(UUID personphisicalId, PersonPhysicalRequest personPhysicalRequest);
 
-    void delete(Long id);
+    void delete(UUID id);
 
-    PersonPhysicalResponse findByIdResponse(Long personphisicalId);
+    PersonPhysicalResponse findByIdResponse(UUID personphisicalId);
 }

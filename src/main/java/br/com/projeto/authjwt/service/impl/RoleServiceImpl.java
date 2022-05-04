@@ -12,6 +12,7 @@ import br.com.projeto.authjwt.repositories.RoleRepository;
 import br.com.projeto.authjwt.service.PermissionService;
 import br.com.projeto.authjwt.service.RoleService;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,8 +40,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role buscarOuFalhar(Long roleId) {
-        log.debug("GET Long roleId received {} ", roleId.toString());
+    public Role buscarOuFalhar(UUID roleId) {
+        log.debug("GET UUID roleId received {} ", roleId.toString());
         return roleRepository.findById(roleId)
             .orElseThrow(() -> new EntityNotFoundException("Error: There is no role registration", roleId));
     }
@@ -52,8 +53,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public RoleResponse findByIdRoleResponse(Long id) {
-        log.debug("POST RoleResponse Long id received {} ", id.toString());
+    public RoleResponse findByIdRoleResponse(UUID id) {
+        log.debug("POST RoleResponse UUID id received {} ", id.toString());
         Role role = buscarOuFalhar(id);
         return roleMapper.toResponse(role);
     }
@@ -69,8 +70,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public RoleResponse update(Long id, RoleRequest roleRequest) {
-        log.debug("PUT Long roleId received {} ", id.toString());
+    public RoleResponse update(UUID id, RoleRequest roleRequest) {
+        log.debug("PUT UUID roleId received {} ", id.toString());
         log.debug("PUT RoleRequest roleRequest received {} ", roleRequest.toString());
         Role role = buscarOuFalhar(id);
 
@@ -82,7 +83,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
         try {
             roleRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
@@ -97,7 +98,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void connectPermission(Long roleId, Long permissionId) {
+    public void connectPermission(UUID roleId, UUID permissionId) {
         Role role = buscarOuFalhar(roleId);
         Permission permission = permissionService.buscarOuFalhar(permissionId);
         role.adicionarPermissao(permission);
@@ -107,7 +108,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void disassociatePermission(Long roleId, Long permissionId) {
+    public void disassociatePermission(UUID roleId, UUID permissionId) {
         Role role = buscarOuFalhar(roleId);
         Permission permission = permissionService.buscarOuFalhar(permissionId);
         role.removerPermissao(permission);

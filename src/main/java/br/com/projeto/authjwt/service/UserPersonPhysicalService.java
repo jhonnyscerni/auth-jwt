@@ -5,6 +5,7 @@ import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
 import br.com.projeto.authjwt.api.response.UserPersonPhysicalResponse;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.models.User;
+import java.util.UUID;
 
 public interface UserPersonPhysicalService {
 
@@ -16,10 +17,10 @@ public interface UserPersonPhysicalService {
 
     UserPersonPhysicalResponse create(UserPersonPhysicalRequest userPersonPhysicalRequest);
 
-    UserPersonPhysicalResponse update(Long id, UserPersonPhysicalRequest userPersonPhysicalRequest);
+    UserPersonPhysicalResponse update(UUID id, UserPersonPhysicalRequest userPersonPhysicalRequest);
 
-    UserPersonPhysicalResponse findByPersonPhysicalIdUserUserPersonPhysicalResponse(Long personId);
+    UserPersonPhysicalResponse findByPersonPhysicalIdUserUserPersonPhysicalResponse(UUID personId);
 
-    UserPersonPhysicalResponse createPersonUser(Long personId, UserAddPersonPhysicalRequest userPersonPhysicalRequest);
+    UserPersonPhysicalResponse createPersonUser(UUID personId, UserAddPersonPhysicalRequest userPersonPhysicalRequest);
 
 }

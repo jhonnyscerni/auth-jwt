@@ -5,12 +5,13 @@ import br.com.projeto.authjwt.models.Role;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import lombok.Data;
 
 @Data
 public class UserPersonPhysicalResponse {
 
-    private Long id;
+    private UUID id;
 
     private String username;
 

@@ -4,6 +4,7 @@ import br.com.projeto.authjwt.models.enums.VoteEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import java.util.Date;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,7 @@ import lombok.Setter;
 @Setter
 public class PersonPhysicalResponse {
 
-    private Long id;
+    private UUID id;
 
     private String name;
 
@@ -38,8 +39,8 @@ public class PersonPhysicalResponse {
 
     private String observation;
 
-    private Long personPhysicalId;
+    private UUID personPhysicalId;
 
-    private Long personLedalId;
+    private UUID personLedalId;
 
 }

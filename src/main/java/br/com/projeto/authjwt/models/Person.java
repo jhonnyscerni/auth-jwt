@@ -1,6 +1,7 @@
 package br.com.projeto.authjwt.models;
 
 import br.com.projeto.authjwt.models.enums.VoteEnum;
+import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -11,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,14 +24,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@SequenceGenerator(name = "seq_person", sequenceName = "seq_person", initialValue = 1, allocationSize = 1)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public abstract class Person {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_person")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @EqualsAndHashCode.Include
-    private Long id;
+    private UUID id;
 
     @Column(nullable = false)
     private String name;

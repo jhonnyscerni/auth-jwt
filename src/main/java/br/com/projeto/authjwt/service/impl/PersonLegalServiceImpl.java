@@ -12,6 +12,7 @@ import br.com.projeto.authjwt.repositories.UserRepository;
 import br.com.projeto.authjwt.service.PersonLegalService;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,8 +35,8 @@ public class PersonLegalServiceImpl implements PersonLegalService {
 
 
     @Override
-    public PersonLegal buscarOuFalhar(Long personlegalId) {
-        log.debug("GET Long personlegalId received {} ", personlegalId.toString());
+    public PersonLegal buscarOuFalhar(UUID personlegalId) {
+        log.debug("GET UUID personlegalId received {} ", personlegalId.toString());
         return personLegalRepository.findById(personlegalId)
             .orElseThrow(() -> new EntityNotFoundException("There is no record of person Legal", personlegalId));
     }
@@ -57,8 +58,8 @@ public class PersonLegalServiceImpl implements PersonLegalService {
     }
 
     @Override
-    public PersonLegalResponse update(Long personLegalId, PersonLegalRequest personLegalRequest) {
-        log.debug("PUT Long personLegalId received {} ", personLegalId.toString());
+    public PersonLegalResponse update(UUID personLegalId, PersonLegalRequest personLegalRequest) {
+        log.debug("PUT UUID personLegalId received {} ", personLegalId.toString());
         log.debug("PUT PersonLegalRequest personLegalRequest received {} ", personLegalRequest.toString());
 
         PersonLegal personLegal = buscarOuFalhar(personLegalId);
@@ -70,7 +71,7 @@ public class PersonLegalServiceImpl implements PersonLegalService {
     }
 
     @Override
-    public void delete(Long personLegalId) {
+    public void delete(UUID personLegalId) {
         try {
             Optional<User> user = userRepository.findByPersonIdUserDto(personLegalId);
             if (user.isPresent()) {
@@ -91,7 +92,7 @@ public class PersonLegalServiceImpl implements PersonLegalService {
     }
 
     @Override
-    public PersonLegalResponse findByIdResponse(Long empresaId) {
+    public PersonLegalResponse findByIdResponse(UUID empresaId) {
         PersonLegal personLegal = buscarOuFalhar(empresaId);
         return personLegalMapper.toResponse(personLegal);
     }

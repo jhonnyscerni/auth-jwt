@@ -1,6 +1,7 @@
 package br.com.projeto.authjwt.api.controllers;
 
 import br.com.projeto.authjwt.service.UserService;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,13 +18,13 @@ public class UserRoleController {
     private final UserService userService;
 
     @PutMapping("/{roleId}")
-    public ResponseEntity<Void> connect(@PathVariable Long userId, @PathVariable Long roleId) {
+    public ResponseEntity<Void> connect(@PathVariable UUID userId, @PathVariable UUID roleId) {
         userService.connectRole(userId, roleId);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{roleId}")
-    public ResponseEntity<Void> disassociate(@PathVariable Long userId, @PathVariable Long roleId) {
+    public ResponseEntity<Void> disassociate(@PathVariable UUID userId, @PathVariable UUID roleId) {
         userService.disassociateRole(userId, roleId);
         return ResponseEntity.noContent().build();
     }

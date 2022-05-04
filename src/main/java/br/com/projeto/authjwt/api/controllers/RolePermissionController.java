@@ -1,6 +1,7 @@
 package br.com.projeto.authjwt.api.controllers;
 
 import br.com.projeto.authjwt.service.RoleService;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,13 +18,13 @@ public class RolePermissionController {
     private final RoleService roleService;
 
     @PutMapping("/{permissionId}")
-    public ResponseEntity<Void> connect(@PathVariable Long roleId, @PathVariable Long permissionId) {
+    public ResponseEntity<Void> connect(@PathVariable UUID roleId, @PathVariable UUID permissionId) {
         roleService.connectPermission(roleId, permissionId);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{permissionId}")
-    public ResponseEntity<Void> disassociate(@PathVariable Long roleId, @PathVariable Long permissionId) {
+    public ResponseEntity<Void> disassociate(@PathVariable UUID roleId, @PathVariable UUID permissionId) {
         roleService.disassociatePermission(roleId, permissionId);
         return ResponseEntity.noContent().build();
     }

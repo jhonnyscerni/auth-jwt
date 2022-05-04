@@ -8,6 +8,7 @@ import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.security.jwt.JwtProvider;
 import br.com.projeto.authjwt.service.PersonPhysicalService;
 import br.com.projeto.authjwt.service.UserService;
+import java.util.UUID;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ public class AuthenticationController {
 
     @PostMapping(value = "/persongoldfather/{id}")
     public ResponseEntity<PersonPhysicalResponse> registerPersonPhisicalGoldFatherPersonPhysical(
-        @RequestParam(required = false) String tipoPerson, @PathVariable Long id, @RequestBody PersonPhysicalRequest personPhysicalRequest) {
+        @RequestParam(required = false) String tipoPerson, @PathVariable UUID id, @RequestBody PersonPhysicalRequest personPhysicalRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(personPhysicalService.create(id, personPhysicalRequest, tipoPerson));
     }
 

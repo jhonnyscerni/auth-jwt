@@ -5,24 +5,25 @@ import br.com.projeto.authjwt.api.request.RoleRequest;
 import br.com.projeto.authjwt.api.response.RoleResponse;
 import br.com.projeto.authjwt.models.Role;
 import java.util.List;
+import java.util.UUID;
 
 public interface RoleService {
 
     Role findByRoleName(String roleType);
 
-    Role buscarOuFalhar(Long permisionId);
+    Role buscarOuFalhar(UUID permisionId);
 
     List<RoleResponse> findAll();
 
-    RoleResponse findByIdRoleResponse(Long id);
+    RoleResponse findByIdRoleResponse(UUID id);
 
     RoleResponse create(RoleRequest userRequest);
 
-    RoleResponse update(Long id, RoleRequest roleRequest);
+    RoleResponse update(UUID id, RoleRequest roleRequest);
 
-    void delete(Long id);
+    void delete(UUID id);
 
-    void connectPermission(Long roleId, Long permissionId);
+    void connectPermission(UUID roleId, UUID permissionId);
 
-    void disassociatePermission(Long roleId, Long permissionId);
+    void disassociatePermission(UUID roleId, UUID permissionId);
 }

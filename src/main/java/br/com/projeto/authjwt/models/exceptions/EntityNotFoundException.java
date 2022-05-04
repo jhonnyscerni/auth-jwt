@@ -1,5 +1,7 @@
 package br.com.projeto.authjwt.models.exceptions;
 
+import java.util.UUID;
+
 public class EntityNotFoundException extends BusinessException {
 
     private static final long serialVersionUID = 1L;
@@ -8,7 +10,7 @@ public class EntityNotFoundException extends BusinessException {
         super(message);
     }
 
-    public EntityNotFoundException(String message, Long id) {
+    public EntityNotFoundException(String message, UUID id) {
         this(String.format(message + " %d", id));
     }
 

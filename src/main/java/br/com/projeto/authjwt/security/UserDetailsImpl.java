@@ -2,6 +2,7 @@ package br.com.projeto.authjwt.security;
 
 import br.com.projeto.authjwt.models.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,10 +17,12 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserDetailsImpl implements UserDetails {
 
-    private Long userId;
+    private UUID userId;
     private String username;
     @JsonIgnore
     private String password;
+
+    private String tipo;
     private Collection<? extends GrantedAuthority> authorities;
 
     public static UserDetailsImpl build(User userModel) {
@@ -38,6 +41,7 @@ public class UserDetailsImpl implements UserDetails {
             userModel.getId(),
             userModel.getUsername(),
             userModel.getPassword(),
+            userModel.getPerson().getClass().getSimpleName(),
             authorities);
     }
 

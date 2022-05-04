@@ -4,6 +4,7 @@ import br.com.projeto.authjwt.api.request.RoleRequest;
 import br.com.projeto.authjwt.api.response.RoleResponse;
 import br.com.projeto.authjwt.service.RoleService;
 import java.util.List;
+import java.util.UUID;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class RoleController {
     }
 
     @GetMapping("/{roleId}")
-    public ResponseEntity<RoleResponse> findById(@PathVariable Long roleId) {
+    public ResponseEntity<RoleResponse> findById(@PathVariable UUID roleId) {
         return ResponseEntity.ok().body(roleService.findByIdRoleResponse(roleId));
     }
 
@@ -40,14 +41,14 @@ public class RoleController {
     }
 
     @PutMapping("/{roleId}")
-    public ResponseEntity<RoleResponse> update(@PathVariable Long roleId,
+    public ResponseEntity<RoleResponse> update(@PathVariable UUID roleId,
         @RequestBody @Valid RoleRequest roleRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(roleService.update(roleId, roleRequest));
     }
 
 
     @DeleteMapping("/{roleId}")
-    public ResponseEntity<Void> delete(@PathVariable Long roleId) {
+    public ResponseEntity<Void> delete(@PathVariable UUID roleId) {
         roleService.delete(roleId);
         return ResponseEntity.noContent().build();
     }

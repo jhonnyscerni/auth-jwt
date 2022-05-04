@@ -6,22 +6,23 @@ import br.com.projeto.authjwt.api.response.PermissionResponse;
 import br.com.projeto.authjwt.filter.PermissionFilter;
 import br.com.projeto.authjwt.models.Permission;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface PermissionService {
 
-    Permission buscarOuFalhar(Long permisionId);
+    Permission buscarOuFalhar(UUID permisionId);
 
     List<PermissionResponse> findAll();
 
-    PermissionResponse findByIdPermisionResponse(Long permissionId);
+    PermissionResponse findByIdPermisionResponse(UUID permissionId);
 
     Page<PermissionResponse> search(PermissionFilter filter, Pageable pageable);
 
     PermissionResponse create(PermissionRequest permissionRequest);
 
-    PermissionResponse update(Long id, PermissionRequest roleRequest);
+    PermissionResponse update(UUID id, PermissionRequest roleRequest);
 
-    void delete(Long id);
+    void delete(UUID id);
 }

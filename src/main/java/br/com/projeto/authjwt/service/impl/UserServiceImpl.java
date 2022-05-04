@@ -46,14 +46,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User buscarOuFalhar(Long usuarioId) {
+    public User buscarOuFalhar(UUID usuarioId) {
         return userRepository.findById(usuarioId)
             .orElseThrow(() -> new EntityNotFoundException("Não existe um cadastro de usuário", usuarioId));
     }
 
     @Override
     @Transactional
-    public UserResponse findById(Long id) {
+    public UserResponse findById(UUID id) {
         User user = buscarOuFalhar(id);
         return userMapper.toResponse(user);
     }
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void disassociateRole(Long userId, Long roleId) {
+    public void disassociateRole(UUID userId, UUID roleId) {
         User user = buscarOuFalhar(userId);
         Role role = roleService.buscarOuFalhar(roleId);
         user.removeRole(role);
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void connectRole(Long userId, Long roleId) {
+    public void connectRole(UUID userId, UUID roleId) {
         User user = buscarOuFalhar(userId);
         Role role = roleService.buscarOuFalhar(roleId);
         user.addRole(role);
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void delete(Long id) {
+    public void delete(UUID id) {
         try {
             userRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
@@ -126,8 +126,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse update(Long userId, UserRequest userRequest) {
-        log.debug("PUT Long userId received {} ", userId.toString());
+    public UserResponse update(UUID userId, UserRequest userRequest) {
+        log.debug("PUT UUID userId received {} ", userId.toString());
         log.debug("PUT UserRequest userRequest received {} ", userRequest.toString());
         User user = buscarOuFalhar(userId);
 

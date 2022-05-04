@@ -10,19 +10,25 @@ import br.com.projeto.authjwt.models.exceptions.EntityInUseException;
 import br.com.projeto.authjwt.models.exceptions.EntityNotFoundException;
 import br.com.projeto.authjwt.repositories.PersonPhysicalRepository;
 import br.com.projeto.authjwt.repositories.UserRepository;
+import br.com.projeto.authjwt.security.UserDetailsImpl;
 import br.com.projeto.authjwt.service.PersonLegalService;
 import br.com.projeto.authjwt.service.PersonPhysicalService;
 
+import br.com.projeto.authjwt.service.UserService;
+import br.com.projeto.authjwt.utils.AuthenticationFacade;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -36,40 +42,40 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
 
     private final UserRepository userRepository;
 
+    private final UserService userService;
+
+    private final AuthenticationFacade authenticationFacade;
+
     private static final String MSG_OBJECT_IN_USE
-            = "Person Physical %d cannot be removed as it is in use";
+        = "Person Physical %d cannot be removed as it is in use";
 
 
     @Override
-    public PersonPhysical buscarOuFalhar(Long personphysicalId) {
-        log.debug("GET Long personphysicalId received {} ", personphysicalId.toString());
+    public PersonPhysical buscarOuFalhar(UUID personphysicalId) {
+        log.debug("GET UUID personphysicalId received {} ", personphysicalId.toString());
         return personPhysicalRepository.findById(personphysicalId)
-                .orElseThrow(() -> new EntityNotFoundException("There is no record of person physical", personphysicalId));
+            .orElseThrow(() -> new EntityNotFoundException("There is no record of person physical", personphysicalId));
     }
 
     @Override
-    public PersonPhysicalResponse create(Long id, PersonPhysicalRequest personPhysicalRequest, String tipoPerson) {
-        log.debug("POST Long roleRequest {} ", id.toString());
+    public PersonPhysicalResponse create(UUID id, PersonPhysicalRequest personPhysicalRequest, String tipoPerson) {
+        log.debug("POST UUID roleRequest {} ", id.toString());
         log.debug("POST PersonPhysicalRequest personPhysicalRequest {} ", personPhysicalRequest.toString());
         log.debug("POST String tipoPerson {} ", tipoPerson);
-        PersonLegal personLegalGoldFather = new PersonLegal();
-        PersonPhysical personPhysicalGoldFather = new PersonPhysical();
         PersonPhysical personPhysical = new PersonPhysical();
         if (Objects.equals(tipoPerson, "LEGAL")) {
             log.debug("String tipoPerson {} ", tipoPerson);
-            personLegalGoldFather = personLegalService.buscarOuFalhar(id);
+            personPhysicalRequest.setPersonLegalId(id);
             personPhysical = personPhysicalMapper.create(personPhysicalRequest);
-            personPhysical.setCompany(personLegalGoldFather);
             personPhysicalRepository.save(personPhysical);
-            log.debug("POST create PersonPhysical saved set Gold Father in Company {} ",personLegalGoldFather.getName());
+            log.debug("POST create PersonPhysical saved set Gold Father in Company {} ", personPhysical.getName());
             log.info("PersonPhysical create successfully PersonPhysical {} ", personPhysical.getId());
         } else {
             log.debug("String tipoPerson id {} ", tipoPerson);
-            personPhysicalGoldFather = buscarOuFalhar(id);
+            personPhysicalRequest.setPersonPhysicalId(id);
             personPhysical = personPhysicalMapper.create(personPhysicalRequest);
-            personPhysical.setGodfather(personPhysicalGoldFather);
             personPhysicalRepository.save(personPhysical);
-            log.debug("POST create PersonPhysical saved set Gold Father in set PersonPhysical {} ", personPhysicalGoldFather.getName());
+            log.debug("POST create PersonPhysical saved set Gold Father in set PersonPhysical {} ", personPhysical.getName());
             log.info("PersonPhysical create successfully PersonPhysical {} ", personPhysical.getId());
         }
 
@@ -77,10 +83,18 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
     }
 
     @Override
+    @Transactional
     public PersonPhysicalResponse create(PersonPhysicalRequest personPhysicalRequest) {
         log.debug("POST PersonPhysicalRequest personPhysicalRequest {} ", personPhysicalRequest.toString());
-        //PersonPhysical padrinho = buscarOuFalhar(personPhysicalRequest.getPersonPhysicalId());
+        UserDetails userDetails = (UserDetailsImpl) authenticationFacade.getAuthentication().getPrincipal();
+        User user = userRepository.findByUsername(userDetails.getUsername())
+            .orElseThrow(() -> new EntityNotFoundException("Not found User"));
+
+        personPhysicalRequest.setPersonPhysicalId(user.getPerson().getId());
+        personPhysicalRequest.setPersonLegalId(null);
+
         PersonPhysical personPhysical = personPhysicalMapper.create(personPhysicalRequest);
+
         //personPhysical.setGodfather(padrinho);
         personPhysicalRepository.save(personPhysical);
         log.debug("POST create personPhysicalRequest id saved {} ", personPhysicalRequest.getId());
@@ -95,8 +109,8 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
     }
 
     @Override
-    public PersonPhysicalResponse update(Long personphisicalId, PersonPhysicalRequest personPhysicalRequest) {
-        log.debug("PUT Long personphisicalId received {} ", personphisicalId.toString());
+    public PersonPhysicalResponse update(UUID personphisicalId, PersonPhysicalRequest personPhysicalRequest) {
+        log.debug("PUT UUID personphisicalId received {} ", personphisicalId.toString());
         log.debug("PUT PersonPhysicalRequest personPhysicalRequest received {} ", personPhysicalRequest.toString());
         PersonPhysical personPhysical = buscarOuFalhar(personphisicalId);
 
@@ -109,7 +123,7 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
         try {
 
             Optional<User> user = userRepository.findByPersonIdUserDto(id);
@@ -126,13 +140,13 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
         } catch (DataIntegrityViolationException e) {
             log.warn("Person Physical {} cannot be removed as it is in use", id);
             throw new EntityInUseException(
-                    String.format(MSG_OBJECT_IN_USE, id));
+                String.format(MSG_OBJECT_IN_USE, id));
         }
     }
 
     @Override
-    public PersonPhysicalResponse findByIdResponse(Long personphisicalId) {
-        log.debug("GET findByIdResponse Long personphisicalId {} ", personphisicalId);
+    public PersonPhysicalResponse findByIdResponse(UUID personphisicalId) {
+        log.debug("GET findByIdResponse UUID personphisicalId {} ", personphisicalId);
         PersonPhysical personPhysical = buscarOuFalhar(personphisicalId);
         return personPhysicalMapper.toResponse(personPhysical);
     }

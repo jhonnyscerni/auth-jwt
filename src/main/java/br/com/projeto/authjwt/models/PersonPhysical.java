@@ -1,5 +1,6 @@
 package br.com.projeto.authjwt.models;
 
+import java.util.UUID;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,11 +33,9 @@ public class PersonPhysical extends Person {
     @Column
     private String sectionVote;
 
-    @OneToOne
-    private PersonPhysical godfather;
+    private UUID godfatherId;
 
-    @OneToOne
-    private PersonLegal company;
+    private UUID companyId;
 
     @Column
     private String observation;
