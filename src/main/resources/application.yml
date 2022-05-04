@@ -1,0 +1,63 @@
+server:
+    port: 8087
+    servlet:
+        context-path: /authuser/
+
+spring:
+    application:
+        name: authuser-service
+    datasource:
+        password: postgres
+        url: jdbc:postgresql://localhost:5432/syspolicy
+        username: postgres
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                show_sql: true
+    mail:
+        host: smtp.hostinger.com
+        password: Jscernih4
+        port: 587
+        properties:
+            mail:
+                smtp:
+                    starttls:
+                        enable: true
+                transport:
+                    protocol: smtp
+        username: contato@siberius.com.br
+    freemarker:
+        settings:
+            locale: pt_BR
+
+    mvc:
+        pathmatch:
+            matching-strategy: ant_path_matcher
+
+auth:
+    jwtExpirationMs: 14400000
+    jwtSecret: t7w!z%C*F-JaNdRgUkXp2s5v8x/A?D(G+KbPeShVmYq3t6w9z$B&E)H@McQfTjWn
+jwt:
+    email:
+        impl: fake
+        remetente: Siberius <contato@siberius.com.br>
+logging:
+    level:
+        br:
+            com:
+                projeto: DEBUG
+        org:
+            hibernate: INFO
+            springframework:
+                web: DEBUG
+        root: INFO
+
+eureka:
+    client:
+        service-url:
+            defaultZone: 'http://localhost:8761/eureka'
+    instance:
+        hostname: localhost
