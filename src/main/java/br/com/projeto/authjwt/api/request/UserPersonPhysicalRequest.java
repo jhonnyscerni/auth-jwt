@@ -13,7 +13,7 @@ public class UserPersonPhysicalRequest {
 
     private String password;
 
-    private PersonPhysical person;
+    private PersonPhysicalRequest person;
 
     Set<Role> roles = new HashSet<>();
 

@@ -17,6 +17,5 @@ public interface UserMapper {
 
     PersonResponse toPersonResponse(Person person);
 
-    @Mapping(target = "person", ignore = true)
     void update(@MappingTarget User user, UserRequest userRequest);
 }

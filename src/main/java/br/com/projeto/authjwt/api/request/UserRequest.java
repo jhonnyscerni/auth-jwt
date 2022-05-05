@@ -17,9 +17,6 @@ public class UserRequest {
 
     private String password;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Person person;
-
     private Set<RoleResponse> roles = new HashSet<>();
 
 }

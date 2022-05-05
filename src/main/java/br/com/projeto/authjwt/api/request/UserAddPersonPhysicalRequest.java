@@ -12,6 +12,6 @@ public class UserAddPersonPhysicalRequest {
 
     private String password;
 
-    Set<Role> roles = new HashSet<>();
+    Set<RoleRequest> roles = new HashSet<>();
 
 }
