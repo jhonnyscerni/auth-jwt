@@ -2,6 +2,7 @@ package br.com.projeto.authjwt.api.request;
 
 import br.com.projeto.authjwt.api.response.RoleResponse;
 import br.com.projeto.authjwt.models.Person;
+import br.com.projeto.authjwt.models.Role;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,6 +18,6 @@ public class UserRequest {
 
     private String password;
 
-    private Set<RoleResponse> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
 }
