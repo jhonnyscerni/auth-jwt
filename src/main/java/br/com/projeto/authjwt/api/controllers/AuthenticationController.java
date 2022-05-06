@@ -40,7 +40,6 @@ public class AuthenticationController {
 
     private final PersonPhysicalService personPhysicalService;
 
-    private final LogicVerifyPersonTypeLogin logicVerifyPersonTypeLogin;
 
     @PostMapping(value = "/persongoldfather/{id}")
     public ResponseEntity<PersonPhysicalResponse> registerPersonPhisicalGoldFatherPersonPhysical(
