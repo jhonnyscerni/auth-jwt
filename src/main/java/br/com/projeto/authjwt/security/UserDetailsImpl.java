@@ -22,7 +22,6 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
 
-    private String tipo;
     private Collection<? extends GrantedAuthority> authorities;
 
     public static UserDetailsImpl build(User userModel) {
@@ -41,7 +40,6 @@ public class UserDetailsImpl implements UserDetails {
             userModel.getId(),
             userModel.getUsername(),
             userModel.getPassword(),
-            userModel.getPerson().getClass().getSimpleName(),
             authorities);
     }
 

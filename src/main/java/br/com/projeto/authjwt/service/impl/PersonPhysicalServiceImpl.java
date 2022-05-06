@@ -10,9 +10,8 @@ import br.com.projeto.authjwt.models.exceptions.EntityInUseException;
 import br.com.projeto.authjwt.models.exceptions.EntityNotFoundException;
 import br.com.projeto.authjwt.repositories.PersonPhysicalRepository;
 import br.com.projeto.authjwt.repositories.UserRepository;
-import br.com.projeto.authjwt.security.UserDetailsImpl;
 import br.com.projeto.authjwt.service.PersonPhysicalService;
-import br.com.projeto.authjwt.utils.AuthenticationFacade;
+import br.com.projeto.authjwt.utils.LogicVerifyPersonTypeLogin;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,7 +21,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +36,7 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
     private final UserRepository userRepository;
 
 
-    private final AuthenticationFacade authenticationFacade;
+    private final LogicVerifyPersonTypeLogin logicVerifyPersonTypeLogin;
 
     private static final String MSG_OBJECT_IN_USE
         = "Person Physical %d cannot be removed as it is in use";
@@ -80,12 +78,8 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
     @Transactional
     public PersonPhysicalResponse create(PersonPhysicalRequest personPhysicalRequest) {
         log.debug("POST PersonPhysicalRequest personPhysicalRequest {} ", personPhysicalRequest.toString());
-        UserDetails userDetails = (UserDetailsImpl) authenticationFacade.getAuthentication().getPrincipal();
-        User user = userRepository.findByUsername(userDetails.getUsername())
-            .orElseThrow(() -> new EntityNotFoundException("Not found User"));
 
-        personPhysicalRequest.setPersonPhysicalId(user.getPerson().getId());
-        personPhysicalRequest.setPersonLegalId(null);
+        logicVerifyPersonTypeLogin.setPersonTypePersonPhysicalRequest(personPhysicalRequest);
 
         PersonPhysical personPhysical = personPhysicalMapper.create(personPhysicalRequest);
 

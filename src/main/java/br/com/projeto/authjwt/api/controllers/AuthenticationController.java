@@ -9,6 +9,7 @@ import br.com.projeto.authjwt.models.enums.PersonType;
 import br.com.projeto.authjwt.security.jwt.JwtProvider;
 import br.com.projeto.authjwt.service.PersonPhysicalService;
 import br.com.projeto.authjwt.service.UserService;
+import br.com.projeto.authjwt.utils.LogicVerifyPersonTypeLogin;
 import java.util.UUID;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -38,6 +39,8 @@ public class AuthenticationController {
     private final UserService userService;
 
     private final PersonPhysicalService personPhysicalService;
+
+    private final LogicVerifyPersonTypeLogin logicVerifyPersonTypeLogin;
 
     @PostMapping(value = "/persongoldfather/{id}")
     public ResponseEntity<PersonPhysicalResponse> registerPersonPhisicalGoldFatherPersonPhysical(

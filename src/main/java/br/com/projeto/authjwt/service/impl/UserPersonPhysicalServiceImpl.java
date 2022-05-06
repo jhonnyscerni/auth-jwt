@@ -14,6 +14,7 @@ import br.com.projeto.authjwt.service.PersonPhysicalService;
 import br.com.projeto.authjwt.service.RoleService;
 import br.com.projeto.authjwt.service.UserPersonPhysicalService;
 import br.com.projeto.authjwt.service.UserService;
+import br.com.projeto.authjwt.utils.LogicVerifyPersonTypeLogin;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -33,9 +34,9 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
     private final UserPersonPhysicalMapper userPersonPhysicalMapper;
     private final PasswordEncoder passwordEncoder;
 
-    private final PersonPhysicalService personPhysicalService;
-
     private final UserService userService;
+
+    private final LogicVerifyPersonTypeLogin logicVerifyPersonTypeLogin;
 
 
     @Override
@@ -45,6 +46,8 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
 
         userService.existsByUserName(new User(), userPersonPhysicalRequest.getUsername());
         //existsByUserEmail(new User(), userRequest.getEmail());
+
+        logicVerifyPersonTypeLogin.setPersonTypePersonPhysicalRequest(userPersonPhysicalRequest);
 
         userPersonPhysicalRequest.setPassword(passwordEncoder.encode(userPersonPhysicalRequest.getPassword()));
         //userRequest.setUserType(UserType.USER.name());

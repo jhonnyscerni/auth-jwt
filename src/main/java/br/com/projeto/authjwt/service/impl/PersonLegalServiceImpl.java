@@ -10,6 +10,7 @@ import br.com.projeto.authjwt.models.exceptions.EntityNotFoundException;
 import br.com.projeto.authjwt.repositories.PersonLegalRepository;
 import br.com.projeto.authjwt.repositories.UserRepository;
 import br.com.projeto.authjwt.service.PersonLegalService;
+import br.com.projeto.authjwt.utils.LogicVerifyPersonTypeLogin;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,6 +31,8 @@ public class PersonLegalServiceImpl implements PersonLegalService {
 
     private final UserRepository userRepository;
 
+    private final LogicVerifyPersonTypeLogin logicVerifyPersonTypeLogin;
+
     private static final String MSG_OBJECT_IN_USE
         = "Person Legal %d cannot be removed as it is in use";
 
@@ -44,6 +47,7 @@ public class PersonLegalServiceImpl implements PersonLegalService {
     @Override
     public PersonLegalResponse create(PersonLegalRequest personLegalRequest) {
         log.debug("POST PersonLegalRequest personLegalRequest {} ", personLegalRequest.toString());
+
         PersonLegal personLegal = personLegalMapper.create(personLegalRequest);
         personLegalRepository.save(personLegal);
         log.debug("POST create personLegal saved {} ", personLegal.getId());
