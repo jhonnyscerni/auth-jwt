@@ -5,7 +5,6 @@ import br.com.projeto.authjwt.api.request.PersonPhysicalRequest;
 import br.com.projeto.authjwt.api.response.PersonPhysicalResponse;
 import br.com.projeto.authjwt.models.PersonPhysical;
 import br.com.projeto.authjwt.models.User;
-import br.com.projeto.authjwt.models.enums.PersonType;
 import br.com.projeto.authjwt.models.exceptions.EntityInUseException;
 import br.com.projeto.authjwt.models.exceptions.EntityNotFoundException;
 import br.com.projeto.authjwt.repositories.PersonPhysicalRepository;
@@ -13,7 +12,6 @@ import br.com.projeto.authjwt.repositories.UserRepository;
 import br.com.projeto.authjwt.service.PersonPhysicalService;
 import br.com.projeto.authjwt.utils.LogicVerifyPersonTypeLogin;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -68,7 +66,7 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
     public PersonPhysicalResponse create(PersonPhysicalRequest personPhysicalRequest) {
         log.debug("POST PersonPhysicalRequest personPhysicalRequest {} ", personPhysicalRequest.toString());
 
-        logicVerifyPersonTypeLogin.setPersonTypePersonPhysicalRequest(personPhysicalRequest);
+        logicVerifyPersonTypeLogin.setUserIdLoggedPerson(personPhysicalRequest);
 
         PersonPhysical personPhysical = personPhysicalMapper.create(personPhysicalRequest);
 

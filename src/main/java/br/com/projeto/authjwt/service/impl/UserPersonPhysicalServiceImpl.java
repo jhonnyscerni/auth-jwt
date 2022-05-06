@@ -10,7 +10,6 @@ import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.models.enums.PersonType;
 import br.com.projeto.authjwt.models.enums.RoleType;
 import br.com.projeto.authjwt.repositories.UserRepository;
-import br.com.projeto.authjwt.service.PersonPhysicalService;
 import br.com.projeto.authjwt.service.RoleService;
 import br.com.projeto.authjwt.service.UserPersonPhysicalService;
 import br.com.projeto.authjwt.service.UserService;
@@ -47,7 +46,7 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
         userService.existsByUserName(new User(), userPersonPhysicalRequest.getUsername());
         //existsByUserEmail(new User(), userRequest.getEmail());
 
-        logicVerifyPersonTypeLogin.setPersonTypePersonPhysicalRequest(userPersonPhysicalRequest);
+        logicVerifyPersonTypeLogin.setUserIdLoggedPerson(userPersonPhysicalRequest);
 
         userPersonPhysicalRequest.setPassword(passwordEncoder.encode(userPersonPhysicalRequest.getPassword()));
         //userRequest.setUserType(UserType.USER.name());

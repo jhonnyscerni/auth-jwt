@@ -47,7 +47,7 @@ public class PersonLegalServiceImpl implements PersonLegalService {
     @Override
     public PersonLegalResponse create(PersonLegalRequest personLegalRequest) {
         log.debug("POST PersonLegalRequest personLegalRequest {} ", personLegalRequest.toString());
-        logicVerifyPersonTypeLogin.setPersonTypePersonPhysicalRequest(personLegalRequest);
+        logicVerifyPersonTypeLogin.setUserIdLoggedPerson(personLegalRequest);
 
         PersonLegal personLegal = personLegalMapper.create(personLegalRequest);
         personLegalRepository.save(personLegal);

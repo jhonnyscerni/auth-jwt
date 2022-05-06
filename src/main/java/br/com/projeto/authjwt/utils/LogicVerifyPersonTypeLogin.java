@@ -21,44 +21,22 @@ public class LogicVerifyPersonTypeLogin {
     private final AuthenticationFacade authenticationFacade;
     private final UserRepository userRepository;
 
-    public void setPersonTypePersonPhysicalRequest(PersonPhysicalRequest personPhysicalRequest) {
+    public void setUserIdLoggedPerson(PersonPhysicalRequest personPhysicalRequest) {
 
         User user = getLoggedUser();
         personPhysicalRequest.setUserId(user.getId());
     }
 
-    public void setPersonTypePersonPhysicalRequest(PersonLegalRequest personPhysicalRequest) {
+    public void setUserIdLoggedPerson(PersonLegalRequest personPhysicalRequest) {
 
         User user = getLoggedUser();
         personPhysicalRequest.setUserId(user.getId());
     }
 
-    public void setPersonTypePersonPhysicalRequest(UserPersonPhysicalRequest personPhysicalRequest) {
+    public void setUserIdLoggedPerson(UserPersonPhysicalRequest personPhysicalRequest) {
 
         User user = getLoggedUser();
         personPhysicalRequest.getPerson().setUserId(user.getId());
-    }
-
-    public UUID getUUIPersonPhysical() {
-
-        UUID personPhysicalId = null;
-        User user = getLoggedUser();
-
-        if (user.getPerson() instanceof PersonPhysical) {
-            personPhysicalId = user.getPerson().getId();
-        }
-        return personPhysicalId;
-    }
-
-    public UUID getUUIPersonLegal() {
-
-        UUID personLegalId = null;
-        User user = getLoggedUser();
-
-        if (user.getPerson() instanceof PersonLegal) {
-            personLegalId = user.getPerson().getId();
-        }
-        return personLegalId;
     }
 
     public User getLoggedUser() {
