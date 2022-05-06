@@ -6,6 +6,7 @@ import br.com.projeto.authjwt.api.response.PersonPhysicalResponse;
 import br.com.projeto.authjwt.models.PersonLegal;
 import br.com.projeto.authjwt.models.PersonPhysical;
 import br.com.projeto.authjwt.models.User;
+import br.com.projeto.authjwt.models.enums.PersonType;
 import br.com.projeto.authjwt.models.exceptions.EntityInUseException;
 import br.com.projeto.authjwt.models.exceptions.EntityNotFoundException;
 import br.com.projeto.authjwt.repositories.PersonPhysicalRepository;
@@ -58,20 +59,20 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
     }
 
     @Override
-    public PersonPhysicalResponse create(UUID id, PersonPhysicalRequest personPhysicalRequest, String tipoPerson) {
+    public PersonPhysicalResponse create(UUID id, PersonPhysicalRequest personPhysicalRequest, PersonType personType) {
         log.debug("POST UUID roleRequest {} ", id.toString());
         log.debug("POST PersonPhysicalRequest personPhysicalRequest {} ", personPhysicalRequest.toString());
-        log.debug("POST String tipoPerson {} ", tipoPerson);
+        log.debug("POST String tipoPerson {} ", personType.name());
         PersonPhysical personPhysical = new PersonPhysical();
-        if (Objects.equals(tipoPerson, "LEGAL")) {
-            log.debug("String tipoPerson {} ", tipoPerson);
+        if (Objects.equals(personType, PersonType.LEGAL)) {
+            log.debug("String tipoPerson {} ", personType.name());
             personPhysicalRequest.setPersonLegalId(id);
             personPhysical = personPhysicalMapper.create(personPhysicalRequest);
             personPhysicalRepository.save(personPhysical);
             log.debug("POST create PersonPhysical saved set Gold Father in Company {} ", personPhysical.getName());
             log.info("PersonPhysical create successfully PersonPhysical {} ", personPhysical.getId());
         } else {
-            log.debug("String tipoPerson id {} ", tipoPerson);
+            log.debug("String tipoPerson id {} ", personType.name());
             personPhysicalRequest.setPersonPhysicalId(id);
             personPhysical = personPhysicalMapper.create(personPhysicalRequest);
             personPhysicalRepository.save(personPhysical);

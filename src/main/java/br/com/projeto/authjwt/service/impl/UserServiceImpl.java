@@ -1,20 +1,28 @@
 package br.com.projeto.authjwt.service.impl;
 
 import br.com.projeto.authjwt.api.mapper.UserMapper;
-import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
+import br.com.projeto.authjwt.api.mapper.UserPersonLegalMapper;
+import br.com.projeto.authjwt.api.mapper.UserPersonPhysicalMapper;
+import br.com.projeto.authjwt.api.request.UserAddPersonRequest;
 import br.com.projeto.authjwt.api.request.UserRequest;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.filter.UserFilter;
+import br.com.projeto.authjwt.models.PersonLegal;
+import br.com.projeto.authjwt.models.PersonPhysical;
 import br.com.projeto.authjwt.models.Role;
 import br.com.projeto.authjwt.models.User;
+import br.com.projeto.authjwt.models.enums.PersonType;
 import br.com.projeto.authjwt.models.exceptions.ConflictException;
 import br.com.projeto.authjwt.models.exceptions.EntityInUseException;
 import br.com.projeto.authjwt.models.exceptions.EntityNotFoundException;
 import br.com.projeto.authjwt.repositories.UserRepository;
 import br.com.projeto.authjwt.repositories.specs.UserSpecification;
+import br.com.projeto.authjwt.service.PersonLegalService;
+import br.com.projeto.authjwt.service.PersonPhysicalService;
 import br.com.projeto.authjwt.service.RoleService;
 import br.com.projeto.authjwt.service.UserService;
 import br.com.projeto.authjwt.service.email.EmailService;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -35,7 +43,15 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
 
+    private final PersonLegalService personLegalService;
+
+    private final PersonPhysicalService personPhysicalService;
+
     private final UserMapper userMapper;
+
+    private final UserPersonLegalMapper userPersonLegalMapper;
+
+    private final UserPersonPhysicalMapper userPersonPhysicalMapper;
 
     private final EmailService emailService;
 
@@ -144,6 +160,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserResponse createPersonUser(UUID personId, UserAddPersonRequest userAddPersonRequest, PersonType personType) {
+        log.debug("POST UUID personId received {} ", personId.toString());
+        log.debug("POST UserPersonPhysicalRequest userPersonPhysicalRequest received {} ", userAddPersonRequest.toString());
+        existsByUserName(new User(), userAddPersonRequest.getUsername());
+        userAddPersonRequest.setPassword(passwordEncoder.encode(userAddPersonRequest.getPassword()));
+        if (Objects.equals(personType, PersonType.LEGAL)) {
+            log.debug("String tipoPerson {} ", personType.name());
+            PersonLegal personLegal = personLegalService.buscarOuFalhar(personId);
+
+            User user = userPersonLegalMapper.add(userAddPersonRequest);
+            user.setPerson(personLegal);
+            userRepository.save(user);
+            log.debug("POST create userId saved {} ", user.getId());
+            log.info("User create successfully userId {} ", user.getId());
+            return userPersonLegalMapper.toResponse(user);
+        }
+
+        PersonPhysical personPhysical = personPhysicalService.buscarOuFalhar(personId);
+
+        User user = userPersonPhysicalMapper.add(userAddPersonRequest);
+        user.setPerson(personPhysical);
+        userRepository.save(user);
+        log.debug("POST create userId saved {} ", user.getId());
+        log.info("User create successfully userId {} ", user.getId());
+        return userPersonPhysicalMapper.toResponse(user);
+
+    }
+
+    @Override
     public void passwordNotEquals(User user, UserRequest userRequest) {
         log.debug("Verify password {} ", user.getId());
         if (!user.getPassword().equals(userRequest.getPassword())) {
@@ -165,4 +210,15 @@ public class UserServiceImpl implements UserService {
     private String encodePassword(String password) {
         return passwordEncoder.encode(password);
     }
+
+    // @Override
+    // public void existsByUserEmail(User cliente, String email) {
+    //     Optional<User> clienteExistente = userRepository.findByEmail(email);
+//
+//        if (clienteExistente.isPresent() && !clienteExistente.get().equals(cliente)) {
+//            log.warn("Email {} is Already Taken ", clienteExistente.get().getEmail());
+//            throw new ConflictException(
+//                String.format("\"Error: Email is Already Taken! %s ", clienteExistente.get().getEmail()));
+//        }
+//    }
 }

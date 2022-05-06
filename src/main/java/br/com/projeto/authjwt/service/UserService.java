@@ -1,9 +1,11 @@
 package br.com.projeto.authjwt.service;
 
+import br.com.projeto.authjwt.api.request.UserAddPersonRequest;
 import br.com.projeto.authjwt.api.request.UserRequest;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.filter.UserFilter;
 import br.com.projeto.authjwt.models.User;
+import br.com.projeto.authjwt.models.enums.PersonType;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,4 +36,6 @@ public interface UserService {
     void existsByUserName(User cliente, String username);
 
     void passwordNotEquals(User user, UserRequest userPersonPhysicalRequest);
+
+    UserResponse createPersonUser(UUID personId, UserAddPersonRequest userAddPersonRequest, PersonType personType);
 }

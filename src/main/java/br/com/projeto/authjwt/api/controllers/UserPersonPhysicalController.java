@@ -1,8 +1,8 @@
 package br.com.projeto.authjwt.api.controllers;
 
-import br.com.projeto.authjwt.api.request.UserAddPersonPhysicalRequest;
+import br.com.projeto.authjwt.api.request.UserAddPersonRequest;
 import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
-import br.com.projeto.authjwt.api.response.UserPersonPhysicalResponse;
+import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.service.UserPersonPhysicalService;
 import java.util.UUID;
 import javax.validation.Valid;
@@ -25,24 +25,24 @@ public class UserPersonPhysicalController {
     private final UserPersonPhysicalService userPersonPhysicalService;
 
     @GetMapping("/{personPhysicalId}")
-    public ResponseEntity<UserPersonPhysicalResponse> findByPersonId(@PathVariable UUID personPhysicalId) {
+    public ResponseEntity<UserResponse> findByPersonId(@PathVariable UUID personPhysicalId) {
         return ResponseEntity.ok().body(userPersonPhysicalService.findByPersonPhysicalIdUserUserPersonPhysicalResponse(personPhysicalId));
     }
 
     @PostMapping("/{personPhysicalId}")
-    public ResponseEntity<UserPersonPhysicalResponse> createPersonUser(@PathVariable UUID personPhysicalId,
-        @RequestBody @Valid UserAddPersonPhysicalRequest userAddPersonPhysicalRequest) {
+    public ResponseEntity<UserResponse> createPersonUser(@PathVariable UUID personPhysicalId,
+        @RequestBody @Valid UserAddPersonRequest userAddPersonRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(userPersonPhysicalService.createPersonUser(personPhysicalId, userAddPersonPhysicalRequest));
+            .body(userPersonPhysicalService.createPersonUser(personPhysicalId, userAddPersonRequest));
     }
 
     @PostMapping
-    public ResponseEntity<UserPersonPhysicalResponse> create(@RequestBody @Valid UserPersonPhysicalRequest userPersonPhysicalRequest) {
+    public ResponseEntity<UserResponse> create(@RequestBody @Valid UserPersonPhysicalRequest userPersonPhysicalRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userPersonPhysicalService.create(userPersonPhysicalRequest));
     }
 
     @PutMapping("/{userPersonPhysicalId}")
-    public ResponseEntity<UserPersonPhysicalResponse> update(@PathVariable UUID userPersonPhysicalId,
+    public ResponseEntity<UserResponse> update(@PathVariable UUID userPersonPhysicalId,
         @RequestBody @Valid UserPersonPhysicalRequest userPersonPhysicalRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(userPersonPhysicalService.update(userPersonPhysicalId, userPersonPhysicalRequest));
     }

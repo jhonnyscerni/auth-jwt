@@ -5,6 +5,7 @@ import br.com.projeto.authjwt.api.request.PersonPhysicalRequest;
 import br.com.projeto.authjwt.api.response.JwtResponse;
 import br.com.projeto.authjwt.api.response.PersonPhysicalResponse;
 import br.com.projeto.authjwt.api.response.UserResponse;
+import br.com.projeto.authjwt.models.enums.PersonType;
 import br.com.projeto.authjwt.security.jwt.JwtProvider;
 import br.com.projeto.authjwt.service.PersonPhysicalService;
 import br.com.projeto.authjwt.service.UserService;
@@ -40,8 +41,8 @@ public class AuthenticationController {
 
     @PostMapping(value = "/persongoldfather/{id}")
     public ResponseEntity<PersonPhysicalResponse> registerPersonPhisicalGoldFatherPersonPhysical(
-        @RequestParam(required = false) String tipoPerson, @PathVariable UUID id, @RequestBody PersonPhysicalRequest personPhysicalRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(personPhysicalService.create(id, personPhysicalRequest, tipoPerson));
+        @RequestParam(required = false) PersonType personType, @PathVariable UUID id, @RequestBody PersonPhysicalRequest personPhysicalRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(personPhysicalService.create(id, personPhysicalRequest, personType));
     }
 
     @PostMapping("/login")

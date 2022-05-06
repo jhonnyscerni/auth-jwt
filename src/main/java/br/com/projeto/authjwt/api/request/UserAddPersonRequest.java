@@ -6,7 +6,7 @@ import java.util.Set;
 import lombok.Data;
 
 @Data
-public class UserAddPersonPhysicalRequest {
+public class UserAddPersonRequest {
 
     private String username;
 

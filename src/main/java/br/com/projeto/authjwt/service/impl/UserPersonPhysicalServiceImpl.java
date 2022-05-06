@@ -2,14 +2,13 @@ package br.com.projeto.authjwt.service.impl;
 
 
 import br.com.projeto.authjwt.api.mapper.UserPersonPhysicalMapper;
-import br.com.projeto.authjwt.api.request.UserAddPersonPhysicalRequest;
+import br.com.projeto.authjwt.api.request.UserAddPersonRequest;
 import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
-import br.com.projeto.authjwt.api.response.UserPersonPhysicalResponse;
-import br.com.projeto.authjwt.models.PersonPhysical;
+import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.models.Role;
 import br.com.projeto.authjwt.models.User;
+import br.com.projeto.authjwt.models.enums.PersonType;
 import br.com.projeto.authjwt.models.enums.RoleType;
-import br.com.projeto.authjwt.models.exceptions.ConflictException;
 import br.com.projeto.authjwt.repositories.UserRepository;
 import br.com.projeto.authjwt.service.PersonPhysicalService;
 import br.com.projeto.authjwt.service.RoleService;
@@ -41,10 +40,10 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
 
     @Override
     @Transactional
-    public UserPersonPhysicalResponse create(UserPersonPhysicalRequest userPersonPhysicalRequest) {
+    public UserResponse create(UserPersonPhysicalRequest userPersonPhysicalRequest) {
         log.debug("POST registerUser userDto received {} ", userPersonPhysicalRequest.toString());
 
-        existsByUserName(new User(), userPersonPhysicalRequest.getUsername());
+        userService.existsByUserName(new User(), userPersonPhysicalRequest.getUsername());
         //existsByUserEmail(new User(), userRequest.getEmail());
 
         userPersonPhysicalRequest.setPassword(passwordEncoder.encode(userPersonPhysicalRequest.getPassword()));
@@ -67,12 +66,12 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
 
     @Override
     @Transactional
-    public UserPersonPhysicalResponse update(UUID id, UserPersonPhysicalRequest userPersonPhysicalRequest) {
+    public UserResponse update(UUID id, UserPersonPhysicalRequest userPersonPhysicalRequest) {
         log.debug("PUT UUID id received {} ", id.toString());
         log.debug("PUT UserPersonPhysicalRequest userPersonPhysicalRequest received {} ", userPersonPhysicalRequest.toString());
         User user = userService.buscarOuFalhar(id);
 
-        existsByUserName(user, userPersonPhysicalRequest.getUsername());
+        userService.existsByUserName(user, userPersonPhysicalRequest.getUsername());
         //existsByUserEmail(user, userRequest.getEmail());
         passwordNotEquals(user, userPersonPhysicalRequest);
 
@@ -86,7 +85,7 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
 
     @Override
     @Transactional
-    public UserPersonPhysicalResponse findByPersonPhysicalIdUserUserPersonPhysicalResponse(UUID personId) {
+    public UserResponse findByPersonPhysicalIdUserUserPersonPhysicalResponse(UUID personId) {
         Optional<User> userOptional = userRepository.findByPersonIdUserDto(personId);
 
         if (userOptional.isPresent()) {
@@ -98,22 +97,8 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
 
     @Override
     @Transactional
-    public UserPersonPhysicalResponse createPersonUser(UUID personId, UserAddPersonPhysicalRequest userPersonPhysicalRequest) {
-        log.debug("POST UUID personId received {} ", personId.toString());
-        log.debug("POST UserPersonPhysicalRequest userPersonPhysicalRequest received {} ", userPersonPhysicalRequest.toString());
-
-
-        PersonPhysical personPhysical = personPhysicalService.buscarOuFalhar(personId);
-        existsByUserName(new User(), userPersonPhysicalRequest.getUsername());
-        //existsByUserEmail(new User(), userRequest.getEmail());
-        userPersonPhysicalRequest.setPassword(passwordEncoder.encode(userPersonPhysicalRequest.getPassword()));
-
-        User user = userPersonPhysicalMapper.add(userPersonPhysicalRequest);
-        user.setPerson(personPhysical);
-        userRepository.save(user);
-        log.debug("POST create userId saved {} ", user.getId());
-        log.info("User create successfully userId {} ", user.getId());
-        return userPersonPhysicalMapper.toResponse(user);
+    public UserResponse createPersonUser(UUID personId, UserAddPersonRequest userAddPersonRequest) {
+        return userService.createPersonUser(personId, userAddPersonRequest, PersonType.PHYSICAL);
     }
 
     @Override
@@ -124,28 +109,5 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
             userPersonPhysicalRequest.setPassword(passwordEncoder.encode(userPersonPhysicalRequest.getPassword()));
         }
     }
-
-    @Override
-    @Transactional
-    public void existsByUserName(User cliente, String username) {
-        Optional<User> clienteExistente = userRepository.findByUsername(username);
-
-        if (clienteExistente.isPresent() && !clienteExistente.get().equals(cliente)) {
-            log.warn("Username {} is Already Taken ", clienteExistente.get().getUsername());
-            throw new ConflictException(
-                String.format("Error: Username is Already Taken! %s ", clienteExistente.get().getUsername()));
-        }
-    }
-
-    // @Override
-    // public void existsByUserEmail(User cliente, String email) {
-    //     Optional<User> clienteExistente = userRepository.findByEmail(email);
-//
-//        if (clienteExistente.isPresent() && !clienteExistente.get().equals(cliente)) {
-//            log.warn("Email {} is Already Taken ", clienteExistente.get().getEmail());
-//            throw new ConflictException(
-//                String.format("\"Error: Email is Already Taken! %s ", clienteExistente.get().getEmail()));
-//        }
-//    }
 
 }
