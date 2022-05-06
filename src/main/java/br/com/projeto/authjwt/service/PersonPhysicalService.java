@@ -11,7 +11,7 @@ public interface PersonPhysicalService {
 
     PersonPhysical buscarOuFalhar(UUID personphysicalId);
 
-    PersonPhysicalResponse create(UUID personphysicalId, PersonPhysicalRequest personPhysicalRequest,PersonType personType);
+    PersonPhysicalResponse create(UUID personphysicalId, PersonPhysicalRequest personPhysicalRequest);
 
     PersonPhysicalResponse create(PersonPhysicalRequest personPhysicalRequest);
 
@@ -22,4 +22,6 @@ public interface PersonPhysicalService {
     void delete(UUID id);
 
     PersonPhysicalResponse findByIdResponse(UUID personphisicalId);
+
+    List<PersonPhysicalResponse> findAllMy(UUID userId);
 }

@@ -2,8 +2,8 @@ package br.com.projeto.authjwt.api.controllers;
 
 import br.com.projeto.authjwt.api.request.PersonPhysicalRequest;
 import br.com.projeto.authjwt.api.response.PersonPhysicalResponse;
-import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.service.PersonPhysicalService;
+import br.com.projeto.authjwt.utils.LogicVerifyPersonTypeLogin;
 import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
@@ -26,9 +26,18 @@ public class PersonPhysicalController {
 
     private final PersonPhysicalService personPhysicalService;
 
+    private final LogicVerifyPersonTypeLogin logicVerifyPersonTypeLogin;
+
     @GetMapping
     public ResponseEntity<List<PersonPhysicalResponse>> list() {
         return ResponseEntity.ok().body(personPhysicalService.findAll());
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<List<PersonPhysicalResponse>> listMy() {
+        return ResponseEntity.ok()
+            .body(personPhysicalService.findAllMy(
+                logicVerifyPersonTypeLogin.getLoggedUser().getId()));
     }
 
     @PostMapping

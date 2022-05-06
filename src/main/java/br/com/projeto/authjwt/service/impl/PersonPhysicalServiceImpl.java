@@ -50,26 +50,15 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
     }
 
     @Override
-    public PersonPhysicalResponse create(UUID id, PersonPhysicalRequest personPhysicalRequest, PersonType personType) {
+    public PersonPhysicalResponse create(UUID id, PersonPhysicalRequest personPhysicalRequest) {
         log.debug("POST UUID roleRequest {} ", id.toString());
         log.debug("POST PersonPhysicalRequest personPhysicalRequest {} ", personPhysicalRequest.toString());
-        log.debug("POST String tipoPerson {} ", personType.name());
-        PersonPhysical personPhysical = new PersonPhysical();
-        if (Objects.equals(personType, PersonType.LEGAL)) {
-            log.debug("String tipoPerson {} ", personType.name());
-            personPhysicalRequest.setPersonLegalId(id);
-            personPhysical = personPhysicalMapper.create(personPhysicalRequest);
-            personPhysicalRepository.save(personPhysical);
-            log.debug("POST create PersonPhysical saved set Gold Father in Company {} ", personPhysical.getName());
-            log.info("PersonPhysical create successfully PersonPhysical {} ", personPhysical.getId());
-        } else {
-            log.debug("String tipoPerson id {} ", personType.name());
-            personPhysicalRequest.setPersonPhysicalId(id);
-            personPhysical = personPhysicalMapper.create(personPhysicalRequest);
-            personPhysicalRepository.save(personPhysical);
-            log.debug("POST create PersonPhysical saved set Gold Father in set PersonPhysical {} ", personPhysical.getName());
-            log.info("PersonPhysical create successfully PersonPhysical {} ", personPhysical.getId());
-        }
+
+        personPhysicalRequest.setUserId(id);
+        PersonPhysical personPhysical = personPhysicalMapper.create(personPhysicalRequest);
+        personPhysicalRepository.save(personPhysical);
+        log.debug("POST create PersonPhysical saved set Gold Father in Company {} ", personPhysical.getName());
+        log.info("PersonPhysical create successfully PersonPhysical {} ", personPhysical.getId());
 
         return personPhysicalMapper.toResponse(personPhysical);
     }
@@ -137,6 +126,13 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
         log.debug("GET findByIdResponse UUID personphisicalId {} ", personphisicalId);
         PersonPhysical personPhysical = buscarOuFalhar(personphisicalId);
         return personPhysicalMapper.toResponse(personPhysical);
+    }
+
+    @Override
+    public List<PersonPhysicalResponse> findAllMy(UUID userId) {
+        log.debug("GET List Physical My ");
+        return personPhysicalRepository.findAllMy(userId).stream().map(personPhysicalMapper::toResponse)
+            .collect(Collectors.toList());
     }
 
 }

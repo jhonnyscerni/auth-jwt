@@ -39,8 +39,6 @@ public class PersonPhysicalResponse {
 
     private String observation;
 
-    private UUID personPhysicalId;
-
-    private UUID personLedalId;
+    private UUID userId;
 
 }

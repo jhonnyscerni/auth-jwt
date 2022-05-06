@@ -40,8 +40,6 @@ public class PersonPhysicalRequest {
 
     private String observation;
 
-    private UUID personPhysicalId;
-
-    private UUID personLegalId;
+    private UUID userId;
 
 }

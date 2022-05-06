@@ -47,6 +47,7 @@ public class PersonLegalServiceImpl implements PersonLegalService {
     @Override
     public PersonLegalResponse create(PersonLegalRequest personLegalRequest) {
         log.debug("POST PersonLegalRequest personLegalRequest {} ", personLegalRequest.toString());
+        logicVerifyPersonTypeLogin.setPersonTypePersonPhysicalRequest(personLegalRequest);
 
         PersonLegal personLegal = personLegalMapper.create(personLegalRequest);
         personLegalRepository.save(personLegal);
@@ -99,6 +100,13 @@ public class PersonLegalServiceImpl implements PersonLegalService {
     public PersonLegalResponse findByIdResponse(UUID empresaId) {
         PersonLegal personLegal = buscarOuFalhar(empresaId);
         return personLegalMapper.toResponse(personLegal);
+    }
+
+    @Override
+    public List<PersonLegalResponse> findAllMy(UUID userId) {
+        log.debug("GET List Physical My ");
+        return personLegalRepository.findAllMy(userId).stream().map(personLegalMapper::toResponse)
+            .collect(Collectors.toList());
     }
 
 }

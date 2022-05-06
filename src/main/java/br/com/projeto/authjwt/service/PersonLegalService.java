@@ -19,4 +19,6 @@ public interface PersonLegalService {
     void delete(UUID personLegalId);
 
     PersonLegalResponse findByIdResponse(UUID personLegalId);
+
+    List<PersonLegalResponse> findAllMy(UUID userId);
 }

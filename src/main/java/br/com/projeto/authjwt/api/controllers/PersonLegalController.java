@@ -2,7 +2,9 @@ package br.com.projeto.authjwt.api.controllers;
 
 import br.com.projeto.authjwt.api.request.PersonLegalRequest;
 import br.com.projeto.authjwt.api.response.PersonLegalResponse;
+import br.com.projeto.authjwt.api.response.PersonPhysicalResponse;
 import br.com.projeto.authjwt.service.PersonLegalService;
+import br.com.projeto.authjwt.utils.LogicVerifyPersonTypeLogin;
 import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
@@ -25,9 +27,18 @@ public class PersonLegalController {
 
     private final PersonLegalService personLegalService;
 
+    private final LogicVerifyPersonTypeLogin logicVerifyPersonTypeLogin;
+
     @GetMapping
     public ResponseEntity<List<PersonLegalResponse>> list() {
         return ResponseEntity.ok().body(personLegalService.findAll());
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<List<PersonLegalResponse>> listMy() {
+        return ResponseEntity.ok()
+            .body(personLegalService.findAllMy(
+                logicVerifyPersonTypeLogin.getLoggedUser().getId()));
     }
 
     @GetMapping("/{personLegalId}")

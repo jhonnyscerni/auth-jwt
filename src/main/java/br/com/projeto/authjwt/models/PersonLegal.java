@@ -1,5 +1,6 @@
 package br.com.projeto.authjwt.models;
 
+import java.util.UUID;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -18,5 +19,7 @@ public class PersonLegal extends Person {
 
     @Column(nullable = false)
     private String cnpj;
+
+    private UUID userId;
 
 }

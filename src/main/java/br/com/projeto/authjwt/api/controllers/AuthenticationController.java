@@ -42,9 +42,8 @@ public class AuthenticationController {
 
 
     @PostMapping(value = "/persongoldfather/{id}")
-    public ResponseEntity<PersonPhysicalResponse> registerPersonPhisicalGoldFatherPersonPhysical(
-        @RequestParam(required = false) PersonType personType, @PathVariable UUID id, @RequestBody PersonPhysicalRequest personPhysicalRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(personPhysicalService.create(id, personPhysicalRequest, personType));
+    public ResponseEntity<PersonPhysicalResponse> registerPersonPhisicalGoldFatherPersonPhysical(@PathVariable UUID id, @RequestBody PersonPhysicalRequest personPhysicalRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(personPhysicalService.create(id, personPhysicalRequest));
     }
 
     @PostMapping("/login")

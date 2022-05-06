@@ -25,4 +25,6 @@ public class PersonLegalRequest {
 
     private String cnpj;
 
+    private UUID userId;
+
 }

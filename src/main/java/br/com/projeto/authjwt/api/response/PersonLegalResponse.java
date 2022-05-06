@@ -23,4 +23,6 @@ public class PersonLegalResponse {
 
     private String cnpj;
 
+    private UUID userId;
+
 }

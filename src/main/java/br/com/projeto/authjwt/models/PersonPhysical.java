@@ -33,9 +33,7 @@ public class PersonPhysical extends Person {
     @Column
     private String sectionVote;
 
-    private UUID godfatherId;
-
-    private UUID companyId;
+    private UUID userId;
 
     @Column
     private String observation;
