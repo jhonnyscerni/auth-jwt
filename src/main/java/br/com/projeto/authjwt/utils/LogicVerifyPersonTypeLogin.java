@@ -2,6 +2,7 @@ package br.com.projeto.authjwt.utils;
 
 import br.com.projeto.authjwt.api.request.PersonLegalRequest;
 import br.com.projeto.authjwt.api.request.PersonPhysicalRequest;
+import br.com.projeto.authjwt.api.request.UserPersonLegalRequest;
 import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
 import br.com.projeto.authjwt.models.PersonLegal;
 import br.com.projeto.authjwt.models.PersonPhysical;
@@ -31,6 +32,12 @@ public class LogicVerifyPersonTypeLogin {
 
         User user = getLoggedUser();
         personPhysicalRequest.setUserId(user.getId());
+    }
+
+    public void setUserIdLoggedPerson(UserPersonLegalRequest personPhysicalRequest) {
+
+        User user = getLoggedUser();
+        personPhysicalRequest.getPerson().setUserId(user.getId());
     }
 
     public void setUserIdLoggedPerson(UserPersonPhysicalRequest personPhysicalRequest) {

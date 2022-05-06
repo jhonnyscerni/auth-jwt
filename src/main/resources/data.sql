@@ -1,9 +1,9 @@
 
 insert into tb_person_physical (id, address_complement, address_district, address_nm_city, address_number, address_state,
                                 address_street, address_zip_code, email, name, phone_number, vote, birth_date, cpf, gender,
-                                observation, section_vote, surname, zone_voting, company_id, godfather_id)
+                                observation, section_vote, surname, zone_voting, user_id)
 values ('257736fc-2fa4-4650-ad06-cd98964e346b', 'complement','district', 'nm_city', 'number', 'state', 'street', '66615005', 'jhonnyscerni@gmail.com', 'Jhonny Scerni', '9999999', 'A_CONQUISTAR',
-        null, '98473891287', 'MASCULINO', '', 'secao voto', 'scerni', 'zona votação', null, null);
+        null, '98473891287', 'MASCULINO', '', 'secao voto', 'scerni', 'zona votação', null);
 
 
 insert into tb_users (id, username, password, user_status, person_id)
