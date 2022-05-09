@@ -1,6 +1,8 @@
 package br.com.projeto.authjwt.models;
 
+import java.util.List;
 import java.util.UUID;
+import javax.persistence.OneToMany;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -21,5 +23,8 @@ public class PersonLegal extends Person {
     private String cnpj;
 
     private UUID userId;
+
+    @OneToMany(mappedBy = "person")
+    private List<User> users;
 
 }

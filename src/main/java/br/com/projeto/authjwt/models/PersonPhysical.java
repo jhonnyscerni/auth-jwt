@@ -1,5 +1,6 @@
 package br.com.projeto.authjwt.models;
 
+import java.util.List;
 import java.util.UUID;
 import lombok.*;
 
@@ -37,4 +38,7 @@ public class PersonPhysical extends Person {
 
     @Column
     private String observation;
+
+    @OneToMany(mappedBy = "person")
+    private List<User> users;
 }

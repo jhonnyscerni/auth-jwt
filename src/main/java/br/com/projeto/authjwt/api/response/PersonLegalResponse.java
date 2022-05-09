@@ -1,6 +1,7 @@
 package br.com.projeto.authjwt.api.response;
 
 import br.com.projeto.authjwt.models.enums.VoteEnum;
+import java.util.List;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,5 +25,7 @@ public class PersonLegalResponse {
     private String cnpj;
 
     private UUID userId;
+
+    private List<UserPersonResponse> users;
 
 }

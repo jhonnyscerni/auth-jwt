@@ -15,6 +15,7 @@ public interface PersonLegalMapper {
     //@Mapping(target = "id", ignore = true)
     void update(@MappingTarget PersonLegal entity, PersonLegalRequest model);
 
+    @Mapping(target = "users", source = "users")
     PersonLegalResponse toResponse(PersonLegal entity);
 
     PersonLegal toEntity(PersonLegalResponse model);

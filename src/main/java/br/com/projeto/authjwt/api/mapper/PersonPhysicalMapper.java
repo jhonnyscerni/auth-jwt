@@ -16,6 +16,8 @@ public interface PersonPhysicalMapper {
     //@Mapping(target = "id", ignore = true)
     void update(@MappingTarget PersonPhysical entity, PersonPhysicalRequest model);
 
+
+    @Mapping(target = "users", source = "users")
     PersonPhysicalResponse toResponse(PersonPhysical entity);
 
     PersonPhysical toEntity(PersonPhysicalResponse model);
