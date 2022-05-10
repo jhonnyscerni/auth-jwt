@@ -22,8 +22,6 @@ public class PersonLegal extends Person {
     @Column(nullable = false)
     private String cnpj;
 
-    private UUID userId;
-
     @OneToMany(mappedBy = "person")
     private List<User> users;
 

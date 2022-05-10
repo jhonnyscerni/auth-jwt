@@ -31,6 +31,9 @@ public class UserSpecification implements Specification<User> {
             .ifPresent(p -> predicates.add(criteriaBuilder.like(root.get("username"), "%" + allocationFilter.getUsername() + "%")));
         Optional.ofNullable(allocationFilter.getEmail())
             .ifPresent(p -> predicates.add(criteriaBuilder.like(person.get("email"), "%" + allocationFilter.getEmail() + "%")));
+
+        Optional.ofNullable(allocationFilter.getUserId())
+            .ifPresent(p -> predicates.add(criteriaBuilder.equal(person.get("userId"), allocationFilter.getUserId())));
 //        Optional.ofNullable(allocationFilter.getRg())
 //        Optional.ofNullable(allocationFilter.getRg())
 //            .ifPresent(p -> predicates.add(criteriaBuilder.equal(root.get("rg"), allocationFilter.getRg())));

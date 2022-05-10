@@ -26,6 +26,8 @@ public interface UserService {
 
     Page<UserResponse> search(UserFilter filter, Pageable pageable);
 
+    Page<UserResponse> searchMy(UserFilter filter, Pageable pageable);
+
     void delete(UUID id);
 
     @Transactional

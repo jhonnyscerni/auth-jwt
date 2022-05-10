@@ -33,6 +33,13 @@ public class UserController {
         @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable pageable) {
         return ResponseEntity.ok().body(userService.search(filter, pageable));
     }
+
+    @GetMapping("/my")
+    public ResponseEntity<Page<UserResponse>> searchMy(UserFilter filter,
+        @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable pageable) {
+        return ResponseEntity.ok().body(userService.searchMy(filter, pageable));
+    }
+
     @GetMapping("/{userId}")
     public ResponseEntity<UserResponse> findById(@PathVariable UUID userId) {
         return ResponseEntity.ok().body(userService.findById(userId));

@@ -50,12 +50,8 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
 
         userPersonPhysicalRequest.setPassword(passwordEncoder.encode(userPersonPhysicalRequest.getPassword()));
         //userRequest.setUserType(UserType.USER.name());
-        Role dashboard = roleService.findByRoleName(RoleType.ROLE_DASHBOARD.name());
         Role pessoas = roleService.findByRoleName(RoleType.ROLE_PESSOAS.name());
-        Role empresas = roleService.findByRoleName(RoleType.ROLE_EMPRESAS.name());
-        userPersonPhysicalRequest.getRoles().add(dashboard);
         userPersonPhysicalRequest.getRoles().add(pessoas);
-        userPersonPhysicalRequest.getRoles().add(empresas);
 
         User user = userPersonPhysicalMapper.create(userPersonPhysicalRequest);
         user = userRepository.save(user);

@@ -22,6 +22,7 @@ import br.com.projeto.authjwt.service.PersonPhysicalService;
 import br.com.projeto.authjwt.service.RoleService;
 import br.com.projeto.authjwt.service.UserService;
 import br.com.projeto.authjwt.service.email.EmailService;
+import br.com.projeto.authjwt.utils.LogicVerifyPersonTypeLogin;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -57,6 +58,8 @@ public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final LogicVerifyPersonTypeLogin logicVerifyPersonTypeLogin;
+
     private static final String MSG_OBJECT_IN_USE
         = "code user %d cannot be removed as it is in use";
 
@@ -87,6 +90,13 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public Page<UserResponse> search(UserFilter filter, Pageable pageable) {
         log.debug("GET UserFilter filter received {} ", filter.toString());
+        return userRepository.findAll(new UserSpecification(filter), pageable).map(userMapper::toResponse);
+    }
+
+    @Override
+    public Page<UserResponse> searchMy(UserFilter filter, Pageable pageable) {
+        log.debug("GET searchMy filter received {} ", filter.toString());
+        filter.setUserId(logicVerifyPersonTypeLogin.getLoggedUser().getId());
         return userRepository.findAll(new UserSpecification(filter), pageable).map(userMapper::toResponse);
     }
 

@@ -68,12 +68,8 @@ public class UserPersonLegalServiceImpl implements UserPersonLegalService {
 
         userPersonLegalRequest.setPassword(passwordEncoder.encode(userPersonLegalRequest.getPassword()));
         //userRequest.setUserType(UserType.USER.name());
-        Role dashboard = roleService.findByRoleName(RoleType.ROLE_DASHBOARD.name());
         Role pessoas = roleService.findByRoleName(RoleType.ROLE_PESSOAS.name());
-        Role empresas = roleService.findByRoleName(RoleType.ROLE_EMPRESAS.name());
-        userPersonLegalRequest.getRoles().add(dashboard);
         userPersonLegalRequest.getRoles().add(pessoas);
-        userPersonLegalRequest.getRoles().add(empresas);
 
         User user = userPersonLegalMapper.create(userPersonLegalRequest);
         user = userRepository.save(user);
