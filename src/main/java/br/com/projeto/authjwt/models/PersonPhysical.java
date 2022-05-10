@@ -1,5 +1,6 @@
 package br.com.projeto.authjwt.models;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import lombok.*;
@@ -19,8 +20,7 @@ public class PersonPhysical extends Person {
     @Column(nullable = false)
     private String cpf;
 
-    @Temporal(TemporalType.DATE)
-    private Date birthDate;
+    private LocalDate birthDate;
 
     @Column
     private String surname;

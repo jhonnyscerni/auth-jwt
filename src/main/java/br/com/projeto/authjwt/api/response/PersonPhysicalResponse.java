@@ -3,6 +3,7 @@ package br.com.projeto.authjwt.api.response;
 import br.com.projeto.authjwt.models.enums.VoteEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -27,8 +28,8 @@ public class PersonPhysicalResponse {
 
     private String cpf;
 
-    @JsonFormat(shape = Shape.STRING, pattern = "dd-MM-yyyy")
-    private Date birthDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate birthDate;
 
     private String surname;
 
