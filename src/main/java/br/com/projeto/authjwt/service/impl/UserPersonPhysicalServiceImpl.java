@@ -5,6 +5,7 @@ import br.com.projeto.authjwt.api.mapper.UserPersonPhysicalMapper;
 import br.com.projeto.authjwt.api.request.UserAddPersonRequest;
 import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
 import br.com.projeto.authjwt.api.response.UserResponse;
+import br.com.projeto.authjwt.filter.UserPersonPhysicalFilter;
 import br.com.projeto.authjwt.models.Role;
 import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.models.enums.PersonType;
@@ -14,10 +15,14 @@ import br.com.projeto.authjwt.service.RoleService;
 import br.com.projeto.authjwt.service.UserPersonPhysicalService;
 import br.com.projeto.authjwt.service.UserService;
 import br.com.projeto.authjwt.utils.LogicVerifyPersonTypeLogin;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -97,6 +102,24 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
     @Transactional
     public UserResponse createPersonUser(UUID personId, UserAddPersonRequest userAddPersonRequest) {
         return userService.createPersonUser(personId, userAddPersonRequest, PersonType.PHYSICAL);
+    }
+
+    @Override
+    @Transactional
+    public Page<UserResponse> search(UserPersonPhysicalFilter filter, Pageable pageable) {
+        log.debug("GET UserFilter filter received {} ", filter.toString());
+        List<User> users = userRepository.findAllUserPersonPhysical(filter, null);
+        return new PageImpl<>(
+            users, pageable, users.size()).map(userPersonPhysicalMapper::toResponse);
+
+    }
+
+    @Override
+    public Page<UserResponse> searchMy(UserPersonPhysicalFilter filter, Pageable pageable) {
+        List<User> users = userRepository.findAllUserPersonPhysical(filter, logicVerifyPersonTypeLogin.getLoggedUser().getId());
+        return new PageImpl<>(
+            users, pageable, users.size()).map(userPersonPhysicalMapper::toResponse);
+
     }
 
     @Override

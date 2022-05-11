@@ -1,6 +1,8 @@
 package br.com.projeto.authjwt.api.controllers;
 
 import br.com.projeto.authjwt.api.request.UserRequest;
+import br.com.projeto.authjwt.api.response.UserPersonLegalResponse;
+import br.com.projeto.authjwt.api.response.UserPersonPhysicalResponse;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.filter.UserFilter;
 import br.com.projeto.authjwt.service.UserService;
@@ -28,16 +30,14 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping
-    public ResponseEntity<Page<UserResponse>> search(UserFilter filter,
-        @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable pageable) {
-        return ResponseEntity.ok().body(userService.search(filter, pageable));
+    @GetMapping("/{userId}/person-physical")
+    public ResponseEntity<UserPersonPhysicalResponse> findByIdPersonPhysical(@PathVariable UUID userId) {
+        return ResponseEntity.ok().body(userService.findByIdPersonPhysical(userId));
     }
 
-    @GetMapping("/my")
-    public ResponseEntity<Page<UserResponse>> searchMy(UserFilter filter,
-        @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable pageable) {
-        return ResponseEntity.ok().body(userService.searchMy(filter, pageable));
+    @GetMapping("/{userId}/person-legal")
+    public ResponseEntity<UserPersonLegalResponse> findByIdPersonLegal(@PathVariable UUID userId) {
+        return ResponseEntity.ok().body(userService.findByIdPersonLegal(userId));
     }
 
     @GetMapping("/{userId}")

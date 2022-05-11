@@ -3,10 +3,16 @@ package br.com.projeto.authjwt.api.controllers;
 import br.com.projeto.authjwt.api.request.UserAddPersonRequest;
 import br.com.projeto.authjwt.api.request.UserPersonLegalRequest;
 import br.com.projeto.authjwt.api.response.UserResponse;
+import br.com.projeto.authjwt.filter.UserPersonLegalFilter;
+import br.com.projeto.authjwt.filter.UserPersonPhysicalFilter;
 import br.com.projeto.authjwt.service.UserPersonLegalService;
 import java.util.UUID;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +29,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserPersonLegalController {
 
     private final UserPersonLegalService userPersonLegalService;
+
+
+    @GetMapping
+    public ResponseEntity<Page<UserResponse>> search(UserPersonLegalFilter filter,
+        @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable pageable) {
+        return ResponseEntity.ok().body(userPersonLegalService.search(filter, pageable));
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<Page<UserResponse>> searchMy(UserPersonLegalFilter filter,
+        @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable pageable) {
+        return ResponseEntity.ok().body(userPersonLegalService.searchMy(filter, pageable));
+    }
 
 
     @GetMapping("/{personLegalId}")

@@ -4,6 +4,7 @@ import br.com.projeto.authjwt.api.mapper.UserPersonLegalMapper;
 import br.com.projeto.authjwt.api.request.UserAddPersonRequest;
 import br.com.projeto.authjwt.api.request.UserPersonLegalRequest;
 import br.com.projeto.authjwt.api.response.UserResponse;
+import br.com.projeto.authjwt.filter.UserPersonLegalFilter;
 import br.com.projeto.authjwt.models.Role;
 import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.models.enums.PersonType;
@@ -13,10 +14,14 @@ import br.com.projeto.authjwt.service.RoleService;
 import br.com.projeto.authjwt.service.UserPersonLegalService;
 import br.com.projeto.authjwt.service.UserService;
 import br.com.projeto.authjwt.utils.LogicVerifyPersonTypeLogin;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -105,6 +110,22 @@ public class UserPersonLegalServiceImpl implements UserPersonLegalService {
         if (!user.getPassword().equals(userPersonLegalRequest.getPassword())) {
             userPersonLegalRequest.setPassword(passwordEncoder.encode(userPersonLegalRequest.getPassword()));
         }
+    }
+
+    @Override
+    public Page<UserResponse> search(UserPersonLegalFilter filter, Pageable pageable) {
+        log.debug("GET UserFilter filter received {} ", filter.toString());
+        List<User> users = userRepository.findAllUserPersonLegal(filter, null);
+        return new PageImpl<>(
+            users, pageable, users.size()).map(userPersonLegalMapper::toResponse);
+
+    }
+
+    @Override
+    public Page<UserResponse> searchMy(UserPersonLegalFilter filter, Pageable pageable) {
+        List<User> users = userRepository.findAllUserPersonLegal(filter, logicVerifyPersonTypeLogin.getLoggedUser().getId());
+        return new PageImpl<>(
+            users, pageable, users.size()).map(userPersonLegalMapper::toResponse);
     }
 
 }

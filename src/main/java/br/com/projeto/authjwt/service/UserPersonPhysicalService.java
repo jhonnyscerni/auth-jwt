@@ -2,9 +2,14 @@ package br.com.projeto.authjwt.service;
 
 import br.com.projeto.authjwt.api.request.UserAddPersonRequest;
 import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
+import br.com.projeto.authjwt.api.response.UserPersonPhysicalResponse;
 import br.com.projeto.authjwt.api.response.UserResponse;
+import br.com.projeto.authjwt.filter.UserFilter;
+import br.com.projeto.authjwt.filter.UserPersonPhysicalFilter;
 import br.com.projeto.authjwt.models.User;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface UserPersonPhysicalService {
 
@@ -18,4 +23,7 @@ public interface UserPersonPhysicalService {
 
     UserResponse createPersonUser(UUID personId, UserAddPersonRequest userAddPersonRequest);
 
+    Page<UserResponse> search(UserPersonPhysicalFilter filter, Pageable pageable);
+
+    Page<UserResponse> searchMy(UserPersonPhysicalFilter filter, Pageable pageable);
 }

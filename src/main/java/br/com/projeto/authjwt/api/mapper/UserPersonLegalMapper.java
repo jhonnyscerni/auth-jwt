@@ -3,7 +3,9 @@ package br.com.projeto.authjwt.api.mapper;
 import br.com.projeto.authjwt.api.request.PersonLegalRequest;
 import br.com.projeto.authjwt.api.request.UserAddPersonRequest;
 import br.com.projeto.authjwt.api.request.UserPersonLegalRequest;
+import br.com.projeto.authjwt.api.response.PersonLegalResponse;
 import br.com.projeto.authjwt.api.response.PersonResponse;
+import br.com.projeto.authjwt.api.response.UserPersonLegalResponse;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.models.Person;
 import br.com.projeto.authjwt.models.PersonLegal;
@@ -33,5 +35,11 @@ public interface UserPersonLegalMapper {
 
 
     PersonLegal toEntityRequest(PersonLegalRequest model);
+
+
+    @Mapping(target = "person", expression = "java(toPersonLegalResponse(entity.getPerson()))")
+    UserPersonLegalResponse toResponseUserLegalPhysical(User entity);
+
+    PersonLegalResponse toPersonLegalResponse(Person person);
 
 }
