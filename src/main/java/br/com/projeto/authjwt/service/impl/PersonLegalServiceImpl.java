@@ -68,8 +68,10 @@ public class PersonLegalServiceImpl implements PersonLegalService {
         log.debug("PUT PersonLegalRequest personLegalRequest received {} ", personLegalRequest.toString());
 
         PersonLegal personLegal = buscarOuFalhar(personLegalId);
+        UUID userId = personLegal.getUserId();
 
         personLegalMapper.update(personLegal, personLegalRequest);
+        personLegal.setUserId(userId);
         log.debug("PUT update personLegalId saved {} ", personLegal.getId());
         log.info("Person Legal update successfully personLegalId {} ", personLegal.getId());
         return personLegalMapper.toResponse(personLegalRepository.save(personLegal));

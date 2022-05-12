@@ -88,8 +88,11 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
         log.debug("PUT UUID personphisicalId received {} ", personphisicalId.toString());
         log.debug("PUT PersonPhysicalRequest personPhysicalRequest received {} ", personPhysicalRequest.toString());
         PersonPhysical personPhysical = buscarOuFalhar(personphisicalId);
+        UUID userId = personPhysical.getUserId();
 
         personPhysicalMapper.update(personPhysical, personPhysicalRequest);
+        personPhysical.setUserId(userId);
+
         PersonPhysical save = personPhysicalRepository.save(personPhysical);
 
         log.debug("PUT update personphisicalId saved {} ", personphisicalId);
