@@ -35,7 +35,7 @@ public class UserRepositoryImpl implements UserRepositoryQueries {
 
     private List<User> getUsers(StringBuilder query, String username, String email, UUID id) {
         if (username != null) {
-            query.append(" and u.username like '%").append(username).append("%')");
+            query.append(" and u.username like '%").append(username).append("%'");
         }
 
         if (id != null) {
