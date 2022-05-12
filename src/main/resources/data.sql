@@ -1,8 +1,11 @@
 
-insert into tb_person_physical (id, address_complement, address_district, address_nm_city, address_number, address_state,
-                                address_street, address_zip_code, email, name, phone_number, vote, birth_date, cpf, gender,
+insert into tb_person (id, address_complement, address_district, address_nm_city, address_number, address_state,
+                       address_street, address_zip_code, email, name, phone_number, vote)
+values ('257736fc-2fa4-4650-ad06-cd98964e346b', 'complement','district', 'nm_city', 'number', 'state', 'street', '66615005', 'jhonnyscerni@gmail.com', 'Jhonny Scerni', '9999999', 'A_CONQUISTAR');
+
+insert into tb_person_physical (id, birth_date, cpf, gender,
                                 observation, section_vote, surname, zone_voting, user_id)
-values ('257736fc-2fa4-4650-ad06-cd98964e346b', 'complement','district', 'nm_city', 'number', 'state', 'street', '66615005', 'jhonnyscerni@gmail.com', 'Jhonny Scerni', '9999999', 'A_CONQUISTAR',
+values ('257736fc-2fa4-4650-ad06-cd98964e346b',
         null, '98473891287', 'MASCULINO', '', 'secao voto', 'scerni', 'zona votação', null);
 
 
