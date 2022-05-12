@@ -46,7 +46,7 @@ public class UserRepositoryImpl implements UserRepositoryQueries {
         }
 
         if (id != null){
-            query.append(" and u.userId = :id");
+            query.append(" and p.userId = :id");
             q.setParameter("id", id);
         }
 
