@@ -8,6 +8,7 @@ import br.com.projeto.authjwt.api.request.UserRequest;
 import br.com.projeto.authjwt.api.response.UserPersonLegalResponse;
 import br.com.projeto.authjwt.api.response.UserPersonPhysicalResponse;
 import br.com.projeto.authjwt.api.response.UserResponse;
+import br.com.projeto.authjwt.filter.UserFilter;
 import br.com.projeto.authjwt.models.PersonLegal;
 import br.com.projeto.authjwt.models.PersonPhysical;
 import br.com.projeto.authjwt.models.Role;
@@ -17,6 +18,7 @@ import br.com.projeto.authjwt.models.exceptions.ConflictException;
 import br.com.projeto.authjwt.models.exceptions.EntityInUseException;
 import br.com.projeto.authjwt.models.exceptions.EntityNotFoundException;
 import br.com.projeto.authjwt.repositories.UserRepository;
+import br.com.projeto.authjwt.repositories.specs.UserSpecification;
 import br.com.projeto.authjwt.service.PersonLegalService;
 import br.com.projeto.authjwt.service.PersonPhysicalService;
 import br.com.projeto.authjwt.service.RoleService;
@@ -30,6 +32,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -181,6 +185,20 @@ public class UserServiceImpl implements UserService {
         log.info("User create successfully userId {} ", user.getId());
         return userPersonPhysicalMapper.toResponse(user);
 
+    }
+
+    @Override
+    @Transactional
+    public Page<UserResponse> search(UserFilter filter, Pageable pageable) {
+        log.debug("GET UserFilter filter received {} ", filter.toString());
+        return userRepository.findAll(new UserSpecification(filter), pageable).map(userMapper::toResponse);
+    }
+
+    @Override
+    public Page<UserResponse> searchMy(UserFilter filter, Pageable pageable) {
+        log.debug("GET searchMy filter received {} ", filter.toString());
+        filter.setUserId(logicVerifyPersonTypeLogin.getLoggedUser().getId());
+        return userRepository.findAll(new UserSpecification(filter), pageable).map(userMapper::toResponse);
     }
 
     @Override
