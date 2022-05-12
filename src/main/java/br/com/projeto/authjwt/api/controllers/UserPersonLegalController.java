@@ -49,13 +49,6 @@ public class UserPersonLegalController {
         return ResponseEntity.ok().body(userPersonLegalService.findByPersonLegalIdUserUserPersonLegalResponse(personLegalId));
     }
 
-    @PostMapping("/{personLegalId}")
-    public ResponseEntity<UserResponse> createPersonUser(@PathVariable UUID personLegalId,
-        @RequestBody @Valid UserAddPersonRequest userAddPersonRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-            .body(userPersonLegalService.createPersonUser(personLegalId, userAddPersonRequest));
-    }
-
     @PostMapping
     public ResponseEntity<UserResponse> create(@RequestBody @Valid UserPersonLegalRequest userPersonLegalRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userPersonLegalService.create(userPersonLegalRequest));

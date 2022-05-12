@@ -100,12 +100,6 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
 
     @Override
     @Transactional
-    public UserResponse createPersonUser(UUID personId, UserAddPersonRequest userAddPersonRequest) {
-        return userService.createPersonUser(personId, userAddPersonRequest, PersonType.PHYSICAL);
-    }
-
-    @Override
-    @Transactional
     public Page<UserResponse> search(UserPersonPhysicalFilter filter, Pageable pageable) {
         log.debug("GET UserFilter filter received {} ", filter.toString());
         List<User> users = userRepository.findAllUserPersonPhysical(filter, null);

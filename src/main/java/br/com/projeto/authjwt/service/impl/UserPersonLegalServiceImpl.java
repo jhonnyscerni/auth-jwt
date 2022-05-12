@@ -58,11 +58,6 @@ public class UserPersonLegalServiceImpl implements UserPersonLegalService {
     }
 
     @Override
-    public UserResponse createPersonUser(UUID personId, UserAddPersonRequest userAddPersonRequest) {
-        return userService.createPersonUser(personId, userAddPersonRequest, PersonType.LEGAL);
-    }
-
-    @Override
     public UserResponse create(UserPersonLegalRequest userPersonLegalRequest) {
         log.debug("POST UserPersonLegalRequest userPersonLegalRequest received {} ", userPersonLegalRequest.toString());
 

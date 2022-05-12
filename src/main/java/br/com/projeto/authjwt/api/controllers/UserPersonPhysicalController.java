@@ -48,13 +48,6 @@ public class UserPersonPhysicalController {
         return ResponseEntity.ok().body(userPersonPhysicalService.findByPersonPhysicalIdUserUserPersonPhysicalResponse(personPhysicalId));
     }
 
-    @PostMapping("/{personPhysicalId}")
-    public ResponseEntity<UserResponse> createPersonUser(@PathVariable UUID personPhysicalId,
-        @RequestBody @Valid UserAddPersonRequest userAddPersonRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-            .body(userPersonPhysicalService.createPersonUser(personPhysicalId, userAddPersonRequest));
-    }
-
     @PostMapping
     public ResponseEntity<UserResponse> create(@RequestBody @Valid UserPersonPhysicalRequest userPersonPhysicalRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userPersonPhysicalService.create(userPersonPhysicalRequest));

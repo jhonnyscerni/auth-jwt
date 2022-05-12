@@ -1,10 +1,12 @@
 package br.com.projeto.authjwt.api.controllers;
 
+import br.com.projeto.authjwt.api.request.UserAddPersonRequest;
 import br.com.projeto.authjwt.api.request.UserRequest;
 import br.com.projeto.authjwt.api.response.UserPersonLegalResponse;
 import br.com.projeto.authjwt.api.response.UserPersonPhysicalResponse;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.filter.UserFilter;
+import br.com.projeto.authjwt.models.enums.PersonType;
 import br.com.projeto.authjwt.service.UserService;
 import java.util.UUID;
 import javax.validation.Valid;
@@ -18,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,18 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
-
-    @GetMapping
-    public ResponseEntity<Page<UserResponse>> search(UserFilter filter,
-        @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable pageable) {
-        return ResponseEntity.ok().body(userService.search(filter, pageable));
-    }
-
-    @GetMapping("/my")
-    public ResponseEntity<Page<UserResponse>> searchMy(UserFilter filter,
-        @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable pageable) {
-        return ResponseEntity.ok().body(userService.searchMy(filter, pageable));
-    }
 
     @GetMapping("/{userId}/person-physical")
     public ResponseEntity<UserPersonPhysicalResponse> findByIdPersonPhysical(@PathVariable UUID userId) {
@@ -63,6 +54,22 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    //ADD PERSON USER
+    @PostMapping("/person-physical/{personId}")
+    public ResponseEntity<UserResponse> createPersonPhysicalUser(@PathVariable UUID personId,
+        @RequestBody @Valid UserAddPersonRequest userAddPersonRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(userService.createPersonUser(personId, userAddPersonRequest, PersonType.PHYSICAL));
+    }
+
+    @PostMapping("/person-legal/{personId}")
+    public ResponseEntity<UserResponse> createPersonLegalUser(@PathVariable UUID personId,
+        @RequestBody @Valid UserAddPersonRequest userAddPersonRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(userService.createPersonUser(personId, userAddPersonRequest, PersonType.LEGAL));
+    }
+
+    //UPDATE PERSON USERNAME, ROLES E PASSWORD
     @PutMapping("/{userId}")
     public ResponseEntity<UserResponse> update(@PathVariable UUID userId,
         @RequestBody @Valid UserRequest userRequest) {

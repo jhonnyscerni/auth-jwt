@@ -21,8 +21,6 @@ public interface UserPersonPhysicalService {
 
     UserResponse findByPersonPhysicalIdUserUserPersonPhysicalResponse(UUID personId);
 
-    UserResponse createPersonUser(UUID personId, UserAddPersonRequest userAddPersonRequest);
-
     Page<UserResponse> search(UserPersonPhysicalFilter filter, Pageable pageable);
 
     Page<UserResponse> searchMy(UserPersonPhysicalFilter filter, Pageable pageable);
