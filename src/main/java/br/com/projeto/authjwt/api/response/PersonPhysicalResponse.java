@@ -43,6 +43,4 @@ public class PersonPhysicalResponse {
 
     private UUID userId;
 
-    private List<UserPersonResponse> users;
-
 }

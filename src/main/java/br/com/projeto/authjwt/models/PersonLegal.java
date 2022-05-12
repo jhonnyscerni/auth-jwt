@@ -22,7 +22,7 @@ public class PersonLegal extends Person {
     @Column(nullable = false)
     private String cnpj;
 
-    @OneToMany(mappedBy = "person")
-    private List<User> users;
+
+    private UUID userId;
 
 }

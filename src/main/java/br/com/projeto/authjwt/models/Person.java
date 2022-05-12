@@ -49,6 +49,4 @@ public abstract class Person {
     @Embedded
     private Address address;
 
-    private UUID userId;
-
 }

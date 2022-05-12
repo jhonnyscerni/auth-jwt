@@ -38,15 +38,18 @@ public class UserRepositoryImpl implements UserRepositoryQueries {
             query.append(" and u.username like '%").append(username).append("%')");
         }
 
-        TypedQuery<User> q = em.createQuery(query.toString(), User.class);
+        if (id != null) {
+            query.append(" and pf.userId = '").append(id).append("'");
+        }
 
         if (email != null) {
             query.append(" and p.email = :email");
-            q.setParameter("email", email);
         }
 
-        if (id != null) {
-            query.append(" and pf.userId = '").append(id).append("'");
+        TypedQuery<User> q = em.createQuery(query.toString(), User.class);
+
+        if (email != null) {
+            q.setParameter("email", email);
         }
 
         return q.getResultList();

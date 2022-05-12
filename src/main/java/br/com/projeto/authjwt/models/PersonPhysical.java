@@ -37,6 +37,5 @@ public class PersonPhysical extends Person {
     @Column
     private String observation;
 
-    @OneToMany(mappedBy = "person")
-    private List<User> users;
+    private UUID userId;
 }
