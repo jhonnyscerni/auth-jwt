@@ -21,10 +21,9 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface UserPersonPhysicalMapper {
 
-    @Mapping(target = "person", expression = "java( toEntityRequest(model.getPerson()))")
+    @Mapping(target = "person", expression = "java( ((PersonPhysical) toEntityRequest(model.getPerson())))")
     void update(@MappingTarget User entity, UserPersonPhysicalRequest model);
 
-    @InheritConfiguration
     @Mapping(target = "person", expression = "java( toEntityRequest(userPersonPhysicalRequest.getPerson()))")
     User create(UserPersonPhysicalRequest userPersonPhysicalRequest);
 
@@ -35,6 +34,7 @@ public interface UserPersonPhysicalMapper {
 
     PersonResponse toPersonResponse(Person person);
 
+    @Mapping(target = "userId", expression = "java(model.getUserId())")
     PersonPhysical toEntityRequest(PersonPhysicalRequest model);
 
     // USER Person Physical

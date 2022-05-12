@@ -5,6 +5,8 @@ import br.com.projeto.authjwt.api.request.UserAddPersonRequest;
 import br.com.projeto.authjwt.api.request.UserPersonLegalRequest;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.filter.UserPersonLegalFilter;
+import br.com.projeto.authjwt.models.PersonLegal;
+import br.com.projeto.authjwt.models.PersonPhysical;
 import br.com.projeto.authjwt.models.Role;
 import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.models.enums.PersonType;
@@ -85,12 +87,16 @@ public class UserPersonLegalServiceImpl implements UserPersonLegalService {
         log.debug("PUT UUID idPerson Legal {} ", id.toString());
         log.debug("PUT UserPersonLegalRequest userPersonLegalRequest received {} ", userPersonLegalRequest.toString());
         User user = userService.buscarOuFalhar(id);
+        UUID userId = ((PersonLegal) user.getPerson()).getUserId();
 
         userService.existsByUserName(user, userPersonLegalRequest.getUsername());
         //existsByUserEmail(user, userRequest.getEmail());
         passwordNotEquals(user, userPersonLegalRequest);
 
         userPersonLegalMapper.update(user, userPersonLegalRequest);
+        PersonLegal personLegal = (PersonLegal) user.getPerson();
+        personLegal.setUserId(userId);
+        user.setPerson(personLegal);
 
         User save = userRepository.save(user);
         log.debug("PUT update userId saved {} ", user.getId());

@@ -26,7 +26,7 @@ public interface UserPersonLegalMapper {
 
     PersonResponse toPersonResponse(Person person);
 
-    @Mapping(target = "person", expression = "java( toEntityRequest(model.getPerson()))")
+    @Mapping(target = "person", expression = "java( ((PersonLegal) toEntityRequest(model.getPerson())))")
     void update(@MappingTarget User entity, UserPersonLegalRequest model);
 
     @InheritConfiguration

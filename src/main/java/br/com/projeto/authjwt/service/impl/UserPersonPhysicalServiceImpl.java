@@ -6,6 +6,7 @@ import br.com.projeto.authjwt.api.request.UserAddPersonRequest;
 import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.filter.UserPersonPhysicalFilter;
+import br.com.projeto.authjwt.models.PersonPhysical;
 import br.com.projeto.authjwt.models.Role;
 import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.models.enums.PersonType;
@@ -73,12 +74,19 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
         log.debug("PUT UUID id received {} ", id.toString());
         log.debug("PUT UserPersonPhysicalRequest userPersonPhysicalRequest received {} ", userPersonPhysicalRequest.toString());
         User user = userService.buscarOuFalhar(id);
+        UUID userId = ((PersonPhysical) user.getPerson()).getUserId();
 
         userService.existsByUserName(user, userPersonPhysicalRequest.getUsername());
+
+
         //existsByUserEmail(user, userRequest.getEmail());
         passwordNotEquals(user, userPersonPhysicalRequest);
 
         userPersonPhysicalMapper.update(user, userPersonPhysicalRequest);
+
+        PersonPhysical personPhysical = (PersonPhysical) user.getPerson();
+        personPhysical.setUserId(userId);
+        user.setPerson(personPhysical);
 
         User save = userRepository.save(user);
         log.debug("PUT update userId saved {} ", user.getId());
