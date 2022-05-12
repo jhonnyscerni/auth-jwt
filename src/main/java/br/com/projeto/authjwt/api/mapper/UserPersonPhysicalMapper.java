@@ -3,11 +3,14 @@ package br.com.projeto.authjwt.api.mapper;
 import br.com.projeto.authjwt.api.request.PersonPhysicalRequest;
 import br.com.projeto.authjwt.api.request.UserAddPersonRequest;
 import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
+import br.com.projeto.authjwt.api.response.PersonLegalResponse;
 import br.com.projeto.authjwt.api.response.PersonPhysicalResponse;
 import br.com.projeto.authjwt.api.response.PersonResponse;
+import br.com.projeto.authjwt.api.response.UserPersonLegalResponse;
 import br.com.projeto.authjwt.api.response.UserPersonPhysicalResponse;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.models.Person;
+import br.com.projeto.authjwt.models.PersonLegal;
 import br.com.projeto.authjwt.models.PersonPhysical;
 import br.com.projeto.authjwt.models.User;
 import org.mapstruct.InheritConfiguration;
@@ -27,17 +30,17 @@ public interface UserPersonPhysicalMapper {
 
     User add(UserAddPersonRequest userPersonPhysicalRequest);
 
-
     @Mapping(target = "person", expression = "java(toPersonResponse(entity.getPerson()))")
     UserResponse toResponse(User entity);
 
-    @Mapping(target = "person", expression = "java(toPersonPhysicalResponse(entity.getPerson()))")
-    UserPersonPhysicalResponse toResponseUserPersonPhysical(User entity);
-
     PersonResponse toPersonResponse(Person person);
 
-    PersonPhysicalResponse toPersonPhysicalResponse(Person person);
-
     PersonPhysical toEntityRequest(PersonPhysicalRequest model);
+
+    // USER Person Physical
+    @Mapping(target = "person", expression = "java(toPersonPhysicalResponse((PersonPhysical)entity.getPerson()))")
+    UserPersonPhysicalResponse toResponseUserPersonPhysical(User entity);
+
+    PersonPhysicalResponse toPersonPhysicalResponse(PersonPhysical person);
 
 }

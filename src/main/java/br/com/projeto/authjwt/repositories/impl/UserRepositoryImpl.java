@@ -45,9 +45,8 @@ public class UserRepositoryImpl implements UserRepositoryQueries {
             q.setParameter("email", email);
         }
 
-        if (id != null){
-            query.append(" and p.userId = :id");
-            q.setParameter("id", id);
+        if (id != null) {
+            query.append(" and pf.userId = '").append(id).append("'");
         }
 
         return q.getResultList();

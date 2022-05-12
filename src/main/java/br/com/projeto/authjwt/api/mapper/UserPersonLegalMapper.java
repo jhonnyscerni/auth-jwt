@@ -37,9 +37,9 @@ public interface UserPersonLegalMapper {
     PersonLegal toEntityRequest(PersonLegalRequest model);
 
 
-    @Mapping(target = "person", expression = "java(toPersonLegalResponse(entity.getPerson()))")
+    @Mapping(target = "person", expression = "java(toPersonLegalResponse((PersonLegal)entity.getPerson()))")
     UserPersonLegalResponse toResponseUserLegalPhysical(User entity);
 
-    PersonLegalResponse toPersonLegalResponse(Person person);
+    PersonLegalResponse toPersonLegalResponse(PersonLegal person);
 
 }
