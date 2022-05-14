@@ -2,14 +2,10 @@ package br.com.projeto.authjwt.security.jwt;
 
 import br.com.projeto.authjwt.security.UserDetailsImpl;
 import io.jsonwebtoken.*;
-import java.util.stream.Collectors;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -25,11 +21,11 @@ public class JwtProvider {
     private int jwtExpirationMs;
 
     public String generateJwt(Authentication authentication) {
-        UserDetails userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
         Collection<? extends GrantedAuthority> authorities = userPrincipal.getAuthorities();
 
         return Jwts.builder()
-                .setSubject((userPrincipal.getUsername()))
+                .setSubject((userPrincipal.getUserId().toString()))
                 .claim("authorities", authorities)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
@@ -38,7 +34,7 @@ public class JwtProvider {
     }
 
     // Usado no Filter
-    public String getUsernameJwt(String token) {
+    public String getSubjectJwt(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 

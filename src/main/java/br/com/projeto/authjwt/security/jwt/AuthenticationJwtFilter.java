@@ -1,8 +1,7 @@
 package br.com.projeto.authjwt.security.jwt;
 
 import br.com.projeto.authjwt.security.UserDetailsServiceImpl;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,8 +31,8 @@ public class AuthenticationJwtFilter extends OncePerRequestFilter {
         try {
             String jwtStr = getTokenHeader(httpServletRequest);
             if (jwtStr != null && jwtProvider.validateJwt(jwtStr)) {
-                String username = jwtProvider.getUsernameJwt(jwtStr);
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                String userId = jwtProvider.getSubjectJwt(jwtStr);
+                UserDetails userDetails = userDetailsService.loadUserById(UUID.fromString(userId));
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
