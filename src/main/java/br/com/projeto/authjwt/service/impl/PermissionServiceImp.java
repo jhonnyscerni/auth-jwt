@@ -90,7 +90,7 @@ public class PermissionServiceImp implements PermissionService {
             permissionRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             log.warn("Permission {} not found", id);
-            throw new EntityNotFoundException("Permission não encontrado");
+            throw new EntityNotFoundException("Permission not found");
 
         } catch (DataIntegrityViolationException e) {
             log.warn("Permission {} cannot be removed as it is in use", id);
