@@ -9,6 +9,7 @@ import br.com.projeto.authjwt.api.response.UserPersonLegalResponse;
 import br.com.projeto.authjwt.api.response.UserPersonPhysicalResponse;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.filter.UserFilter;
+import br.com.projeto.authjwt.integration.appointment.clients.AppointmentClient;
 import br.com.projeto.authjwt.models.PersonLegal;
 import br.com.projeto.authjwt.models.PersonPhysical;
 import br.com.projeto.authjwt.models.Role;
@@ -62,6 +63,8 @@ public class UserServiceImpl implements UserService {
 
     private final LogicVerifyPersonTypeLogin logicVerifyPersonTypeLogin;
 
+    private final AppointmentClient appointmentClient;
+
     private static final String MSG_OBJECT_IN_USE
         = "code user %d cannot be removed as it is in use";
 
@@ -112,6 +115,7 @@ public class UserServiceImpl implements UserService {
     public void delete(UUID id) {
         try {
             userRepository.deleteById(id);
+            appointmentClient.deleteUserInAppointment(id);
         } catch (EmptyResultDataAccessException e) {
             log.warn("User {} not found", id);
             throw new EntityNotFoundException("User not found");

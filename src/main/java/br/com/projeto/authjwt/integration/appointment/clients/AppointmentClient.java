@@ -46,4 +46,9 @@ public class AppointmentClient {
         log.info("Ending request /appointments userId {} ", userId);
         return result.getBody();
     }
+
+    public void deleteUserInAppointment(UUID userId){
+        String url = REQUEST_URL_COURSE + "/appointments/users/" + userId;
+        restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
+    }
 }

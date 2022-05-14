@@ -20,11 +20,11 @@ public class IntegrationUserAppointmentController {
 
     private final AppointmentClient appointmentClient;
 
+
     @GetMapping("/users/{userId}/appointments")
     public ResponseEntity<Page<AppointmentResponse>> search(
         @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable pageable,
         @PathVariable(value = "userId") UUID userId) {
         return ResponseEntity.status(HttpStatus.OK).body(appointmentClient.getAllCoursesByUser(userId, pageable));
     }
-
 }
