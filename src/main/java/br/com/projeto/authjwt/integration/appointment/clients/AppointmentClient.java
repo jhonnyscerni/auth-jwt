@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -27,27 +29,31 @@ public class AppointmentClient {
     @Value("${api.url.appointment}")
     String REQUEST_URL_COURSE;
 
-    public Page<AppointmentResponse> getAllCoursesByUser(UUID userId, Pageable pageable){
+    public Page<AppointmentResponse> getAllCoursesByUser(UUID userId, Pageable pageable, String token) {
         List<AppointmentResponse> searchResult = null;
         ResponseEntity<ResponsePageDto<AppointmentResponse>> result = null;
         String url = REQUEST_URL_COURSE + "/appointment/appointments?userId=" + userId + "&page=" + pageable.getPageNumber() + "&size="
             + pageable.getPageSize() + "&sort=" + pageable.getSort().toString().replaceAll(": ", ",");
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", token);
+        HttpEntity<String> requestEntity = new HttpEntity<>("parameters", headers);
+
         log.debug("Request URL: {} ", url);
         log.info("Request URL: {} ", url);
-        try{
+        try {
             ParameterizedTypeReference<ResponsePageDto<AppointmentResponse>> responseType = new ParameterizedTypeReference<ResponsePageDto<AppointmentResponse>>() {};
-            result = restTemplate.exchange(url, HttpMethod.GET, null, responseType);
+            result = restTemplate.exchange(url, HttpMethod.GET, requestEntity, responseType);
             searchResult = result.getBody().getContent();
             log.debug("Response Number of Elements: {} ", searchResult.size());
-        } catch (HttpStatusCodeException e){
+        } catch (HttpStatusCodeException e) {
             log.error("Error request /appointments {} ", e);
         }
         log.info("Ending request /appointments userId {} ", userId);
         return result.getBody();
     }
 
-    public void deleteUserInAppointment(UUID userId){
+    public void deleteUserInAppointment(UUID userId) {
         String url = REQUEST_URL_COURSE + "/appointments/users/" + userId;
         restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
     }
