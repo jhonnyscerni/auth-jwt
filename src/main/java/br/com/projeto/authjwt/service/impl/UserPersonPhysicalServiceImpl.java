@@ -2,15 +2,15 @@ package br.com.projeto.authjwt.service.impl;
 
 
 import br.com.projeto.authjwt.api.mapper.UserPersonPhysicalMapper;
-import br.com.projeto.authjwt.api.request.UserAddPersonRequest;
 import br.com.projeto.authjwt.api.request.UserPersonPhysicalRequest;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.filter.UserPersonPhysicalFilter;
+import br.com.projeto.authjwt.integration.rabbitmq.user.enums.ActionType;
 import br.com.projeto.authjwt.models.PersonPhysical;
 import br.com.projeto.authjwt.models.Role;
 import br.com.projeto.authjwt.models.User;
-import br.com.projeto.authjwt.models.enums.PersonType;
 import br.com.projeto.authjwt.models.enums.RoleType;
+import br.com.projeto.authjwt.publishers.UserEventPublisher;
 import br.com.projeto.authjwt.repositories.UserRepository;
 import br.com.projeto.authjwt.service.RoleService;
 import br.com.projeto.authjwt.service.UserPersonPhysicalService;
@@ -43,6 +43,7 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
 
     private final LogicVerifyPersonTypeLogin logicVerifyPersonTypeLogin;
 
+    private final UserEventPublisher userEventPublisher;
 
     @Override
     @Transactional
@@ -70,6 +71,14 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
 
     @Override
     @Transactional
+    public UserResponse createUserEvent(UserPersonPhysicalRequest userPersonPhysicalRequest) {
+        UserResponse userResponse = create(userPersonPhysicalRequest);
+        userEventPublisher.publishUserEvent(userResponse.convertToUserEventResponse(), ActionType.CREATE);
+        return userResponse;
+    }
+
+    @Override
+    @Transactional
     public UserResponse update(UUID id, UserPersonPhysicalRequest userPersonPhysicalRequest) {
         log.debug("PUT UUID id received {} ", id.toString());
         log.debug("PUT UserPersonPhysicalRequest userPersonPhysicalRequest received {} ", userPersonPhysicalRequest.toString());
@@ -92,6 +101,14 @@ public class UserPersonPhysicalServiceImpl implements UserPersonPhysicalService 
         log.debug("PUT update userId saved {} ", user.getId());
         log.info("User update successfully userId {} ", user.getId());
         return userPersonPhysicalMapper.toResponse(save);
+    }
+
+    @Override
+    @Transactional
+    public UserResponse updateUserEvent(UUID id, UserPersonPhysicalRequest userPersonPhysicalRequest) {
+        UserResponse userResponse = update(id, userPersonPhysicalRequest);
+        userEventPublisher.publishUserEvent(userResponse.convertToUserEventResponse(), ActionType.UPDATE);
+        return userResponse;
     }
 
     @Override

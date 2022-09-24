@@ -24,4 +24,8 @@ public interface UserPersonPhysicalService {
     Page<UserResponse> search(UserPersonPhysicalFilter filter, Pageable pageable);
 
     Page<UserResponse> searchMy(UserPersonPhysicalFilter filter, Pageable pageable);
+
+    UserResponse createUserEvent(UserPersonPhysicalRequest userPersonPhysicalRequest);
+
+    UserResponse updateUserEvent(UUID id, UserPersonPhysicalRequest userPersonPhysicalRequest);
 }

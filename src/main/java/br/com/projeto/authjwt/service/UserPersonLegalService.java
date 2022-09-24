@@ -21,4 +21,8 @@ public interface UserPersonLegalService {
     Page<UserResponse> search(UserPersonLegalFilter filter, Pageable pageable);
 
     Page<UserResponse> searchMy(UserPersonLegalFilter filter, Pageable pageable);
+
+    UserResponse createUserEvent(UserPersonLegalRequest userPersonLegalRequest);
+
+    UserResponse updateUserEvent(UUID id, UserPersonLegalRequest userPersonLegalRequest);
 }

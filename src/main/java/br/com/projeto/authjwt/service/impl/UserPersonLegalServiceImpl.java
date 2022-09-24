@@ -1,16 +1,15 @@
 package br.com.projeto.authjwt.service.impl;
 
 import br.com.projeto.authjwt.api.mapper.UserPersonLegalMapper;
-import br.com.projeto.authjwt.api.request.UserAddPersonRequest;
 import br.com.projeto.authjwt.api.request.UserPersonLegalRequest;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.filter.UserPersonLegalFilter;
+import br.com.projeto.authjwt.integration.rabbitmq.user.enums.ActionType;
 import br.com.projeto.authjwt.models.PersonLegal;
-import br.com.projeto.authjwt.models.PersonPhysical;
 import br.com.projeto.authjwt.models.Role;
 import br.com.projeto.authjwt.models.User;
-import br.com.projeto.authjwt.models.enums.PersonType;
 import br.com.projeto.authjwt.models.enums.RoleType;
+import br.com.projeto.authjwt.publishers.UserEventPublisher;
 import br.com.projeto.authjwt.repositories.UserRepository;
 import br.com.projeto.authjwt.service.RoleService;
 import br.com.projeto.authjwt.service.UserPersonLegalService;
@@ -45,6 +44,8 @@ public class UserPersonLegalServiceImpl implements UserPersonLegalService {
     private final PasswordEncoder passwordEncoder;
 
     private final LogicVerifyPersonTypeLogin logicVerifyPersonTypeLogin;
+
+    private final UserEventPublisher userEventPublisher;
 
 
     @Override
@@ -83,6 +84,13 @@ public class UserPersonLegalServiceImpl implements UserPersonLegalService {
     }
 
     @Override
+    public UserResponse createUserEvent(UserPersonLegalRequest userPersonLegalRequest) {
+        UserResponse userResponse = create(userPersonLegalRequest);
+        userEventPublisher.publishUserEvent(userResponse.convertToUserEventResponse(), ActionType.CREATE);
+        return userResponse;
+    }
+
+    @Override
     public UserResponse update(UUID id, UserPersonLegalRequest userPersonLegalRequest) {
         log.debug("PUT UUID idPerson Legal {} ", id.toString());
         log.debug("PUT UserPersonLegalRequest userPersonLegalRequest received {} ", userPersonLegalRequest.toString());
@@ -103,6 +111,14 @@ public class UserPersonLegalServiceImpl implements UserPersonLegalService {
         log.info("User update successfully userId {} ", user.getId());
         return userPersonLegalMapper.toResponse(save);
     }
+
+    @Override
+    public UserResponse updateUserEvent(UUID id, UserPersonLegalRequest userPersonLegalRequest) {
+        UserResponse userResponse = update(id, userPersonLegalRequest);
+        userEventPublisher.publishUserEvent(userResponse.convertToUserEventResponse(), ActionType.UPDATE);
+        return userResponse;
+    }
+
 
     @Override
     @Transactional
