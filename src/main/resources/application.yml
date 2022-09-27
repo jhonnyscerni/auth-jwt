@@ -1,11 +1,5 @@
 spring:
     application:
         name: authuser-service
-    config:
-        import: 'configserver:'
-    cloud:
-        config:
-            discovery:
-                serviceId: config-server
-            username: configserver
-            password: '123cs'
+    profiles:
+        active: prod
