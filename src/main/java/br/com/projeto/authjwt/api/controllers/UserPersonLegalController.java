@@ -1,10 +1,8 @@
 package br.com.projeto.authjwt.api.controllers;
 
-import br.com.projeto.authjwt.api.request.UserAddPersonRequest;
 import br.com.projeto.authjwt.api.request.UserPersonLegalRequest;
 import br.com.projeto.authjwt.api.response.UserResponse;
 import br.com.projeto.authjwt.filter.UserPersonLegalFilter;
-import br.com.projeto.authjwt.filter.UserPersonPhysicalFilter;
 import br.com.projeto.authjwt.service.UserPersonLegalService;
 import java.util.UUID;
 import javax.validation.Valid;
@@ -51,13 +49,13 @@ public class UserPersonLegalController {
 
     @PostMapping
     public ResponseEntity<UserResponse> create(@RequestBody @Valid UserPersonLegalRequest userPersonLegalRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userPersonLegalService.create(userPersonLegalRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userPersonLegalService.createUserEvent(userPersonLegalRequest));
     }
 
     @PutMapping("/{userPersonLegalId}")
     public ResponseEntity<UserResponse> update(@PathVariable UUID userPersonLegalId,
         @RequestBody @Valid UserPersonLegalRequest userPersonLegalRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(userPersonLegalService.update(userPersonLegalId, userPersonLegalRequest));
+        return ResponseEntity.status(HttpStatus.OK).body(userPersonLegalService.updateUserEvent(userPersonLegalId, userPersonLegalRequest));
     }
 
 }
