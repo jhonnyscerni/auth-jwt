@@ -9,6 +9,7 @@ import br.com.projeto.authjwt.models.PersonLegal;
 import br.com.projeto.authjwt.models.Role;
 import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.models.enums.RoleType;
+import br.com.projeto.authjwt.models.enums.UserStatus;
 import br.com.projeto.authjwt.publishers.UserEventPublisher;
 import br.com.projeto.authjwt.repositories.UserRepository;
 import br.com.projeto.authjwt.service.RoleService;
@@ -115,6 +116,7 @@ public class UserPersonLegalServiceImpl implements UserPersonLegalService {
     @Override
     public UserResponse updateUserEvent(UUID id, UserPersonLegalRequest userPersonLegalRequest) {
         UserResponse userResponse = update(id, userPersonLegalRequest);
+        userResponse.setUserStatus(UserStatus.ACTIVE);
         userEventPublisher.publishUserEvent(userResponse.convertToUserEventResponse(), ActionType.UPDATE);
         return userResponse;
     }
