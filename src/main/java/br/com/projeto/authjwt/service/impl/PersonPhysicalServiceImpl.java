@@ -136,4 +136,24 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
             .collect(Collectors.toList());
     }
 
+    @Override
+    public Long countPersonPhysical(UUID aLong) {
+        return personPhysicalRepository.countPersonPhysical(aLong);
+    }
+
+    @Override
+    public Long countPersonPhysicalVoteIsConquistado(UUID aLong) {
+        return personPhysicalRepository.countPersonIsVoteIsConquistado(aLong);
+    }
+
+    @Override
+    public Long countPersonPhysicalVoteIsAConquistar(UUID aLong) {
+        return personPhysicalRepository.countPersonVoteIsAConquistar(aLong);
+    }
+
+    @Override
+    public Long countPersonPhysicalVoteIsPerdido(UUID aLong) {
+        return personPhysicalRepository.countPersonVoteIsPerdido(aLong);
+    }
+
 }

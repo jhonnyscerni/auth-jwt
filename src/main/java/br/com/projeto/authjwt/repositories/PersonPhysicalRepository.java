@@ -11,4 +11,16 @@ public interface PersonPhysicalRepository extends JpaRepository<PersonPhysical, 
 
     @Query("select pf from PersonPhysical pf where pf.userId =:userId ")
     List<PersonPhysical> findAllMy(@Param("userId") UUID userId);
+
+    @Query("SELECT count(pf.id) FROM PersonPhysical pf where pf.userId = :id")
+    long countPersonPhysical(@Param("id") UUID id);
+
+    @Query("SELECT count(pf.id) FROM PersonPhysical pf where pf.userId = :id and pf.vote = 'CONQUISTADO' ")
+    long countPersonIsVoteIsConquistado(@Param("id") UUID id);
+
+    @Query("SELECT count(pf.id) FROM PersonPhysical pf where pf.userId = :id and pf.vote = 'A_CONQUISTAR' ")
+    long countPersonVoteIsAConquistar(@Param("id") UUID id);
+
+    @Query("SELECT count(pf.id) FROM PersonPhysical pf where pf.userId = :id and pf.vote = 'PERDIDO' ")
+    long countPersonVoteIsPerdido(@Param("id") UUID id);
 }

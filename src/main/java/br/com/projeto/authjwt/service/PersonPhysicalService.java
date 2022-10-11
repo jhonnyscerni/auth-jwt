@@ -24,4 +24,12 @@ public interface PersonPhysicalService {
     PersonPhysicalResponse findByIdResponse(UUID personphisicalId);
 
     List<PersonPhysicalResponse> findAllMy(UUID userId);
+
+    Long countPersonPhysical(UUID aLong);
+
+    Long countPersonPhysicalVoteIsConquistado(UUID aLong);
+
+    Long countPersonPhysicalVoteIsAConquistar(UUID aLong);
+
+    Long countPersonPhysicalVoteIsPerdido(UUID aLong);
 }

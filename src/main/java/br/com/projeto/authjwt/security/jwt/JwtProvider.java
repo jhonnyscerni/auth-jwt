@@ -25,12 +25,13 @@ public class JwtProvider {
         Collection<? extends GrantedAuthority> authorities = userPrincipal.getAuthorities();
 
         return Jwts.builder()
-                .setSubject((userPrincipal.getUserId().toString()))
-                .claim("authorities", authorities)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact();
+            .setIssuer(userPrincipal.getUsername())
+            .setSubject((userPrincipal.getUserId().toString()))
+            .claim("authorities", authorities)
+            .setIssuedAt(new Date())
+            .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+            .signWith(SignatureAlgorithm.HS512, jwtSecret)
+            .compact();
     }
 
     // Usado no Filter
@@ -55,7 +56,6 @@ public class JwtProvider {
         }
         return false;
     }
-
 
 
 }
