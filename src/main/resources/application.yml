@@ -2,4 +2,4 @@ spring:
     application:
         name: authuser-service
     profiles:
-        active: prod
+        active: dev
