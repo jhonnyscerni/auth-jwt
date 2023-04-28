@@ -3,6 +3,8 @@ package br.com.projeto.authjwt.service.impl;
 import br.com.projeto.authjwt.api.mapper.PersonPhysicalMapper;
 import br.com.projeto.authjwt.api.request.PersonPhysicalRequest;
 import br.com.projeto.authjwt.api.response.PersonPhysicalResponse;
+import br.com.projeto.authjwt.integration.client.GoogleClient;
+import br.com.projeto.authjwt.integration.client.dto.GoogleDTO;
 import br.com.projeto.authjwt.models.PersonPhysical;
 import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.models.exceptions.EntityInUseException;
@@ -36,6 +38,8 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
 
     private final LogicVerifyPersonTypeLogin logicVerifyPersonTypeLogin;
 
+    private final GoogleClient googleClient;
+
     private static final String MSG_OBJECT_IN_USE
         = "Person Physical %d cannot be removed as it is in use";
 
@@ -54,6 +58,11 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
 
         personPhysicalRequest.setUserId(id);
         PersonPhysical personPhysical = personPhysicalMapper.create(personPhysicalRequest);
+        //buscar Latitude e Longitudo do Endereço
+        GoogleDTO googleDTO = googleClient.getLatLong(personPhysical.getAddress());
+        personPhysical.getAddress().setLng(googleDTO.getResults().get(0).getGeometry().getLocation().getLng());
+        personPhysical.getAddress().setLat(googleDTO.getResults().get(0).getGeometry().getLocation().getLat());
+
         personPhysicalRepository.save(personPhysical);
         log.debug("POST create PersonPhysical saved set Gold Father in Company {} ", personPhysical.getName());
         log.info("PersonPhysical create successfully PersonPhysical {} ", personPhysical.getId());
@@ -69,6 +78,11 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
         logicVerifyPersonTypeLogin.setUserIdLoggedPerson(personPhysicalRequest);
 
         PersonPhysical personPhysical = personPhysicalMapper.create(personPhysicalRequest);
+
+        //buscar Latitude e Longitudo do Endereço
+        GoogleDTO googleDTO = googleClient.getLatLong(personPhysical.getAddress());
+        personPhysical.getAddress().setLng(googleDTO.getResults().get(0).getGeometry().getLocation().getLng());
+        personPhysical.getAddress().setLat(googleDTO.getResults().get(0).getGeometry().getLocation().getLat());
 
         //personPhysical.setGodfather(padrinho);
         personPhysicalRepository.save(personPhysical);
@@ -92,6 +106,11 @@ public class PersonPhysicalServiceImpl implements PersonPhysicalService {
 
         personPhysicalMapper.update(personPhysical, personPhysicalRequest);
         personPhysical.setUserId(userId);
+
+        //buscar Latitude e Longitudo do Endereço
+        GoogleDTO googleDTO = googleClient.getLatLong(personPhysical.getAddress());
+        personPhysical.getAddress().setLng(googleDTO.getResults().get(0).getGeometry().getLocation().getLng());
+        personPhysical.getAddress().setLat(googleDTO.getResults().get(0).getGeometry().getLocation().getLat());
 
         PersonPhysical save = personPhysicalRepository.save(personPhysical);
 

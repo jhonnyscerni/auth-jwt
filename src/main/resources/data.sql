@@ -1,8 +1,8 @@
 
 
 insert into tb_person (id, address_complement, address_district, address_nm_city, address_number, address_state,
-                       address_street, address_zip_code, email, name, phone_number, vote)
-values ('257736fc-2fa4-4650-ad06-cd98964e346b', 'complement','district', 'nm_city', 'number', 'state', 'street', '66615005', 'jhonnyscerni@gmail.com', 'Jhonny Scerni', '9999999', 'A_CONQUISTAR');
+                       address_street, address_zip_code, email, name, phone_number, vote, address_lng , address_lat)
+values ('257736fc-2fa4-4650-ad06-cd98964e346b', 'complement','district', 'nm_city', 'number', 'state', 'street', '66615005', 'jhonnyscerni@gmail.com', 'Jhonny Scerni', '9999999', 'A_CONQUISTAR', '-48.45198', '-1.4036915');
 
 insert into tb_person_physical (id, birth_date, cpf, gender,
                                 observation, section_vote, surname, zone_voting, user_id)

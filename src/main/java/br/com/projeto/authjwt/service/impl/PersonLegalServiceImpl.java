@@ -3,6 +3,8 @@ package br.com.projeto.authjwt.service.impl;
 import br.com.projeto.authjwt.api.mapper.PersonLegalMapper;
 import br.com.projeto.authjwt.api.request.PersonLegalRequest;
 import br.com.projeto.authjwt.api.response.PersonLegalResponse;
+import br.com.projeto.authjwt.integration.client.GoogleClient;
+import br.com.projeto.authjwt.integration.client.dto.GoogleDTO;
 import br.com.projeto.authjwt.models.PersonLegal;
 import br.com.projeto.authjwt.models.User;
 import br.com.projeto.authjwt.models.exceptions.EntityInUseException;
@@ -33,6 +35,8 @@ public class PersonLegalServiceImpl implements PersonLegalService {
 
     private final LogicVerifyPersonTypeLogin logicVerifyPersonTypeLogin;
 
+    private final GoogleClient googleClient;
+
     private static final String MSG_OBJECT_IN_USE
         = "Person Legal %d cannot be removed as it is in use";
 
@@ -50,6 +54,11 @@ public class PersonLegalServiceImpl implements PersonLegalService {
         logicVerifyPersonTypeLogin.setUserIdLoggedPerson(personLegalRequest);
 
         PersonLegal personLegal = personLegalMapper.create(personLegalRequest);
+        //buscar Latitude e Longitudo do Endereço
+        GoogleDTO googleDTO = googleClient.getLatLong(personLegal.getAddress());
+        personLegal.getAddress().setLng(googleDTO.getResults().get(0).getGeometry().getLocation().getLng());
+        personLegal.getAddress().setLat(googleDTO.getResults().get(0).getGeometry().getLocation().getLat());
+
         personLegalRepository.save(personLegal);
         log.debug("POST create personLegal saved {} ", personLegal.getId());
         log.info("User create successfully personLegal {} ", personLegal.getId());
@@ -72,6 +81,12 @@ public class PersonLegalServiceImpl implements PersonLegalService {
 
         personLegalMapper.update(personLegal, personLegalRequest);
         personLegal.setUserId(userId);
+
+        //buscar Latitude e Longitudo do Endereço
+        GoogleDTO googleDTO = googleClient.getLatLong(personLegal.getAddress());
+        personLegal.getAddress().setLng(googleDTO.getResults().get(0).getGeometry().getLocation().getLng());
+        personLegal.getAddress().setLat(googleDTO.getResults().get(0).getGeometry().getLocation().getLat());
+
         log.debug("PUT update personLegalId saved {} ", personLegal.getId());
         log.info("Person Legal update successfully personLegalId {} ", personLegal.getId());
         return personLegalMapper.toResponse(personLegalRepository.save(personLegal));

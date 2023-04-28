@@ -2,6 +2,7 @@ package br.com.projeto.authjwt.api.controllers;
 
 import br.com.projeto.authjwt.api.request.PersonPhysicalRequest;
 import br.com.projeto.authjwt.api.response.PersonPhysicalResponse;
+import br.com.projeto.authjwt.integration.client.GoogleClient;
 import br.com.projeto.authjwt.service.PersonPhysicalService;
 import br.com.projeto.authjwt.utils.LogicVerifyPersonTypeLogin;
 import java.util.List;

@@ -2,6 +2,8 @@ package br.com.projeto.authjwt.api.response;
 
 import lombok.Data;
 
+import javax.persistence.Column;
+
 @Data
 public class AddressResponse {
 
@@ -18,4 +20,8 @@ public class AddressResponse {
     private String nameCity;
 
     private String state;
+
+    private String lat;
+
+    private String lng;
 }

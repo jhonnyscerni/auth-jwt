@@ -29,4 +29,10 @@ public class Address {
     @Column(name = "address_state")
     private String state;
 
+    @Column(name = "address_lat")
+    private String lat;
+
+    @Column(name = "address_lng")
+    private String lng;
+
 }
